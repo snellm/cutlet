@@ -10,21 +10,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class JSONXPathObject extends XPathObject {
-    private JSONXPathObject(JXPathContext jxpathContext) {
+public class JSONCutlet extends AbstractCutlet {
+    private JSONCutlet(JXPathContext jxpathContext) {
         super(jxpathContext);
     }
 
     @Override
-    protected XPathObject createXPathObject(JXPathContext jxpathContext) {
-        return new JSONXPathObject(jxpathContext);
+    protected AbstractCutlet createXPathObject(JXPathContext jxpathContext) {
+        return new JSONCutlet(jxpathContext);
     }
 
     @Override
-    public XPathObject addArray(String xpath, List<XPathObject> xpos) {
-        Collection<Object> os = new ArrayList<>(xpos.size());
-        for (XPathObject xpo : xpos) {
-            os.add(xpo.getContextBean());
+    public AbstractCutlet addArray(String xpath, List<Cutlet> cutlets) {
+        Collection<Object> os = new ArrayList<>(cutlets.size());
+        for (Cutlet cutlet : cutlets) {
+            os.add(cutlet.getContextBean());
         }
         context.createPathAndSetValue(xpath, os);
 
@@ -34,14 +34,14 @@ public class JSONXPathObject extends XPathObject {
     /**
      * Parse a JSON string into a XPathObject class with can be queried using XPath expressions
      */
-    public static JSONXPathObject parse(String json) {
-        return new JSONXPathObject(JXPathContext.newContext(JSONSerializer.toJSON(json)));
+    public static JSONCutlet parse(String json) {
+        return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(json)));
     }
 
     /**
      * Create an empty XPathObject than can later be serialised to JSON
      */
-    public static XPathObject create() {
+    public static AbstractCutlet create() {
         JXPathContext jxpathContext = JXPathContext.newContext(new JSONObject());
         jxpathContext.setFactory(new AbstractFactory() {
             @Override
@@ -54,18 +54,18 @@ public class JSONXPathObject extends XPathObject {
                 }
             }
         });
-        return new JSONXPathObject(jxpathContext);
+        return new JSONCutlet(jxpathContext);
     }
 
     /**
      * Output a XPathObject as JSON text
      * This is pretty-printed with newlines and indentation
      */
-    public static String print(XPathObject xpo) {
-        if (xpo.getContextBean() instanceof JSONObject) {
-            return ((JSONObject) xpo.getContextBean()).toString(2);
+    public static String print(Cutlet cutlet) {
+        if (cutlet.getContextBean() instanceof JSONObject) {
+            return ((JSONObject) cutlet.getContextBean()).toString(2);
         } else {
-            throw new RuntimeException("Cannot parse [" + xpo.getContextBean().getClass() + "] to JSON string - must be JSONObject");
+            throw new RuntimeException("Cannot parse [" + cutlet.getContextBean().getClass() + "] to JSON string - must be JSONObject");
         }
     }
 

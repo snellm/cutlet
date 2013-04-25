@@ -12,25 +12,25 @@ import org.w3c.dom.ls.*;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-public class XMLXPathObject extends XPathObject {
+public class XMLCutlet extends AbstractCutlet {
     private static DOMImplementationLS DOM_IMPLEMENTATION;
     private static LSParser PARSER;
 
-    private XMLXPathObject(JXPathContext jxpathContext) {
+    private XMLCutlet(JXPathContext jxpathContext) {
         super(jxpathContext);
     }
 
     @Override
-    protected XPathObject createXPathObject(JXPathContext jxpathContext) {
-        return new XMLXPathObject(jxpathContext);
+    protected AbstractCutlet createXPathObject(JXPathContext jxpathContext) {
+        return new XMLCutlet(jxpathContext);
     }
 
     @Override
-    public XPathObject addArray(String xpath, List<XPathObject> xpos) {
+    public Cutlet addArray(String xpath, List<Cutlet> cutlets) {
         Pointer p = context.createPath(xpath);
         Element e = (Element) p.getNode();
-        for (XPathObject xpo : xpos) {
-            Node n = (Node) xpo.getContextBean();
+        for (Cutlet cutlet : cutlets) {
+            Node n = (Node) cutlet.getContextBean();
             Node ni = ((Element) getContextBean()).getOwnerDocument().importNode(n, true);
             e.appendChild(ni);
         }
@@ -60,7 +60,7 @@ public class XMLXPathObject extends XPathObject {
      * Parse a XML string into a XPathObject class with can be queried using XPath expressions
      * The root node of the XML document must be specified, and is not required in further queries
      */
-    public static XPathObject parse(String xml, String rootNode) {
+    public static AbstractCutlet parse(String xml, String rootNode) {
         JXPathContext context = JXPathContext.newContext(parseXML(xml));
 
         Pointer pointer = context.getPointer(rootNode);
@@ -68,14 +68,14 @@ public class XMLXPathObject extends XPathObject {
             throw new RuntimeException("No root node [" + rootNode + "] found in [" + xml + "]");
         }
 
-        return new XMLXPathObject(context.getRelativeContext(pointer));
+        return new XMLCutlet(context.getRelativeContext(pointer));
     }
 
     /**
      * Create an empty XPathObject than can later be serialised to XML
      * The root node of the XML document must be specified, and is not required in further queries
      */
-    public static XPathObject create(String rootNode) {
+    public static Cutlet create(String rootNode) {
         final Document document = parseXML("<" + rootNode + "/>");
         JXPathContext context = JXPathContext.newContext(document);
 
@@ -92,7 +92,7 @@ public class XMLXPathObject extends XPathObject {
         });
 
         Pointer pointer = context.getPointer(rootNode);
-        return new XMLXPathObject(context.getRelativeContext(pointer));
+        return new XMLCutlet(context.getRelativeContext(pointer));
     }
 
     private static String serializeXML(Document document) {
@@ -117,11 +117,11 @@ public class XMLXPathObject extends XPathObject {
      * Output a XPathObject as XML text
      * This is UTF-8 encoded and pretty-printed with newlines and indentation
      */
-    public static String print(XPathObject xpo) {
-        if (xpo.getContextBean() instanceof Element) {
-            return serializeXML(((Element) xpo.getContextBean()).getOwnerDocument());
+    public static String print(Cutlet cutlet) {
+        if (cutlet.getContextBean() instanceof Element) {
+            return serializeXML(((Element) cutlet.getContextBean()).getOwnerDocument());
         } else {
-            throw new RuntimeException("Cannot parse [" + xpo.getContextBean().getClass() + "] to XML string - must be Element");
+            throw new RuntimeException("Cannot parse [" + cutlet.getContextBean().getClass() + "] to XML string - must be Element");
         }
     }
 }
