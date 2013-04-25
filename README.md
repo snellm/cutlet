@@ -6,11 +6,12 @@ Cutlet is a library to make working with XML and JSON in Java faster and simpler
 Example
 -------
 
-Combining first and last names into a full name from a XML string with a root element "people" and multiple "person" subelements:
+Combining first name, last name and mobile number into a string from a XML string with a root element "people" and multiple "person" subelements with multiple
+"phonenumber" subelements with different types - see [people.xml](src/test/java/org/snellm/cutlet/people.xml):
 
-    List<String> fullnames = Lists.transform(XMLCutlet.parse(xmlString, "people").getArray("person"), new Function<Cutlet, String>() {
+    List<String> list = Lists.transform(XMLCutlet.parse(xmlString, "people").getArray("person"), new Function<Cutlet, String>() {
         public String apply(Cutlet input) {
-            return input.getString("firstname") + " " + input.getString("lastname");
+                return input.getString("firstname") + " " + input.getString("lastname") + " " + input.getString("phonenumber[@type = 'mobile']");
         }
     });
 

@@ -15,15 +15,15 @@ public class XMLCutletTest {
     @Test
     public void testExample() {
         String xml = getFileResource(getClass(), "people.xml");
-        List<String> fullnames = Lists.transform(XMLCutlet.parse(xml, "people").getArray("person"), new Function<Cutlet, String>() {
+        List<String> list = Lists.transform(XMLCutlet.parse(xml, "people").getArray("person"), new Function<Cutlet, String>() {
             public String apply(Cutlet input) {
-                return input.getString("firstname") + " " + input.getString("lastname");
+                return input.getString("firstname") + " " + input.getString("lastname") + " " + input.getString("phonenumber[@type = 'mobile']");
             }
         });
 
-        assertEquals(2, fullnames.size());
-        assertEquals("John Doe", fullnames.get(0));
-        assertEquals("Alfred Neuman", fullnames.get(1));
+        assertEquals(2, list.size());
+        assertEquals("John Doe 0491 570 156", list.get(0));
+        assertEquals("Alfred Neuman 0491 570 999", list.get(1));
     }
 
     @Test
