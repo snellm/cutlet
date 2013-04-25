@@ -11,20 +11,15 @@ import static org.snellm.cutlet.TestUtil.assertContains;
 import static org.snellm.cutlet.TestUtil.getFileResource;
 
 public class JSONCutletTest {
-    private Cutlet getTestJSONCutlet() {
-        Cutlet cutlet = JSONCutlet.parse(getFileResource(getClass(), "test.json"));
-        return cutlet.get("person");
-    }
-
     @Test
     public void testParse() {
-        Cutlet cutlet = getTestJSONCutlet();
+        Cutlet cutlet = getPersonJSONCutlet();
         assertNotNull(cutlet);
     }
 
     @Test
     public void testErrorHandling() {
-        Cutlet cutlet = getTestJSONCutlet();
+        Cutlet cutlet = getPersonJSONCutlet();
 
         try {
             cutlet.getString("location/city");
@@ -36,7 +31,7 @@ public class JSONCutletTest {
 
     @Test
     public void testStrings() {
-        Cutlet cutlet = getTestJSONCutlet();
+        Cutlet cutlet = getPersonJSONCutlet();
 
         // Can get a string using XPath
         assertEquals("New York", cutlet.getString("address/city"));
@@ -56,7 +51,7 @@ public class JSONCutletTest {
 
     @Test
     public void testNumbers() {
-        Cutlet cutlet = getTestJSONCutlet();
+        Cutlet cutlet = getPersonJSONCutlet();
 
         // Can get a integer as a BigDecimal using XPath
         assertEquals(BigDecimal.valueOf(1), cutlet.getBigDecimal("favouriteNumbers[1]"));
@@ -81,7 +76,7 @@ public class JSONCutletTest {
 
     @Test
     public void testArrays() {
-        Cutlet cutlet = getTestJSONCutlet();
+        Cutlet cutlet = getPersonJSONCutlet();
 
         // Can get a specific array entry directly using XPath
         assertEquals("home", cutlet.getString("phoneNumbers[1]/type"));
@@ -149,5 +144,10 @@ public class JSONCutletTest {
         cutlet.removeAll("/biometrics");
 
         assertEquals("{}", JSONCutlet.print(cutlet));
+    }
+
+    private Cutlet getPersonJSONCutlet() {
+        Cutlet cutlet = JSONCutlet.parse(getFileResource(getClass(), "person.json"));
+        return cutlet.get("person");
     }
 }

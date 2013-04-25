@@ -1,5 +1,6 @@
 package org.snellm.cutlet;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
@@ -11,19 +12,29 @@ import static org.snellm.cutlet.TestUtil.assertContains;
 import static org.snellm.cutlet.TestUtil.getFileResource;
 
 public class XMLCutletTest {
-    private Cutlet getTestXMLCutlet() {
-        return XMLCutlet.parse(getFileResource(getClass(), "test.xml"), "person");
+    @Test
+    public void testExample() {
+        String xml = getFileResource(getClass(), "people.xml");
+        List<String> fullnames = Lists.transform(XMLCutlet.parse(xml, "people").getArray("person"), new Function<Cutlet, String>() {
+            public String apply(Cutlet input) {
+                return input.getString("firstname") + " " + input.getString("lastname");
+            }
+        });
+
+        assertEquals(2, fullnames.size());
+        assertEquals("John Doe", fullnames.get(0));
+        assertEquals("Alfred Neuman", fullnames.get(1));
     }
 
     @Test
     public void testParse() {
-        Cutlet cutlet = getTestXMLCutlet();
+        Cutlet cutlet = getPersonXMLCutlet();
         assertNotNull(cutlet);
     }
 
     @Test
     public void testErrorHandling() {
-        Cutlet cutlet = getTestXMLCutlet();
+        Cutlet cutlet = getPersonXMLCutlet();
 
         try {
             cutlet.getString("location/city");
@@ -35,7 +46,7 @@ public class XMLCutletTest {
 
     @Test
     public void testStrings() {
-        Cutlet cutlet = getTestXMLCutlet();
+        Cutlet cutlet = getPersonXMLCutlet();
 
         // Can get a string using XPath
         assertEquals("New York", cutlet.getString("address/city"));
@@ -55,7 +66,7 @@ public class XMLCutletTest {
 
     @Test
     public void testNumbers() {
-        Cutlet cutlet = getTestXMLCutlet();
+        Cutlet cutlet = getPersonXMLCutlet();
 
         // Can get a integer as a BigDecimal using XPath
         assertEquals(BigDecimal.valueOf(1), cutlet.getBigDecimal("favouriteNumber[1]"));
@@ -80,7 +91,7 @@ public class XMLCutletTest {
 
     @Test
     public void testArrays() {
-        Cutlet cutlet = getTestXMLCutlet();
+        Cutlet cutlet = getPersonXMLCutlet();
 
         // Can get a specific array entry directly using XPath
         assertEquals("home", cutlet.getString("phoneNumber[1]/type"));
@@ -126,5 +137,9 @@ public class XMLCutletTest {
         assertEquals(BigDecimal.valueOf(1.8), cutlet.getBigDecimal("biometrics/height"));
         assertEquals("Newcastle", cutlet.get("address").getString("city"));
         assertEquals("Red", cutlet.getArray("colours/color").get(0).getString("name"));
+    }
+
+    private Cutlet getPersonXMLCutlet() {
+        return XMLCutlet.parse(getFileResource(getClass(), "person.xml"), "person");
     }
 }
