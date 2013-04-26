@@ -16,7 +16,7 @@ public class JSONCutlet extends AbstractCutlet {
     }
 
     @Override
-    protected AbstractCutlet createXPathObject(JXPathContext jxpathContext) {
+    protected AbstractCutlet createCutlet(JXPathContext jxpathContext) {
         return new JSONCutlet(jxpathContext);
     }
 
@@ -32,14 +32,14 @@ public class JSONCutlet extends AbstractCutlet {
     }
 
     /**
-     * Parse a JSON string into a XPathObject class with can be queried using XPath expressions
+     * Parse a JSON string into a JSONCutlet with can be queried using XPath expressions
      */
-    public static JSONCutlet parse(String json) {
+    public static Cutlet parse(String json) {
         return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(json)));
     }
 
     /**
-     * Create an empty XPathObject than can later be serialised to JSON
+     * Create an empty JSONCutlet
      */
     public static Cutlet create() {
         JXPathContext jxpathContext = JXPathContext.newContext(new JSONObject());
@@ -72,7 +72,7 @@ public class JSONCutlet extends AbstractCutlet {
     }
 
     /**
-     * Output a XPathObject as JSON text
+     * Output a JSONCutlet as JSON text
      * This is pretty-printed with newlines and indentation
      */
     public static String print(Cutlet cutlet) {

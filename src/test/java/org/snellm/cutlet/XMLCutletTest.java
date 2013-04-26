@@ -117,7 +117,7 @@ public class XMLCutletTest {
         assertContains(generatedXML, "<name>John Smith</name>");
         assertContains(generatedXML, "<city>Newcastle</city>");
 
-        cutlet = XMLCutlet.parse(generatedXML, "person");
+        cutlet = XMLCutlet.parse(generatedXML);
         assertNotNull(cutlet);
         assertEquals(BigDecimal.valueOf(1.8), cutlet.getBigDecimal("biometrics/height"));
         assertEquals("Newcastle", cutlet.get("address").getString("city"));
@@ -139,6 +139,6 @@ public class XMLCutletTest {
     }
 
     private Cutlet getPersonXMLCutlet() {
-        return XMLCutlet.parse(TestUtil.readFileResource(getClass(), "person.xml"), "person");
+        return XMLCutlet.parse(TestUtil.readFileResource(getClass(), "person.xml"));
     }
 }

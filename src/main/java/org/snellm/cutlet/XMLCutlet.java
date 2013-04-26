@@ -21,7 +21,7 @@ public class XMLCutlet extends AbstractCutlet {
     }
 
     @Override
-    protected AbstractCutlet createXPathObject(JXPathContext jxpathContext) {
+    protected AbstractCutlet createCutlet(JXPathContext jxpathContext) {
         return new XMLCutlet(jxpathContext);
     }
 
@@ -71,22 +71,19 @@ public class XMLCutlet extends AbstractCutlet {
     }
 
     /**
-     * Parse a XML string into a XPathObject class with can be queried using XPath expressions
-     * The root node of the XML document must be specified, and is not required in further queries
+     * Parse a XML string into a Cutlet class with can be queried using XPath expressions
      */
-    public static AbstractCutlet parse(String xml, String rootNode) {
-        JXPathContext context = JXPathContext.newContext(parseXML(xml));
+    public static Cutlet parse(String xml) {
+        Document document = parseXML(xml);
+        JXPathContext context = JXPathContext.newContext(document);
 
-        Pointer pointer = context.getPointer(rootNode);
-        if (pointer == null) {
-            throw new RuntimeException("No root node [" + rootNode + "] found in [" + xml + "]");
-        }
+        Pointer pointer = context.getPointer(document.getDocumentElement().getNodeName());
 
         return new XMLCutlet(context.getRelativeContext(pointer));
     }
 
     /**
-     * Create an empty XPathObject than can later be serialised to XML
+     * Create an empty XMLCutlet than can later be serialised to XML
      * The root node of the XML document must be specified, and is not required in further queries
      */
     public static Cutlet create(String rootNode) {
@@ -128,7 +125,7 @@ public class XMLCutlet extends AbstractCutlet {
     }
 
     /**
-     * Output a XPathObject as XML text
+     * Output a XMLCutlet as XML text
      * This is UTF-8 encoded and pretty-printed with newlines and indentation
      */
     public static String print(Cutlet cutlet) {

@@ -11,7 +11,7 @@ import static org.snellm.cutlet.TestUtil.readFileResource;
 public class ExampleTest {
     @Test
     public void example() {
-        Cutlet input = XMLCutlet.parse(readFileResource(getClass(), "input.xml"), "people");
+        Cutlet input = XMLCutlet.parse(readFileResource(getClass(), "input.xml"));
         Cutlet output = JSONCutlet.create();
 
         for (Cutlet person : input.getArray("person")) {

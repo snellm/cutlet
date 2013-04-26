@@ -16,7 +16,7 @@ public abstract class AbstractCutlet implements Cutlet {
         this.context = jxpathContext;
     }
 
-    protected abstract AbstractCutlet createXPathObject(JXPathContext jxpathContext);
+    protected abstract AbstractCutlet createCutlet(JXPathContext jxpathContext);
 
     @Override
     public Object getContextBean() {
@@ -45,7 +45,7 @@ public abstract class AbstractCutlet implements Cutlet {
         Pointer pointer = context.getPointer(xpath);
         if (pointer != null) {
             JXPathContext relativeContext = context.getRelativeContext(pointer);
-            return createXPathObject(relativeContext);
+            return createCutlet(relativeContext);
         } else {
             throw new CutletRuntimeException("No node at [" + xpath + "] in [" + getContextBean() + "]");
         }
@@ -69,7 +69,7 @@ public abstract class AbstractCutlet implements Cutlet {
         List<Cutlet> c = new ArrayList<>();
         while (i.hasNext()) {
             Pointer p = (Pointer) i.next();
-            c.add(createXPathObject(context.getRelativeContext(p)));
+            c.add(createCutlet(context.getRelativeContext(p)));
         }
 
         return c;
