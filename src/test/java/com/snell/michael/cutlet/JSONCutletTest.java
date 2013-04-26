@@ -143,7 +143,7 @@ public class JSONCutletTest {
         cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
         cutlet.addBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
 
-        cutlet.removeAll("/biometrics/height");
+        cutlet.remove("biometrics/height");
 
         assertEquals("{\"biometrics\": {\"weight\": 91.2}}", JSONCutlet.print(cutlet));
     }
@@ -154,7 +154,7 @@ public class JSONCutletTest {
         cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
         cutlet.addBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
 
-        cutlet.removeAll("/biometrics");
+        cutlet.remove("biometrics");
 
         assertEquals("{}", JSONCutlet.print(cutlet));
     }

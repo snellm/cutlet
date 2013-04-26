@@ -155,7 +155,7 @@ public abstract class AbstractCutlet implements Cutlet {
     }
 
     @Override
-    public void removeAll(String xpath) {
+    public void remove(String xpath) {
         context.removeAll(xpath);
     }
 

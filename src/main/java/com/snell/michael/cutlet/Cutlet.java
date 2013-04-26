@@ -30,5 +30,5 @@ public interface Cutlet {
 
     Cutlet addBigDecimal(String xpath, BigDecimal value);
 
-    void removeAll(String xpath);
+    void remove(String xpath);
 }
