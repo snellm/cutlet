@@ -19,7 +19,7 @@ phone numbers to names, changing the keys for first and last name
 ([output.json](src/test/resources/com/snell/michael/cutlet/example/output.json)):
 
 ````java
-Cutlet input = XMLCutlet.parse(readFile("input.xml"));
+Cutlet input = XMLCutlet.parse(new File("input.xml"));
 Cutlet output = JSONCutlet.create();
 
 for (Cutlet person : input.getArray("person")) {
@@ -29,9 +29,36 @@ for (Cutlet person : input.getArray("person")) {
 }
 
 String json = output.printPretty();
-````    
+````
 
 See the [JSON](src/test/java/com/snell/michael/cutlet/JSONCutletTest.java) and [XML](src/test/java/com/snell/michael/cutlet/XMLCutletTest.java) tests cases for more examples.
+
+Downloading
+===========
+
+Cutlet has not yet been officially released, but you can download a development snapshot from https://oss.sonatype.org/content/repositories/snapshots/com/snell/michael/cutlet/cutlet,
+or use Maven or similar tools:
+
+````xml
+<repositories>
+  <repository>
+    <id>sonatype-oss-public</id>
+    <url>https://oss.sonatype.org/content/groups/public/</url>
+    <releases>
+      <enabled>true</enabled>
+    </releases>
+    <snapshots>
+      <enabled>true</enabled>
+    </snapshots>
+  </repository>
+</repositories>
+
+<dependency>
+  <groupId>com.snell.michael.cutlet</groupId>
+  <artifactId>cutlet</artifactId>
+  <version>0.1-SNAPSHOT</version>
+</dependency>
+````
 
 Caveats
 =======
