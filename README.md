@@ -28,7 +28,7 @@ for (Cutlet person : input.getArray("person")) {
         .addString("surname", person.getString("lastname"));
 }
 
-String json = JSONCutlet.print(output);
+String json = output.printPretty();
 ````    
 
 See the [JSON](src/test/java/com/snell/michael/cutlet/JSONCutletTest.java) and [XML](src/test/java/com/snell/michael/cutlet/XMLCutletTest.java) tests cases for more examples.
