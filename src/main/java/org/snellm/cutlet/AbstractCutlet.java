@@ -3,17 +3,21 @@ package org.snellm.cutlet;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.Pointer;
+import org.snellm.cutlet.converters.BigDecimalConverter;
+import org.snellm.cutlet.converters.ValueConverter;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public abstract class AbstractCutlet implements Cutlet {
     protected final JXPathContext context;
 
+    private final Map<Class<?>, ValueConverter<?>> converterMap = new HashMap<>();
+
     protected AbstractCutlet(JXPathContext jxpathContext) {
         this.context = jxpathContext;
+
+        converterMap.put(BigDecimal.class, new BigDecimalConverter());
     }
 
     protected abstract AbstractCutlet createCutlet(JXPathContext jxpathContext);
@@ -55,8 +59,7 @@ public abstract class AbstractCutlet implements Cutlet {
     public boolean has(String xpath) {
         try {
             getString(xpath);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -126,7 +129,7 @@ public abstract class AbstractCutlet implements Cutlet {
         Object o = getValue(xpath);
 
         try {
-            return BigDecimalConverter.parse(o);
+            return parse(BigDecimal.class, o);
         } catch (RuntimeException e) {
             throw new CutletRuntimeException("Cannot parse BigDecimal at path [" + xpath + "] in [" + getContextBean() + "]", e);
         }
@@ -138,7 +141,7 @@ public abstract class AbstractCutlet implements Cutlet {
 
         List<BigDecimal> c = new ArrayList<>();
         while (i.hasNext()) {
-            c.add(BigDecimalConverter.parse(i.next()));
+            c.add(parse(BigDecimal.class, i.next()));
         }
 
         return c;
@@ -147,12 +150,22 @@ public abstract class AbstractCutlet implements Cutlet {
     @Override
     public AbstractCutlet addBigDecimal(String xpath, BigDecimal value) {
         add(xpath);
-        context.setValue(xpath, value);
+        context.setValue(xpath, write(BigDecimal.class, value));
         return this;
     }
 
     @Override
     public void removeAll(String xpath) {
         context.removeAll(xpath);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T parse(Class<T> clazz, Object object) {
+        return ((ValueConverter<T>) converterMap.get(clazz)).read(object);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Object write(Class<T> clazz, T t) {
+        return ((ValueConverter<T>) converterMap.get(clazz)).write(t);
     }
 }
