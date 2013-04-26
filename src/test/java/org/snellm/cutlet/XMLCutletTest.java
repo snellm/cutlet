@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static java.math.BigDecimal.TEN;
 import static org.junit.Assert.*;
 import static org.snellm.cutlet.TestUtil.assertContains;
 
@@ -121,6 +122,20 @@ public class XMLCutletTest {
         assertEquals(BigDecimal.valueOf(1.8), cutlet.getBigDecimal("biometrics/height"));
         assertEquals("Newcastle", cutlet.get("address").getString("city"));
         assertEquals("Red", cutlet.getArray("colours/color").get(0).getString("name"));
+    }
+
+    @Test
+    public void equalsAndHashCode() {
+        Cutlet one = XMLCutlet.create("foo");
+        one.addString("bar/baz", "nop");
+        one.addBigDecimal("baz/bar", TEN);
+
+        Cutlet two = XMLCutlet.create("foo");
+        two.addString("bar/baz", "nop");
+        two.addBigDecimal("baz/bar", TEN);
+
+        assertEquals(one.hashCode(), two.hashCode());
+        assertEquals(one, two);
     }
 
     private Cutlet getPersonXMLCutlet() {

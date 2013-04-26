@@ -59,7 +59,11 @@ public class JSONCutlet extends AbstractCutlet {
 
     @Override
     public boolean equals(Object obj) {
-        return getContextBean().equals(((JSONCutlet) obj).getContextBean());
+        if (obj instanceof JSONCutlet) {
+            return getContextBean().equals(((JSONCutlet) obj).getContextBean());
+        } else {
+            return false;
+        }
     }
 
     @Override

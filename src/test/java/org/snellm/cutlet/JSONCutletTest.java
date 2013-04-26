@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.math.BigDecimal.TEN;
 import static org.junit.Assert.*;
 import static org.snellm.cutlet.TestUtil.assertContains;
 import static org.snellm.cutlet.TestUtil.readFileResource;
@@ -122,6 +123,20 @@ public class JSONCutletTest {
         assertEquals(BigDecimal.valueOf(1.8), cutlet.getBigDecimal("biometrics/height"));
         assertEquals("Newcastle", cutlet.get("address").getString("city"));
         assertEquals("Red", cutlet.getArray("colours").get(0).getString("name"));
+    }
+
+    @Test
+    public void equalsAndHashCode() {
+        Cutlet one = JSONCutlet.create();
+        one.addString("bar/baz", "nop");
+        one.addBigDecimal("baz/bar", TEN);
+
+        Cutlet two = JSONCutlet.create();
+        two.addBigDecimal("baz/bar", TEN);
+        two.addString("bar/baz", "nop");
+
+        assertEquals(one.hashCode(), two.hashCode());
+        assertEquals(one, two);
     }
 
     @Test
