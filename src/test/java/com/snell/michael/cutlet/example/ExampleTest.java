@@ -5,13 +5,14 @@ import com.snell.michael.cutlet.JSONCutlet;
 import com.snell.michael.cutlet.XMLCutlet;
 import org.junit.Test;
 
+import static com.snell.michael.cutlet.TestUtil.openResourceStream;
 import static com.snell.michael.cutlet.TestUtil.readFileResource;
 import static org.junit.Assert.assertEquals;
 
 public class ExampleTest {
     @Test
     public void example() {
-        Cutlet input = XMLCutlet.parse(readFileResource(getClass(), "input.xml"));
+        Cutlet input = XMLCutlet.parse(openResourceStream(getClass(), "input.xml"));
         Cutlet output = JSONCutlet.create();
 
         for (Cutlet person : input.getArray("person")) {

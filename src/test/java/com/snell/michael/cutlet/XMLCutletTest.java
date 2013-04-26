@@ -12,11 +12,18 @@ import static org.junit.Assert.*;
 
 public class XMLCutletTest {
     @Test
-    public void parse() {
-        Cutlet cutlet = getPersonXMLCutlet();
+    public void parseString() {
+        Cutlet cutlet = XMLCutlet.parse(TestUtil.readFileResource(getClass(), "person.xml"));
         assertNotNull(cutlet);
+        assertEquals("John", cutlet.getString("firstName"));
     }
 
+    @Test
+    public void parseInputSteam() {
+        Cutlet cutlet = XMLCutlet.parse(TestUtil.openResourceStream(getClass(), "person.xml"));
+        assertNotNull(cutlet);
+        assertEquals("John", cutlet.getString("firstName"));
+    }
     @Test
     public void errorHandling() {
         Cutlet cutlet = getPersonXMLCutlet();

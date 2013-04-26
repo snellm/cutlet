@@ -13,7 +13,7 @@ public class TestUtil {
     /**
      * Open a stream for a file relative to the class
      */
-    public static InputStream openStreamResource(Class<?> clazz, String filename) {
+    public static InputStream openResourceStream(Class<?> clazz, String filename) {
         InputStream ret = clazz.getResourceAsStream(filename);
         if (ret == null) {
             throw new RuntimeException("File [" + filename + "] not found for class [" + clazz.getCanonicalName() + "]");
@@ -26,7 +26,7 @@ public class TestUtil {
      */
     public static String readFileResource(Class<?> clazz, String filename) {
         try {
-            return IOUtils.toString(openStreamResource(clazz, filename));
+            return IOUtils.toString(openResourceStream(clazz, filename));
         } catch (IOException e) {
             throw new RuntimeException("IO error reading file [" + filename + "]", e);
         } catch (RuntimeException e) {

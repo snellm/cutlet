@@ -11,9 +11,17 @@ import static org.junit.Assert.*;
 
 public class JSONCutletTest {
     @Test
-    public void parse() {
-        Cutlet cutlet = getPersonJSONCutlet();
+    public void parseString() {
+        Cutlet cutlet = JSONCutlet.parse(TestUtil.readFileResource(getClass(), "person.json"));
         assertNotNull(cutlet);
+        assertEquals("John", cutlet.getString("person/firstName"));
+    }
+
+    @Test
+    public void parseInputSteam() {
+        Cutlet cutlet = JSONCutlet.parse(TestUtil.openResourceStream(getClass(), "person.json"));
+        assertNotNull(cutlet);
+        assertEquals("John", cutlet.getString("person/firstName"));
     }
 
     @Test

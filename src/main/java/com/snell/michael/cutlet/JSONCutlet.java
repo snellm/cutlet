@@ -2,10 +2,15 @@ package com.snell.michael.cutlet;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,6 +41,28 @@ public class JSONCutlet extends AbstractCutlet {
      */
     public static Cutlet parse(String json) {
         return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(json)));
+    }
+
+    /**
+     * Parse a JSON input stream into a JSONCutlet with can be queried using XPath expressions
+     */
+    public static Cutlet parse(InputStream inputStream) {
+        try {
+            return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(IOUtils.toString(inputStream))));
+        } catch (IOException e) {
+            throw new CutletRuntimeException("IO exception reading from input stream [" + inputStream + "]", e);
+        }
+    }
+
+    /**
+     * Parse a JSON file into a JSONCutlet with can be queried using XPath expressions
+     */
+    public static Cutlet parse(File file) {
+        try {
+            return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(FileUtils.readFileToString(file))));
+        } catch (IOException e) {
+            throw new CutletRuntimeException("IO exception reading from file [" + file + "]", e);
+        }
     }
 
     /**
