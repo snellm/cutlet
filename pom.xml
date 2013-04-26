@@ -6,7 +6,40 @@
     <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
     <name>cutlet</name>
+    <description>Slice and dice XML and JSON</description>
     <url>https://github.com/snellm/cutlet</url>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>snellm</id>
+            <name>Michael Snell</name>
+            <email>michael@snell.com</email>
+            <url>http://michael.snell.com</url>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:snellm/cutlet.git</connection>
+        <url>scm:git:git@github.com:snellm/cutlet.git</url>
+        <developerConnection>scm:git:git@github.com:snellm/cutlet.git</developerConnection>
+    </scm>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4.1</version>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <!-- Runtime -->
         <dependency>
@@ -19,11 +52,6 @@
             <artifactId>json-lib</artifactId>
             <version>2.4</version>
             <classifier>jdk15</classifier>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.2</version>
         </dependency>
 
         <!-- Test -->
