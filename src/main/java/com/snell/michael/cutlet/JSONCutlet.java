@@ -98,15 +98,30 @@ public class JSONCutlet extends AbstractCutlet {
         return getContextBean(this).hashCode();
     }
 
+    private String print(boolean pretty) {
+        if (getContextBean(this) instanceof JSONObject) {
+            return ((JSONObject) getContextBean(this)).toString(pretty ? 2 : 0);
+        } else {
+            throw new RuntimeException("Cannot parse [" + getContextBean(this).getClass() + "] to JSON string - must be JSONObject");
+        }
+    }
+
+    /**
+     * Output a JSONCutlet as JSON text
+     * This is printed compactly
+     */
+    @Override
+    public String printCompact() {
+        return print(false);
+    }
+
+
     /**
      * Output a JSONCutlet as JSON text
      * This is pretty-printed with newlines and indentation
      */
-    public static String print(Cutlet cutlet) {
-        if (getContextBean(cutlet) instanceof JSONObject) {
-            return ((JSONObject) getContextBean(cutlet)).toString(2);
-        } else {
-            throw new RuntimeException("Cannot parse [" + getContextBean(cutlet).getClass() + "] to JSON string - must be JSONObject");
-        }
+    @Override
+    public String printPretty() {
+        return print(true);
     }
 }

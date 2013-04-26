@@ -44,13 +44,13 @@ public class XMLCutlet extends AbstractCutlet {
 
     @Override
     public int hashCode() {
-        return print(this).hashCode();
+        return print(false).hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof XMLCutlet) {
-            return print(this).equals(print((XMLCutlet) obj));
+            return print(false).equals(((XMLCutlet) obj).print(false));
         } else {
             return false;
         }
@@ -141,13 +141,13 @@ public class XMLCutlet extends AbstractCutlet {
         return new XMLCutlet(context.getRelativeContext(pointer));
     }
 
-    private static String serializeXML(Document document) {
+    private static String serializeXML(Document document, boolean pretty) {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 
         createParser();
         LSSerializer serializer = DOM_IMPLEMENTATION.createLSSerializer();
-        if (serializer.getDomConfig().canSetParameter("format-pretty-print", Boolean.TRUE)) {
-            serializer.getDomConfig().setParameter("format-pretty-print", Boolean.TRUE);
+        if (serializer.getDomConfig().canSetParameter("format-pretty-print", pretty)) {
+            serializer.getDomConfig().setParameter("format-pretty-print", pretty);
         }
         serializer.getDomConfig().setParameter("xml-declaration", Boolean.TRUE);
 
@@ -159,15 +159,29 @@ public class XMLCutlet extends AbstractCutlet {
         return byteStream.toString();
     }
 
+    private String print(boolean pretty) {
+        if (getContextBean(this) instanceof Element) {
+            return serializeXML(((Element) getContextBean(this)).getOwnerDocument(), pretty);
+        } else {
+            throw new RuntimeException("Cannot parse [" + getContextBean(this).getClass() + "] to XML string - must be Element");
+        }
+    }
+
+    /**
+     * Output a XMLCutlet as XML text
+     * This is UTF-8 encoded and compact
+     */
+    @Override
+    public String printCompact() {
+        return print(false);
+    }
+
     /**
      * Output a XMLCutlet as XML text
      * This is UTF-8 encoded and pretty-printed with newlines and indentation
      */
-    public static String print(Cutlet cutlet) {
-        if (getContextBean(cutlet) instanceof Element) {
-            return serializeXML(((Element) getContextBean(cutlet)).getOwnerDocument());
-        } else {
-            throw new RuntimeException("Cannot parse [" + getContextBean(cutlet).getClass() + "] to XML string - must be Element");
-        }
+    @Override
+    public String printPretty() {
+        return print(true);
     }
 }

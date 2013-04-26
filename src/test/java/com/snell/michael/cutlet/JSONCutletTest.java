@@ -119,7 +119,7 @@ public class JSONCutletTest {
                 .addString("meaning", "Go"));
         cutlet.addArray("colours", cutlets);
 
-        String s = JSONCutlet.print(cutlet);
+        String s = cutlet.printPretty();
         assertNotNull(s);
         TestUtil.assertContains(s, "\"John Smith\"");
         TestUtil.assertContains(s, "\"Newcastle\"");
@@ -153,7 +153,7 @@ public class JSONCutletTest {
 
         cutlet.remove("biometrics/height");
 
-        assertEquals("{\"biometrics\": {\"weight\": 91.2}}", JSONCutlet.print(cutlet));
+        assertEquals("{\"biometrics\":{\"weight\":91.2}}", cutlet.printCompact());
     }
 
     @Test
@@ -164,7 +164,7 @@ public class JSONCutletTest {
 
         cutlet.remove("biometrics");
 
-        assertEquals("{}", JSONCutlet.print(cutlet));
+        assertEquals("{}", cutlet.printCompact());
     }
 
     private Cutlet getPersonJSONCutlet() {
