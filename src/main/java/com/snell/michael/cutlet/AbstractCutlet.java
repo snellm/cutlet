@@ -19,9 +19,8 @@ public abstract class AbstractCutlet implements Cutlet {
 
     protected abstract AbstractCutlet createCutlet(JXPathContext jxpathContext);
 
-    @Override
-    public Object getContextBean() {
-        return context.getContextBean();
+    static Object getContextBean(Cutlet cutlet) {
+        return ((AbstractCutlet) cutlet).context.getContextBean();
     }
 
     private Object getValue(String xpath) {
@@ -48,7 +47,7 @@ public abstract class AbstractCutlet implements Cutlet {
             JXPathContext relativeContext = context.getRelativeContext(pointer);
             return createCutlet(relativeContext);
         } else {
-            throw new CutletRuntimeException("No node at [" + xpath + "] in [" + getContextBean() + "]");
+            throw new CutletRuntimeException("No node at [" + xpath + "] in [" + getContextBean(this) + "]");
         }
     }
 
@@ -89,7 +88,7 @@ public abstract class AbstractCutlet implements Cutlet {
         Object o = getValue(xpath);
 
         if (o == null) {
-            throw new CutletRuntimeException("No value at [" + xpath + "] in [" + getContextBean() + "]");
+            throw new CutletRuntimeException("No value at [" + xpath + "] in [" + getContextBean(this) + "]");
         } else if (o instanceof String) {
             return (String) o;
         } else {
@@ -128,7 +127,7 @@ public abstract class AbstractCutlet implements Cutlet {
         try {
             return ValueConverters.read(BigDecimal.class, o);
         } catch (RuntimeException e) {
-            throw new CutletRuntimeException("Cannot parse BigDecimal at path [" + xpath + "] in [" + getContextBean() + "]", e);
+            throw new CutletRuntimeException("Cannot parse BigDecimal at path [" + xpath + "] in [" + getContextBean(this) + "]", e);
         }
     }
 

@@ -24,7 +24,7 @@ public class JSONCutlet extends AbstractCutlet {
     public Cutlet addArray(String xpath, List<Cutlet> cutlets) {
         Collection<Object> os = new ArrayList<>(cutlets.size());
         for (Cutlet cutlet : cutlets) {
-            os.add(cutlet.getContextBean());
+            os.add(getContextBean(cutlet));
         }
         context.createPathAndSetValue(xpath, os);
 
@@ -60,7 +60,7 @@ public class JSONCutlet extends AbstractCutlet {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof JSONCutlet) {
-            return getContextBean().equals(((JSONCutlet) obj).getContextBean());
+            return getContextBean(this).equals((getContextBean((JSONCutlet) obj)));
         } else {
             return false;
         }
@@ -68,7 +68,7 @@ public class JSONCutlet extends AbstractCutlet {
 
     @Override
     public int hashCode() {
-        return getContextBean().hashCode();
+        return getContextBean(this).hashCode();
     }
 
     /**
@@ -76,10 +76,10 @@ public class JSONCutlet extends AbstractCutlet {
      * This is pretty-printed with newlines and indentation
      */
     public static String print(Cutlet cutlet) {
-        if (cutlet.getContextBean() instanceof JSONObject) {
-            return ((JSONObject) cutlet.getContextBean()).toString(2);
+        if (getContextBean(cutlet) instanceof JSONObject) {
+            return ((JSONObject) getContextBean(cutlet)).toString(2);
         } else {
-            throw new RuntimeException("Cannot parse [" + cutlet.getContextBean().getClass() + "] to JSON string - must be JSONObject");
+            throw new RuntimeException("Cannot parse [" + getContextBean(cutlet).getClass() + "] to JSON string - must be JSONObject");
         }
     }
 }

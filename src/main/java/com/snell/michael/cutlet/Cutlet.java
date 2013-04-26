@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface Cutlet {
-    Object getContextBean();
-
     Cutlet get(String xpath);
 
     boolean has(String xpath);

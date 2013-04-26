@@ -30,8 +30,8 @@ public class XMLCutlet extends AbstractCutlet {
         Pointer p = context.createPath(xpath);
         Element e = (Element) p.getNode();
         for (Cutlet cutlet : cutlets) {
-            Node n = (Node) cutlet.getContextBean();
-            Node ni = ((Element) getContextBean()).getOwnerDocument().importNode(n, true);
+            Node n = (Node) getContextBean(cutlet);
+            Node ni = ((Element) getContextBean(this)).getOwnerDocument().importNode(n, true);
             e.appendChild(ni);
         }
 
@@ -129,10 +129,10 @@ public class XMLCutlet extends AbstractCutlet {
      * This is UTF-8 encoded and pretty-printed with newlines and indentation
      */
     public static String print(Cutlet cutlet) {
-        if (cutlet.getContextBean() instanceof Element) {
-            return serializeXML(((Element) cutlet.getContextBean()).getOwnerDocument());
+        if (getContextBean(cutlet) instanceof Element) {
+            return serializeXML(((Element) getContextBean(cutlet)).getOwnerDocument());
         } else {
-            throw new RuntimeException("Cannot parse [" + cutlet.getContextBean().getClass() + "] to XML string - must be Element");
+            throw new RuntimeException("Cannot parse [" + getContextBean(cutlet).getClass() + "] to XML string - must be Element");
         }
     }
 }
