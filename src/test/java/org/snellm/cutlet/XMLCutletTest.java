@@ -11,13 +11,13 @@ import static org.snellm.cutlet.TestUtil.assertContains;
 
 public class XMLCutletTest {
     @Test
-    public void testParse() {
+    public void parse() {
         Cutlet cutlet = getPersonXMLCutlet();
         assertNotNull(cutlet);
     }
 
     @Test
-    public void testErrorHandling() {
+    public void errorHandling() {
         Cutlet cutlet = getPersonXMLCutlet();
 
         try {
@@ -29,7 +29,7 @@ public class XMLCutletTest {
     }
 
     @Test
-    public void testStrings() {
+    public void strings() {
         Cutlet cutlet = getPersonXMLCutlet();
 
         // Can get a string using XPath
@@ -49,7 +49,7 @@ public class XMLCutletTest {
     }
 
     @Test
-    public void testNumbers() {
+    public void numbers() {
         Cutlet cutlet = getPersonXMLCutlet();
 
         // Can get a integer as a BigDecimal using XPath
@@ -74,7 +74,7 @@ public class XMLCutletTest {
     }
 
     @Test
-    public void testArrays() {
+    public void arrays() {
         Cutlet cutlet = getPersonXMLCutlet();
 
         // Can get a specific array entry directly using XPath
@@ -92,7 +92,7 @@ public class XMLCutletTest {
     }
 
     @Test
-    public void testCreation() {
+    public void creation() {
         Cutlet cutlet = XMLCutlet.create("person");
         cutlet.addString("name", "John Smith");
 

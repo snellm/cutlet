@@ -12,13 +12,13 @@ import static org.snellm.cutlet.TestUtil.readFileResource;
 
 public class JSONCutletTest {
     @Test
-    public void testParse() {
+    public void parse() {
         Cutlet cutlet = getPersonJSONCutlet();
         assertNotNull(cutlet);
     }
 
     @Test
-    public void testErrorHandling() {
+    public void errorHandling() {
         Cutlet cutlet = getPersonJSONCutlet();
 
         try {
@@ -30,7 +30,7 @@ public class JSONCutletTest {
     }
 
     @Test
-    public void testStrings() {
+    public void strings() {
         Cutlet cutlet = getPersonJSONCutlet();
 
         // Can get a string using XPath
@@ -50,7 +50,7 @@ public class JSONCutletTest {
     }
 
     @Test
-    public void testNumbers() {
+    public void numbers() {
         Cutlet cutlet = getPersonJSONCutlet();
 
         // Can get a integer as a BigDecimal using XPath
@@ -75,7 +75,7 @@ public class JSONCutletTest {
     }
 
     @Test
-    public void testArrays() {
+    public void arrays() {
         Cutlet cutlet = getPersonJSONCutlet();
 
         // Can get a specific array entry directly using XPath
@@ -93,7 +93,7 @@ public class JSONCutletTest {
     }
 
     @Test
-    public void testCreation() {
+    public void creation() {
         Cutlet cutlet = JSONCutlet.create();
         cutlet.addString("name", "John Smith");
 
@@ -125,7 +125,7 @@ public class JSONCutletTest {
     }
 
     @Test
-    public void testCanRemoveIndividualSectionsUsingXpath() {
+    public void canRemoveIndividualSectionsUsingXpath() {
         Cutlet cutlet = JSONCutlet.create();
         cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
         cutlet.addBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
@@ -136,7 +136,7 @@ public class JSONCutletTest {
     }
 
     @Test
-    public void testCanRemoveSeveralSectionsUsingXpath() {
+    public void canRemoveSeveralSectionsUsingXpath() {
         Cutlet cutlet = JSONCutlet.create();
         cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
         cutlet.addBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
