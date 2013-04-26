@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.snellm.cutlet.TestUtil.assertContains;
-import static org.snellm.cutlet.TestUtil.getFileResource;
+import static org.snellm.cutlet.TestUtil.readFileResource;
 
 public class JSONCutletTest {
     @Test
@@ -94,7 +94,7 @@ public class JSONCutletTest {
 
     @Test
     public void testCreation() {
-        AbstractCutlet cutlet = JSONCutlet.create();
+        Cutlet cutlet = JSONCutlet.create();
         cutlet.addString("name", "John Smith");
 
         cutlet.add("address")
@@ -126,7 +126,7 @@ public class JSONCutletTest {
 
     @Test
     public void testCanRemoveIndividualSectionsUsingXpath() {
-        AbstractCutlet cutlet = JSONCutlet.create();
+        Cutlet cutlet = JSONCutlet.create();
         cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
         cutlet.addBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
 
@@ -137,7 +137,7 @@ public class JSONCutletTest {
 
     @Test
     public void testCanRemoveSeveralSectionsUsingXpath() {
-        AbstractCutlet cutlet = JSONCutlet.create();
+        Cutlet cutlet = JSONCutlet.create();
         cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
         cutlet.addBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
 
@@ -147,7 +147,7 @@ public class JSONCutletTest {
     }
 
     private Cutlet getPersonJSONCutlet() {
-        Cutlet cutlet = JSONCutlet.parse(getFileResource(getClass(), "person.json"));
+        Cutlet cutlet = JSONCutlet.parse(readFileResource(getClass(), "person.json"));
         return cutlet.get("person");
     }
 }

@@ -1,0 +1,14 @@
+<people>
+    <person>
+        <firstname>John</firstname>
+        <lastname>Doe</lastname>
+        <phonenumber type="home">5551234</phonenumber>
+        <phonenumber type="mobile">0491570156</phonenumber>
+    </person>
+    <person>
+        <firstname>Alfred</firstname>
+        <lastname>Neuman</lastname>
+        <phonenumber type="home">5555678</phonenumber>
+        <phonenumber type="mobile">0491570999</phonenumber>
+    </person>
+</people>

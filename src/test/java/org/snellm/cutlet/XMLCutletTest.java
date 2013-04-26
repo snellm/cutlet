@@ -1,6 +1,5 @@
 package org.snellm.cutlet;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
@@ -9,23 +8,8 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.snellm.cutlet.TestUtil.assertContains;
-import static org.snellm.cutlet.TestUtil.getFileResource;
 
 public class XMLCutletTest {
-    @Test
-    public void testExample() {
-        String xml = getFileResource(getClass(), "people.xml");
-        List<String> list = Lists.transform(XMLCutlet.parse(xml, "people").getArray("person"), new Function<Cutlet, String>() {
-            public String apply(Cutlet input) {
-                return input.getString("firstname") + " " + input.getString("lastname") + " " + input.getString("phonenumber[@type = 'mobile']");
-            }
-        });
-
-        assertEquals(2, list.size());
-        assertEquals("John Doe 0491 570 156", list.get(0));
-        assertEquals("Alfred Neuman 0491 570 999", list.get(1));
-    }
-
     @Test
     public void testParse() {
         Cutlet cutlet = getPersonXMLCutlet();
@@ -140,6 +124,6 @@ public class XMLCutletTest {
     }
 
     private Cutlet getPersonXMLCutlet() {
-        return XMLCutlet.parse(getFileResource(getClass(), "person.xml"), "person");
+        return XMLCutlet.parse(TestUtil.readFileResource(getClass(), "person.xml"), "person");
     }
 }

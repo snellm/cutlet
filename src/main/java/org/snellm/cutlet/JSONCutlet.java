@@ -21,7 +21,7 @@ public class JSONCutlet extends AbstractCutlet {
     }
 
     @Override
-    public AbstractCutlet addArray(String xpath, List<Cutlet> cutlets) {
+    public Cutlet addArray(String xpath, List<Cutlet> cutlets) {
         Collection<Object> os = new ArrayList<>(cutlets.size());
         for (Cutlet cutlet : cutlets) {
             os.add(cutlet.getContextBean());
@@ -41,7 +41,7 @@ public class JSONCutlet extends AbstractCutlet {
     /**
      * Create an empty XPathObject than can later be serialised to JSON
      */
-    public static AbstractCutlet create() {
+    public static Cutlet create() {
         JXPathContext jxpathContext = JXPathContext.newContext(new JSONObject());
         jxpathContext.setFactory(new AbstractFactory() {
             @Override
@@ -57,6 +57,16 @@ public class JSONCutlet extends AbstractCutlet {
         return new JSONCutlet(jxpathContext);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return getContextBean().equals(((JSONCutlet) obj).getContextBean());
+    }
+
+    @Override
+    public int hashCode() {
+        return getContextBean().hashCode();
+    }
+
     /**
      * Output a XPathObject as JSON text
      * This is pretty-printed with newlines and indentation
@@ -67,9 +77,5 @@ public class JSONCutlet extends AbstractCutlet {
         } else {
             throw new RuntimeException("Cannot parse [" + cutlet.getContextBean().getClass() + "] to JSON string - must be JSONObject");
         }
-    }
-
-    public String print() {
-        return ((JSONObject) getContextBean()).toString(2);
     }
 }

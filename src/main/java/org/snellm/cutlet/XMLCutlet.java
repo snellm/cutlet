@@ -38,6 +38,16 @@ public class XMLCutlet extends AbstractCutlet {
         return this;
     }
 
+    @Override
+    public int hashCode() {
+        return getContextBean().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return getContextBean().equals(((XMLCutlet) obj).getContextBean());
+    }
+
     private static synchronized void createParser() {
         if (DOM_IMPLEMENTATION == null) {
             try {
