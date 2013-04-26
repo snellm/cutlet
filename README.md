@@ -1,21 +1,25 @@
 Overview
 ========
 
-Cutlet is a library to make working with XML and JSON in Java faster and simpler,  particularly where a JavaBean JAXB-style approach is not warranted.
+Cutlet is a library to make working with XML and JSON simple, particularly where a JavaBean
+JAXB-style approach is too heavyweight.
 
 Cutlet supports:
-- The same interface for XML and JSON (with minor differences to account for the different capabilities of these formats)
-- Both reading and writing
+- The same interface for XML and JSON (with minor differences to account for the differences between these)
+- Both reading and writing of XML and JSON
 - Using [XPath](http://en.wikipedia.org/wiki/XPath) to select nodes
 - A nested approach, ie extracting sub-documents and working with them in the same manner as full documents
 
 Example
 =======
 
-Given an XML file containing a list of people and their home and mobile phone numbers ([input.xml](src/test/resources/org/snellm/cutlet/example/input.xml)), output a JSON associative array of their mobile phone numbers to names, changing the keys for first and last name ([output.json](src/test/resources/org/snellm/cutlet/example/output.json)):
+Given an XML file containing a list of people and their home and mobile phone numbers
+([input.xml](src/test/resources/org/snellm/cutlet/example/input.xml)), output a JSON associative array of their mobile
+phone numbers to names, changing the keys for first and last name
+([output.json](src/test/resources/org/snellm/cutlet/example/output.json)):
 
 ````java
-Cutlet input = XMLCutlet.parse(readFile("input.xml"), "people");
+Cutlet input = XMLCutlet.parse(readFile("input.xml"));
 Cutlet output = JSONCutlet.create();
 
 for (Cutlet person : input.getArray("person")) {
