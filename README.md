@@ -5,8 +5,8 @@ Cutlet is a library to make working with XML and JSON simple, particularly where
 JAXB-style approach is too heavyweight.
 
 Cutlet supports:
-- The same interface for XML and JSON (with minor differences to account for the differences between these)
-- Both reading and writing of XML and JSON
+- The same interface for XML and JSON, as far as possible given the different capabilities
+- Reading and writing of both XML and JSON
 - Using [XPath](http://en.wikipedia.org/wiki/XPath) to select nodes
 - A nested approach, ie extracting sub-documents and working with them in the same manner as full documents
 
@@ -32,3 +32,9 @@ String json = output.printPretty();
 ````    
 
 See the [JSON](src/test/java/com/snell/michael/cutlet/JSONCutletTest.java) and [XML](src/test/java/com/snell/michael/cutlet/XMLCutletTest.java) tests cases for more examples.
+
+Caveats
+=======
+- Copyright 2013 Michael Snell
+- Licensed under the MIT license - see [LICENSE](LICENSE)
+- Things may break. Performance may suffer. Giant creatures may arise from the oceans and destory your civilization.
