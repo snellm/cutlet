@@ -4,7 +4,7 @@
     <groupId>org.snellm.cutlet</groupId>
     <artifactId>cutlet</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
     <name>cutlet</name>
     <url>https://github.com/snellm/cutlet</url>
     <dependencies>
