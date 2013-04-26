@@ -1,4 +1,4 @@
-package org.snellm.cutlet.converters;
+package com.snell.michael.cutlet.converters;
 
 import java.math.BigDecimal;
 

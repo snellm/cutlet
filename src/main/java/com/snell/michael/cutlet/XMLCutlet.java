@@ -1,4 +1,4 @@
-package org.snellm.cutlet;
+package com.snell.michael.cutlet;
 
 import org.apache.commons.jxpath.AbstractFactory;
 import org.apache.commons.jxpath.JXPathContext;

@@ -1,4 +1,4 @@
-package org.snellm.cutlet;
+package com.snell.michael.cutlet;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;

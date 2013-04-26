@@ -1,4 +1,4 @@
-package org.snellm.cutlet;
+package com.snell.michael.cutlet;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
@@ -6,9 +6,9 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.snell.michael.cutlet.TestUtil.assertContains;
 import static java.math.BigDecimal.TEN;
 import static org.junit.Assert.*;
-import static org.snellm.cutlet.TestUtil.assertContains;
 
 public class XMLCutletTest {
     @Test

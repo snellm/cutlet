@@ -1,12 +1,12 @@
-package org.snellm.cutlet.example;
+package com.snell.michael.cutlet.example;
 
+import com.snell.michael.cutlet.Cutlet;
+import com.snell.michael.cutlet.JSONCutlet;
+import com.snell.michael.cutlet.XMLCutlet;
 import org.junit.Test;
-import org.snellm.cutlet.Cutlet;
-import org.snellm.cutlet.JSONCutlet;
-import org.snellm.cutlet.XMLCutlet;
 
+import static com.snell.michael.cutlet.TestUtil.readFileResource;
 import static org.junit.Assert.assertEquals;
-import static org.snellm.cutlet.TestUtil.readFileResource;
 
 public class ExampleTest {
     @Test

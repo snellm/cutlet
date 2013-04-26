@@ -1,4 +1,4 @@
-package org.snellm.cutlet;
+package com.snell.michael.cutlet;
 
 public class CutletRuntimeException extends RuntimeException {
     private static final long serialVersionUID = 2160305518990818995L;

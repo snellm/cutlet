@@ -1,10 +1,10 @@
-package org.snellm.cutlet;
+package com.snell.michael.cutlet;
 
+import com.snell.michael.cutlet.converters.BigDecimalConverter;
+import com.snell.michael.cutlet.converters.ValueConverter;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.Pointer;
-import org.snellm.cutlet.converters.BigDecimalConverter;
-import org.snellm.cutlet.converters.ValueConverter;
 
 import java.math.BigDecimal;
 import java.util.*;

@@ -1,4 +1,4 @@
-package org.snellm.cutlet;
+package com.snell.michael.cutlet;
 
 import org.junit.Test;
 
@@ -8,8 +8,6 @@ import java.util.List;
 
 import static java.math.BigDecimal.TEN;
 import static org.junit.Assert.*;
-import static org.snellm.cutlet.TestUtil.assertContains;
-import static org.snellm.cutlet.TestUtil.readFileResource;
 
 public class JSONCutletTest {
     @Test
@@ -115,8 +113,8 @@ public class JSONCutletTest {
 
         String s = JSONCutlet.print(cutlet);
         assertNotNull(s);
-        assertContains(s, "\"John Smith\"");
-        assertContains(s, "\"Newcastle\"");
+        TestUtil.assertContains(s, "\"John Smith\"");
+        TestUtil.assertContains(s, "\"Newcastle\"");
 
         cutlet = JSONCutlet.parse(s);
         assertNotNull(cutlet);
@@ -162,7 +160,7 @@ public class JSONCutletTest {
     }
 
     private Cutlet getPersonJSONCutlet() {
-        Cutlet cutlet = JSONCutlet.parse(readFileResource(getClass(), "person.json"));
+        Cutlet cutlet = JSONCutlet.parse(TestUtil.readFileResource(getClass(), "person.json"));
         return cutlet.get("person");
     }
 }

@@ -1,4 +1,4 @@
-package org.snellm.cutlet;
+package com.snell.michael.cutlet;
 
 import java.math.BigDecimal;
 import java.util.List;
