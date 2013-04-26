@@ -1,23 +1,20 @@
 package com.snell.michael.cutlet;
 
-import com.snell.michael.cutlet.converters.BigDecimalConverter;
-import com.snell.michael.cutlet.converters.ValueConverter;
+import com.snell.michael.cutlet.converters.ValueConverters;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.Pointer;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public abstract class AbstractCutlet implements Cutlet {
     protected final JXPathContext context;
 
-    private final Map<Class<?>, ValueConverter<?>> converterMap = new HashMap<>();
-
     protected AbstractCutlet(JXPathContext jxpathContext) {
         this.context = jxpathContext;
-
-        converterMap.put(BigDecimal.class, new BigDecimalConverter());
     }
 
     protected abstract AbstractCutlet createCutlet(JXPathContext jxpathContext);
@@ -129,7 +126,7 @@ public abstract class AbstractCutlet implements Cutlet {
         Object o = getValue(xpath);
 
         try {
-            return parse(BigDecimal.class, o);
+            return ValueConverters.read(BigDecimal.class, o);
         } catch (RuntimeException e) {
             throw new CutletRuntimeException("Cannot parse BigDecimal at path [" + xpath + "] in [" + getContextBean() + "]", e);
         }
@@ -141,7 +138,7 @@ public abstract class AbstractCutlet implements Cutlet {
 
         List<BigDecimal> c = new ArrayList<>();
         while (i.hasNext()) {
-            c.add(parse(BigDecimal.class, i.next()));
+            c.add(ValueConverters.read(BigDecimal.class, i.next()));
         }
 
         return c;
@@ -150,22 +147,12 @@ public abstract class AbstractCutlet implements Cutlet {
     @Override
     public AbstractCutlet addBigDecimal(String xpath, BigDecimal value) {
         add(xpath);
-        context.setValue(xpath, write(BigDecimal.class, value));
+        context.setValue(xpath, ValueConverters.write(BigDecimal.class, value));
         return this;
     }
 
     @Override
     public void remove(String xpath) {
         context.removeAll(xpath);
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T parse(Class<T> clazz, Object object) {
-        return ((ValueConverter<T>) converterMap.get(clazz)).read(object);
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> Object write(Class<T> clazz, T t) {
-        return ((ValueConverter<T>) converterMap.get(clazz)).write(t);
     }
 }
