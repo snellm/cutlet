@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Cutlet : Slicing and dicing XML and JSON" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Cutlet</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/snellm/cutlet">View on GitHub</a>
+
+          <h1 id="project_title">Cutlet</h1>
+          <h2 id="project_tagline">Slicing and dicing XML and JSON</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/snellm/cutlet/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/snellm/cutlet/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Overview</h1>
+
+<p>Cutlet is a library to make working with XML and JSON simple, particularly where a JavaBean
+JAXB-style approach is too heavyweight.</p>
+
+<p>Cutlet supports:</p>
+
+<ul>
+<li>The same interface for XML and JSON (with minor differences to account for the differences between these)</li>
+<li>Both reading and writing of XML and JSON</li>
+<li>Using <a href="http://en.wikipedia.org/wiki/XPath">XPath</a> to select nodes</li>
+<li>A nested approach, ie extracting sub-documents and working with them in the same manner as full documents</li>
+</ul><h1>Example</h1>
+
+<p>Given an XML file containing a list of people and their home and mobile phone numbers
+(<a href="src/test/resources/org/snellm/cutlet/example/input.xml">input.xml</a>), output a JSON associative array of their mobile
+phone numbers to names, changing the keys for first and last name
+(<a href="src/test/resources/org/snellm/cutlet/example/output.json">output.json</a>):</p>
+
+<div class="highlight"><pre><span class="n">Cutlet</span> <span class="n">input</span> <span class="o">=</span> <span class="n">XMLCutlet</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">readFile</span><span class="o">(</span><span class="s">"input.xml"</span><span class="o">));</span>
+<span class="n">Cutlet</span> <span class="n">output</span> <span class="o">=</span> <span class="n">JSONCutlet</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+
+<span class="k">for</span> <span class="o">(</span><span class="n">Cutlet</span> <span class="n">person</span> <span class="o">:</span> <span class="n">input</span><span class="o">.</span><span class="na">getArray</span><span class="o">(</span><span class="s">"person"</span><span class="o">))</span> <span class="o">{</span>
+    <span class="n">output</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"mobile-"</span> <span class="o">+</span> <span class="n">person</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"phonenumber[@type = 'mobile']"</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">addString</span><span class="o">(</span><span class="s">"forename"</span><span class="o">,</span> <span class="n">person</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"firstname"</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">addString</span><span class="o">(</span><span class="s">"surname"</span><span class="o">,</span> <span class="n">person</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"lastname"</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="n">String</span> <span class="n">json</span> <span class="o">=</span> <span class="n">JSONCutlet</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">output</span><span class="o">);</span>
+</pre></div>
+
+<p>See the <a href="src/test/java/org/snellm/cutlet/JSONCutletTest.java">JSON</a> and <a href="src/test/java/org/snellm/cutlet/XMLCutletTest.java">XML</a> tests cases for more examples.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Cutlet maintained by <a href="https://github.com/snellm">snellm</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
