@@ -1,5 +1,7 @@
-package com.snell.michael.cutlet;
+package com.snell.michael.cutlet.implementation;
 
+import com.snell.michael.cutlet.CutletRuntimeException;
+import com.snell.michael.cutlet.JSONCutlet;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -12,22 +14,21 @@ import static org.junit.Assert.*;
 public class JSONCutletTest {
     @Test
     public void parseString() {
-        Cutlet cutlet = JSONCutlet.parse(TestUtil.readFileResource(getClass(), "person.json"));
+        JSONCutlet cutlet = JSONCutlet.parse(TestUtil.readFileResource(getClass(), "person.json"));
         assertNotNull(cutlet);
         assertEquals("John", cutlet.getString("person/firstName"));
     }
 
     @Test
     public void parseInputSteam() {
-        Cutlet cutlet = JSONCutlet.parse(TestUtil.openResourceStream(getClass(), "person.json"));
+        JSONCutlet cutlet = JSONCutlet.parse(TestUtil.openResourceStream(getClass(), "person.json"));
         assertNotNull(cutlet);
         assertEquals("John", cutlet.getString("person/firstName"));
     }
 
     @Test
     public void errorHandling() {
-        Cutlet cutlet = getPersonJSONCutlet();
-
+        JSONCutlet cutlet = getPersonJSONCutlet();
         try {
             cutlet.getString("location/city");
             fail();
@@ -38,13 +39,13 @@ public class JSONCutletTest {
 
     @Test
     public void strings() {
-        Cutlet cutlet = getPersonJSONCutlet();
+        JSONCutlet cutlet = getPersonJSONCutlet();
 
         // Can get a string using XPath
         assertEquals("New York", cutlet.getString("address/city"));
 
         // Or via nested gets
-        Cutlet addressCutlet = cutlet.get("address");
+        JSONCutlet addressCutlet = cutlet.get("address");
         assertEquals("New York", addressCutlet.getString("city"));
         assertEquals("NY", addressCutlet.getString("state"));
 
@@ -58,7 +59,7 @@ public class JSONCutletTest {
 
     @Test
     public void numbers() {
-        Cutlet cutlet = getPersonJSONCutlet();
+        JSONCutlet cutlet = getPersonJSONCutlet();
 
         // Can get a integer as a BigDecimal using XPath
         assertEquals(BigDecimal.valueOf(1), cutlet.getBigDecimal("favouriteNumbers[1]"));
@@ -83,7 +84,7 @@ public class JSONCutletTest {
 
     @Test
     public void arrays() {
-        Cutlet cutlet = getPersonJSONCutlet();
+        JSONCutlet cutlet = getPersonJSONCutlet();
 
         // Can get a specific array entry directly using XPath
         assertEquals("home", cutlet.getString("phoneNumbers[1]/type"));
@@ -92,16 +93,16 @@ public class JSONCutletTest {
         assertEquals("212 555-1234", cutlet.getString("phoneNumbers[type = 'home']/number"));
 
         // Can get an array and extract values
-        List<Cutlet> cutlets = cutlet.getArray("phoneNumbers");
+        List<JSONCutlet> cutlets = cutlet.getArray("phoneNumbers");
         assertEquals(2, cutlets.size());
-        for (Cutlet o : cutlets) {
+        for (JSONCutlet o : cutlets) {
             assertNotNull(o.getString("type"));
         }
     }
 
     @Test
     public void creation() {
-        Cutlet cutlet = JSONCutlet.create();
+        JSONCutlet cutlet = JSONCutlet.create();
         cutlet.addString("name", "John Smith");
 
         cutlet.add("address")
@@ -110,7 +111,7 @@ public class JSONCutletTest {
 
         cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
 
-        List<Cutlet> cutlets = new ArrayList<>();
+        List<JSONCutlet> cutlets = new ArrayList<>();
         cutlets.add(JSONCutlet.create()
                 .addString("name", "Red")
                 .addString("meaning", "Stop"));
@@ -133,11 +134,11 @@ public class JSONCutletTest {
 
     @Test
     public void equalsAndHashCode() {
-        Cutlet one = JSONCutlet.create();
+        JSONCutlet one = JSONCutlet.create();
         one.addString("bar/baz", "nop");
         one.addBigDecimal("baz/bar", TEN);
 
-        Cutlet two = JSONCutlet.create();
+        JSONCutlet two = JSONCutlet.create();
         two.addBigDecimal("baz/bar", TEN);
         two.addString("bar/baz", "nop");
 
@@ -147,7 +148,7 @@ public class JSONCutletTest {
 
     @Test
     public void canRemoveIndividualSectionsUsingXpath() {
-        Cutlet cutlet = JSONCutlet.create();
+        JSONCutlet cutlet = JSONCutlet.create();
         cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
         cutlet.addBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
 
@@ -158,7 +159,7 @@ public class JSONCutletTest {
 
     @Test
     public void canRemoveSeveralSectionsUsingXpath() {
-        Cutlet cutlet = JSONCutlet.create();
+        JSONCutlet cutlet = JSONCutlet.create();
         cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
         cutlet.addBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
 
@@ -167,8 +168,8 @@ public class JSONCutletTest {
         assertEquals("{}", cutlet.printCompact());
     }
 
-    private Cutlet getPersonJSONCutlet() {
-        Cutlet cutlet = JSONCutlet.parse(TestUtil.readFileResource(getClass(), "person.json"));
+    private JSONCutlet getPersonJSONCutlet() {
+        JSONCutlet cutlet = JSONCutlet.parse(TestUtil.readFileResource(getClass(), "person.json"));
         return cutlet.get("person");
     }
 }

@@ -10,17 +10,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class AbstractCutlet implements Cutlet {
+abstract class JXPathContextCutlet<JXPATHCONTEXTCUTLET extends JXPathContextCutlet<JXPATHCONTEXTCUTLET>> implements Cutlet<JXPATHCONTEXTCUTLET> {
     protected final JXPathContext context;
 
-    protected AbstractCutlet(JXPathContext jxpathContext) {
+    protected JXPathContextCutlet(JXPathContext jxpathContext) {
         this.context = jxpathContext;
     }
 
-    protected abstract AbstractCutlet createCutlet(JXPathContext jxpathContext);
+    protected abstract JXPATHCONTEXTCUTLET createCutlet(JXPathContext jxpathContext);
 
     static Object getContextBean(Cutlet cutlet) {
-        return ((AbstractCutlet) cutlet).context.getContextBean();
+        return ((JXPathContextCutlet) cutlet).context.getContextBean();
     }
 
     private Object getValue(String xpath) {
@@ -41,7 +41,7 @@ public abstract class AbstractCutlet implements Cutlet {
     }
 
     @Override
-    public Cutlet get(String xpath) {
+    public JXPATHCONTEXTCUTLET get(String xpath) {
         Pointer pointer = context.getPointer(xpath);
         if (pointer != null) {
             JXPathContext relativeContext = context.getRelativeContext(pointer);
@@ -62,10 +62,10 @@ public abstract class AbstractCutlet implements Cutlet {
     }
 
     @Override
-    public List<Cutlet> getArray(String xpath) {
+    public List<JXPATHCONTEXTCUTLET> getArray(String xpath) {
         Iterator<?> i = context.iteratePointers(xpath);
 
-        List<Cutlet> c = new ArrayList<>();
+        List<JXPATHCONTEXTCUTLET> c = new ArrayList<>();
         while (i.hasNext()) {
             Pointer p = (Pointer) i.next();
             c.add(createCutlet(context.getRelativeContext(p)));
@@ -75,13 +75,13 @@ public abstract class AbstractCutlet implements Cutlet {
     }
 
     @Override
-    public Cutlet add(String xpath) {
+    public JXPATHCONTEXTCUTLET add(String xpath) {
         context.createPath(xpath);
         return get(xpath);
     }
 
     @Override
-    public abstract Cutlet addArray(String xpath, List<Cutlet> cutlets);
+    public abstract JXPATHCONTEXTCUTLET addArray(String xpath, List<JXPATHCONTEXTCUTLET> cutlets);
 
     @Override
     public String getString(String xpath) {
@@ -113,11 +113,12 @@ public abstract class AbstractCutlet implements Cutlet {
         return c;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public AbstractCutlet addString(String xpath, String value) {
+    public JXPATHCONTEXTCUTLET addString(String xpath, String value) {
         add(xpath);
         context.setValue(xpath, value);
-        return this;
+        return (JXPATHCONTEXTCUTLET) this;
     }
 
     @Override
@@ -143,11 +144,12 @@ public abstract class AbstractCutlet implements Cutlet {
         return c;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public AbstractCutlet addBigDecimal(String xpath, BigDecimal value) {
+    public JXPATHCONTEXTCUTLET addBigDecimal(String xpath, BigDecimal value) {
         add(xpath);
         context.setValue(xpath, ValueConverters.write(BigDecimal.class, value));
-        return this;
+        return (JXPATHCONTEXTCUTLET) this;
     }
 
     @Override

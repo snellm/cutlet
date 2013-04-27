@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class XMLCutlet extends AbstractCutlet {
+public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
     private static DOMImplementationLS DOM_IMPLEMENTATION;
     private static LSParser PARSER;
 
@@ -25,15 +25,15 @@ public class XMLCutlet extends AbstractCutlet {
     }
 
     @Override
-    protected AbstractCutlet createCutlet(JXPathContext jxpathContext) {
+    protected XMLCutlet createCutlet(JXPathContext jxpathContext) {
         return new XMLCutlet(jxpathContext);
     }
 
     @Override
-    public Cutlet addArray(String xpath, List<Cutlet> cutlets) {
+    public XMLCutlet addArray(String xpath, List<XMLCutlet> cutlets) {
         Pointer p = context.createPath(xpath);
         Element e = (Element) p.getNode();
-        for (Cutlet cutlet : cutlets) {
+        for (XMLCutlet cutlet : cutlets) {
             Node n = (Node) getContextBean(cutlet);
             Node ni = ((Element) getContextBean(this)).getOwnerDocument().importNode(n, true);
             e.appendChild(ni);
@@ -84,7 +84,7 @@ public class XMLCutlet extends AbstractCutlet {
     /**
      * Parse a XML string into a Cutlet class with can be queried using XPath expressions
      */
-    public static Cutlet parse(String xml) {
+    public static XMLCutlet parse(String xml) {
         Document document = parseToDocument(xml);
         return getCutletFromDocument(document);
     }
@@ -92,7 +92,7 @@ public class XMLCutlet extends AbstractCutlet {
     /**
      * Parse a XML input stream into a Cutlet class with can be queried using XPath expressions
      */
-    public static Cutlet parse(InputStream inputStream) {
+    public static XMLCutlet parse(InputStream inputStream) {
         Document document = parseToDocument(inputStream);
         return getCutletFromDocument(document);
     }
@@ -100,7 +100,7 @@ public class XMLCutlet extends AbstractCutlet {
     /**
      * Parse a XML file into a Cutlet class with can be queried using XPath expressions
      */
-    public static Cutlet parse(File file) {
+    public static XMLCutlet parse(File file) {
         try {
             Document document = parseToDocument(FileUtils.openInputStream(file));
             return getCutletFromDocument(document);
@@ -109,7 +109,7 @@ public class XMLCutlet extends AbstractCutlet {
         }
     }
 
-    private static Cutlet getCutletFromDocument(Document document) {
+    private static XMLCutlet getCutletFromDocument(Document document) {
         JXPathContext context = JXPathContext.newContext(document);
 
         Pointer pointer = context.getPointer(document.getDocumentElement().getNodeName());
@@ -121,7 +121,7 @@ public class XMLCutlet extends AbstractCutlet {
      * Create an empty XMLCutlet than can later be serialised to XML
      * The root node of the XML document must be specified, and is not required in further queries
      */
-    public static Cutlet create(String rootNode) {
+    public static XMLCutlet create(String rootNode) {
         final Document document = parseToDocument("<" + rootNode + "/>");
         JXPathContext context = JXPathContext.newContext(document);
 

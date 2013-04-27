@@ -15,20 +15,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class JSONCutlet extends AbstractCutlet {
+public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     private JSONCutlet(JXPathContext jxpathContext) {
         super(jxpathContext);
     }
 
     @Override
-    protected AbstractCutlet createCutlet(JXPathContext jxpathContext) {
+    protected JSONCutlet createCutlet(JXPathContext jxpathContext) {
         return new JSONCutlet(jxpathContext);
     }
 
     @Override
-    public Cutlet addArray(String xpath, List<Cutlet> cutlets) {
+    public JSONCutlet addArray(String xpath, List<JSONCutlet> cutlets) {
         Collection<Object> os = new ArrayList<>(cutlets.size());
-        for (Cutlet cutlet : cutlets) {
+        for (JSONCutlet cutlet : cutlets) {
             os.add(getContextBean(cutlet));
         }
         context.createPathAndSetValue(xpath, os);
@@ -39,14 +39,14 @@ public class JSONCutlet extends AbstractCutlet {
     /**
      * Parse a JSON string into a JSONCutlet with can be queried using XPath expressions
      */
-    public static Cutlet parse(String json) {
+    public static JSONCutlet parse(String json) {
         return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(json)));
     }
 
     /**
      * Parse a JSON input stream into a JSONCutlet with can be queried using XPath expressions
      */
-    public static Cutlet parse(InputStream inputStream) {
+    public static JSONCutlet parse(InputStream inputStream) {
         try {
             return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(IOUtils.toString(inputStream))));
         } catch (IOException e) {
@@ -57,7 +57,7 @@ public class JSONCutlet extends AbstractCutlet {
     /**
      * Parse a JSON file into a JSONCutlet with can be queried using XPath expressions
      */
-    public static Cutlet parse(File file) {
+    public static JSONCutlet parse(File file) {
         try {
             return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(FileUtils.readFileToString(file))));
         } catch (IOException e) {
@@ -68,7 +68,7 @@ public class JSONCutlet extends AbstractCutlet {
     /**
      * Create an empty JSONCutlet
      */
-    public static Cutlet create() {
+    public static JSONCutlet create() {
         JXPathContext jxpathContext = JXPathContext.newContext(new JSONObject());
         jxpathContext.setFactory(new AbstractFactory() {
             @Override

@@ -1,32 +1,34 @@
-package com.snell.michael.cutlet;
+package com.snell.michael.cutlet.implementation;
 
 import com.google.common.collect.Lists;
+import com.snell.michael.cutlet.CutletRuntimeException;
+import com.snell.michael.cutlet.XMLCutlet;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.snell.michael.cutlet.TestUtil.assertContains;
+import static com.snell.michael.cutlet.implementation.TestUtil.assertContains;
 import static java.math.BigDecimal.TEN;
 import static org.junit.Assert.*;
 
 public class XMLCutletTest {
     @Test
     public void parseString() {
-        Cutlet cutlet = XMLCutlet.parse(TestUtil.readFileResource(getClass(), "person.xml"));
+        XMLCutlet cutlet = XMLCutlet.parse(TestUtil.readFileResource(getClass(), "person.xml"));
         assertNotNull(cutlet);
         assertEquals("John", cutlet.getString("firstName"));
     }
 
     @Test
     public void parseInputSteam() {
-        Cutlet cutlet = XMLCutlet.parse(TestUtil.openResourceStream(getClass(), "person.xml"));
+        XMLCutlet cutlet = XMLCutlet.parse(TestUtil.openResourceStream(getClass(), "person.xml"));
         assertNotNull(cutlet);
         assertEquals("John", cutlet.getString("firstName"));
     }
     @Test
     public void errorHandling() {
-        Cutlet cutlet = getPersonXMLCutlet();
+        XMLCutlet cutlet = getPersonXMLCutlet();
 
         try {
             cutlet.getString("location/city");
@@ -38,13 +40,13 @@ public class XMLCutletTest {
 
     @Test
     public void strings() {
-        Cutlet cutlet = getPersonXMLCutlet();
+        XMLCutlet cutlet = getPersonXMLCutlet();
 
         // Can get a string using XPath
         assertEquals("New York", cutlet.getString("address/city"));
 
         // Or via nested gets
-        Cutlet addressCutlets = cutlet.get("address");
+        XMLCutlet addressCutlets = cutlet.get("address");
         assertEquals("New York", addressCutlets.getString("city"));
         assertEquals("NY", addressCutlets.getString("state"));
 
@@ -58,7 +60,7 @@ public class XMLCutletTest {
 
     @Test
     public void numbers() {
-        Cutlet cutlet = getPersonXMLCutlet();
+        XMLCutlet cutlet = getPersonXMLCutlet();
 
         // Can get a integer as a BigDecimal using XPath
         assertEquals(BigDecimal.valueOf(1), cutlet.getBigDecimal("favouriteNumber[1]"));
@@ -83,7 +85,7 @@ public class XMLCutletTest {
 
     @Test
     public void arrays() {
-        Cutlet cutlet = getPersonXMLCutlet();
+        XMLCutlet cutlet = getPersonXMLCutlet();
 
         // Can get a specific array entry directly using XPath
         assertEquals("home", cutlet.getString("phoneNumber[1]/type"));
@@ -92,16 +94,16 @@ public class XMLCutletTest {
         assertEquals("212 555-1234", cutlet.getString("phoneNumber[type = 'home']/number"));
 
         // Can get an array and extract values
-        List<Cutlet> cutlets = cutlet.getArray("phoneNumber");
+        List<XMLCutlet> cutlets = cutlet.getArray("phoneNumber");
         assertEquals(2, cutlets.size());
-        for (Cutlet phoneNumberCutlet : cutlets) {
+        for (XMLCutlet phoneNumberCutlet : cutlets) {
             assertNotNull(phoneNumberCutlet.getString("type"));
         }
     }
 
     @Test
     public void creation() {
-        Cutlet cutlet = XMLCutlet.create("person");
+        XMLCutlet cutlet = XMLCutlet.create("person");
         cutlet.addString("name", "John Smith");
 
         cutlet.add("address")
@@ -133,11 +135,11 @@ public class XMLCutletTest {
 
     @Test
     public void equalsAndHashCode() {
-        Cutlet one = XMLCutlet.create("foo");
+        XMLCutlet one = XMLCutlet.create("foo");
         one.addString("bar/baz", "nop");
         one.addBigDecimal("baz/bar", TEN);
 
-        Cutlet two = XMLCutlet.create("foo");
+        XMLCutlet two = XMLCutlet.create("foo");
         two.addString("bar/baz", "nop");
         two.addBigDecimal("baz/bar", TEN);
 
@@ -145,7 +147,7 @@ public class XMLCutletTest {
         assertEquals(one, two);
     }
 
-    private Cutlet getPersonXMLCutlet() {
+    private XMLCutlet getPersonXMLCutlet() {
         return XMLCutlet.parse(TestUtil.readFileResource(getClass(), "person.xml"));
     }
 }

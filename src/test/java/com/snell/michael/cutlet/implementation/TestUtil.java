@@ -1,4 +1,4 @@
-package com.snell.michael.cutlet;
+package com.snell.michael.cutlet.implementation;
 
 import org.apache.commons.io.IOUtils;
 
