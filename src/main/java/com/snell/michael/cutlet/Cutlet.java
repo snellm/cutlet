@@ -6,9 +6,9 @@ import java.util.List;
 interface Cutlet<CUTLET extends Cutlet<CUTLET>> {
     // General methods
 
-    String printCompact();
+    String compactPrint();
 
-    String printPretty();
+    String prettyPrint();
 
     void remove(String xpath);
 

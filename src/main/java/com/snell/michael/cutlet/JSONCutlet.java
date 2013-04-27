@@ -111,7 +111,7 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
      * This is printed compactly
      */
     @Override
-    public String printCompact() {
+    public String compactPrint() {
         return print(false);
     }
 
@@ -121,7 +121,7 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
      * This is pretty-printed with newlines and indentation
      */
     @Override
-    public String printPretty() {
+    public String prettyPrint() {
         return print(true);
     }
 }

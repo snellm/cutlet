@@ -172,7 +172,7 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
      * This is UTF-8 encoded and compact
      */
     @Override
-    public String printCompact() {
+    public String compactPrint() {
         return print(false);
     }
 
@@ -181,7 +181,7 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
      * This is UTF-8 encoded and pretty-printed with newlines and indentation
      */
     @Override
-    public String printPretty() {
+    public String prettyPrint() {
         return print(true);
     }
 }

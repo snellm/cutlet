@@ -120,7 +120,7 @@ public class XMLCutletTest {
                         .addString("name", "Green")
                         .addString("meaning", "Go")));
 
-        String generatedXML = cutlet.printPretty();
+        String generatedXML = cutlet.prettyPrint();
         assertNotNull(generatedXML);
         assertContains(generatedXML, "encoding=\"UTF-8\"");
         assertContains(generatedXML, "<name>John Smith</name>");

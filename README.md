@@ -15,20 +15,20 @@ Example
 
 Given an XML file containing a list of people and their home and mobile phone numbers
 ([input.xml](src/test/resources/com/snell/michael/cutlet/example/input.xml)), output a JSON associative array of their mobile
-phone numbers to names, changing the keys for first and last name
+phone numbers to names, changing the keys for "firstname" and "lastname" to "forename" and "surname"
 ([output.json](src/test/resources/com/snell/michael/cutlet/example/output.json)):
 
 ````java
-Cutlet input = XMLCutlet.parse(new File("input.xml"));
-Cutlet output = JSONCutlet.create();
+XMLCutlet input = XMLCutlet.parse(new File("input.xml"));
+JSONCutlet output = JSONCutlet.create();
 
-for (Cutlet person : input.getArray("person")) {
+for (XMLCutlet person : input.getArray("person")) {
     output.add("mobile-" + person.getString("phonenumber[@type = 'mobile']"))
         .addString("forename", person.getString("firstname"))
         .addString("surname", person.getString("lastname"));
 }
 
-String json = output.printPretty();
+String json = output.prettyPrint();
 ````
 
 See the [JSON](src/test/java/com/snell/michael/cutlet/JSONCutletTest.java) and [XML](src/test/java/com/snell/michael/cutlet/XMLCutletTest.java) tests cases for more examples.
@@ -60,8 +60,8 @@ or use Maven or similar tools:
 </dependency>
 ````
 
-Caveats
-=======
+Fine print
+==========
 - Copyright 2013 Michael Snell
 - Licensed under the MIT license - see [LICENSE](LICENSE)
-- Things may break. Performance may suffer. Giant creatures may arise from the oceans and destory your civilization.
+- Things may break. Performance may suffer. Giant creatures may arise from the oceans and destroy your civilization.
