@@ -1,6 +1,6 @@
 package com.snell.michael.cutlet.converters;
 
-public interface ValueConverter<T> {
+interface ValueConverter<T> {
     /**
      * Parse object from Cutlet into required type
      */

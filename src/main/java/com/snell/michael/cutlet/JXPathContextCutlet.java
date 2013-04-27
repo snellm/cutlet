@@ -6,6 +6,7 @@ import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.Pointer;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,11 +18,11 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         this.context = jxpathContext;
     }
 
-    protected abstract J createCutlet(JXPathContext jxpathContext);
-
     static Object getContextBean(Cutlet cutlet) {
         return ((JXPathContextCutlet) cutlet).context.getContextBean();
     }
+
+    protected abstract J createCutlet(JXPathContext jxpathContext);
 
     private Object getValue(String xpath) {
         try {
@@ -149,6 +150,37 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     public J addBigDecimal(String xpath, BigDecimal value) {
         add(xpath);
         context.setValue(xpath, ValueConverters.write(BigDecimal.class, value));
+        return (J) this;
+    }
+
+    @Override
+    public BigInteger getBigInteger(String xpath) {
+        Object o = getValue(xpath);
+
+        try {
+            return ValueConverters.read(BigInteger.class, o);
+        } catch (RuntimeException e) {
+            throw new CutletRuntimeException("Cannot parse BigInteger at path [" + xpath + "] in [" + getContextBean(this) + "]", e);
+        }
+    }
+
+    @Override
+    public List<BigInteger> getBigIntegerArray(String xpath) {
+        Iterator<?> i = context.iterate(xpath);
+
+        List<BigInteger> c = new ArrayList<>();
+        while (i.hasNext()) {
+            c.add(ValueConverters.read(BigInteger.class, i.next()));
+        }
+
+        return c;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public J addBigInteger(String xpath, BigInteger value) {
+        add(xpath);
+        context.setValue(xpath, ValueConverters.write(BigInteger.class, value));
         return (J) this;
     }
 

@@ -6,6 +6,7 @@ import com.snell.michael.cutlet.XMLCutlet;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 import static com.snell.michael.cutlet.implementation.TestUtil.assertContains;
@@ -59,7 +60,7 @@ public class XMLCutletTest {
     }
 
     @Test
-    public void numbers() {
+    public void decimals() {
         XMLCutlet cutlet = getPersonXMLCutlet();
 
         // Can get a integer as a BigDecimal using XPath
@@ -81,6 +82,29 @@ public class XMLCutletTest {
         for (BigDecimal b : numbers) {
             assertNotNull(b);
         }
+    }
+
+    @Test
+    public void integers() {
+        XMLCutlet cutlet = getPersonXMLCutlet();
+
+        // Can get a integer as a BigDecimal using XPath
+        assertEquals(BigInteger.valueOf(1), cutlet.getBigInteger("favouriteNumber[1]"));
+
+        // Attempting to get a double as a BigDecimal using XPath should fail
+        try {
+            cutlet.getBigInteger("favouriteNumber[2]");
+            fail();
+        } catch (RuntimeException e) {
+            // Expected
+        }
+
+        // Can get a negative number as a BigInteger using XPath
+        assertEquals(BigInteger.valueOf(-42), cutlet.getBigInteger("favouriteNumber[3]"));
+
+        // Can get a number expressed in scientific notation as a BigDecimal using XPath,
+        // ensuring that the number is expressed in plain format
+        assertEquals(BigInteger.valueOf(10000000), cutlet.getBigInteger("favouriteNumber[4]"));
     }
 
     @Test

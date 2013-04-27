@@ -1,37 +1,38 @@
 package com.snell.michael.cutlet.converters;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
-class BigDecimalConverter implements ValueConverter<BigDecimal> {
+class BigIntegerConverter implements ValueConverter<BigInteger> {
     @Override
-    public BigDecimal read(Object object) {
+    public BigInteger read(Object object) {
         if (object instanceof String) {
             String s = (String) object;
             try {
                 if (s.toLowerCase().contains("e")) {
                     return read(new BigDecimal(s).toPlainString());
                 } else {
-                    return new BigDecimal(s);
+                    return new BigInteger(s);
                 }
             } catch (NumberFormatException e) {
-                throw new RuntimeException("Cannot parse [" + object + "] into BigDecimal", e);
+                throw new RuntimeException("Cannot parse [" + object + "] into BigInteger", e);
             }
         } else if (object instanceof Double) {
             Double d = (Double) object;
             if (d.toString().toLowerCase().contains("e")) {
                 return read(BigDecimal.valueOf(d).toPlainString());
             } else {
-                return BigDecimal.valueOf(d);
+                return BigInteger.valueOf(new BigDecimal(d).longValueExact());
             }
         } else if (object instanceof Integer) {
-            return BigDecimal.valueOf((Integer) object);
+            return BigInteger.valueOf((Integer) object);
         } else {
-            throw new RuntimeException("Cannot convert class [" + object.getClass() + "] value [" + object + "] to BigDecimal");
+            throw new RuntimeException("Cannot convert class [" + object.getClass() + "] value [" + object + "] to BigInteger");
         }
     }
 
     @Override
-    public Object write(BigDecimal bigDecimal) {
-        return bigDecimal;
+    public Object write(BigInteger bigInteger) {
+        return bigInteger;
     }
 }

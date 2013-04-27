@@ -5,6 +5,7 @@ import com.snell.michael.cutlet.JSONCutlet;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class JSONCutletTest {
     }
 
     @Test
-    public void numbers() {
+    public void decimals() {
         JSONCutlet cutlet = getPersonJSONCutlet();
 
         // Can get a integer as a BigDecimal using XPath
@@ -80,6 +81,30 @@ public class JSONCutletTest {
         for (BigDecimal b: numbers) {
             assertNotNull(b);
         }
+    }
+
+
+    @Test
+    public void integers() {
+        JSONCutlet cutlet = getPersonJSONCutlet();
+
+        // Can get a integer as a BigDecimal using XPath
+        assertEquals(BigInteger.valueOf(1), cutlet.getBigInteger("favouriteNumbers[1]"));
+
+        // Attempting to get a double as a BigDecimal using XPath should fail
+        try {
+            cutlet.getBigInteger("favouriteNumbers[2]");
+            fail();
+        } catch (RuntimeException e) {
+            // Expected
+        }
+
+        // Can get a negative number as a BigInteger using XPath
+        assertEquals(BigInteger.valueOf(-42), cutlet.getBigInteger("favouriteNumbers[3]"));
+
+        // Can get a number expressed in scientific notation as a BigDecimal using XPath,
+        // ensuring that the number is expressed in plain format
+        assertEquals(BigInteger.valueOf(10000000), cutlet.getBigInteger("favouriteNumbers[4]"));
     }
 
     @Test

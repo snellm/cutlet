@@ -1,6 +1,7 @@
 package com.snell.michael.cutlet;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 interface Cutlet<C extends Cutlet<C>> {
@@ -41,4 +42,12 @@ interface Cutlet<C extends Cutlet<C>> {
     List<BigDecimal> getBigDecimalArray(String xpath);
 
     C addBigDecimal(String xpath, BigDecimal value);
+
+    // BigInteger methods
+
+    BigInteger getBigInteger(String xpath);
+
+    List<BigInteger> getBigIntegerArray(String xpath);
+
+    C addBigInteger(String xpath, BigInteger value);
 }
