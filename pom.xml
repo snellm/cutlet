@@ -9,7 +9,7 @@
     <groupId>com.snell.michael.cutlet</groupId>
     <artifactId>cutlet</artifactId>
     <packaging>jar</packaging>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <name>cutlet</name>
     <description>Slice and dice XML and JSON</description>
     <url>https://github.com/snellm/cutlet</url>
@@ -35,7 +35,7 @@
         <connection>scm:git:git@github.com:snellm/cutlet.git</connection>
         <url>scm:git:git@github.com:snellm/cutlet.git</url>
         <developerConnection>scm:git:git@github.com:snellm/cutlet.git</developerConnection>
-      <tag>HEAD</tag>
+      <tag>cutlet-0.2</tag>
   </scm>
 
     <build>
