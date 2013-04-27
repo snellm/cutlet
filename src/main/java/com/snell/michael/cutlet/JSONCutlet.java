@@ -98,26 +98,8 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
         return getContextBean(this).hashCode();
     }
 
-    private String print(boolean pretty) {
-        return ((JSONObject) getContextBean(this)).toString(pretty ? 2 : 0);
-    }
-
-    /**
-     * Output a JSONCutlet as JSON text - this is printed compactly
-     * The exact formatting is dependent on the JSON library used
-     */
     @Override
-    public String compactPrint() {
-        return print(false);
-    }
-
-
-    /**
-     * Output a JSONCutlet as JSON text - This is "pretty" printed with newlines and indentation
-     * The exact formatting is dependent on the JSON library used
-     */
-    @Override
-    public String prettyPrint() {
-        return print(true);
+    public String write(WriteStyle style) {
+        return ((JSONObject) getContextBean(this)).toString(WriteStyle.PRETTY.equals(style) ? 2 : 0);
     }
 }

@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.snell.michael.cutlet.WriteStyle.COMPACT;
+import static com.snell.michael.cutlet.WriteStyle.PRETTY;
 import static java.math.BigDecimal.TEN;
 import static org.joda.time.DateTimeZone.UTC;
 import static org.junit.Assert.*;
@@ -170,7 +172,7 @@ public class JSONCutletTest {
                 .addString("meaning", "Go"));
         cutlet.addArray("colours", cutlets);
 
-        String s = cutlet.prettyPrint();
+        String s = cutlet.write(PRETTY);
         assertNotNull(s);
         TestUtil.assertContains(s, "\"John Smith\"");
         TestUtil.assertContains(s, "\"Newcastle\"");
@@ -186,8 +188,8 @@ public class JSONCutletTest {
     public void printing() {
         JSONCutlet cutlet = getPersonInPersonJSONCutlet();
 
-        String compactString = cutlet.compactPrint();
-        String prettyString = cutlet.prettyPrint();
+        String compactString = cutlet.write(COMPACT);
+        String prettyString = cutlet.write(PRETTY);
 
         JSONCutlet reparsedCompactCutlet = JSONCutlet.parse(compactString);
         assertEquals(cutlet, reparsedCompactCutlet);
@@ -218,7 +220,7 @@ public class JSONCutletTest {
 
         cutlet.remove("biometrics/height");
 
-        assertEquals("{\"biometrics\":{\"weight\":91.2}}", cutlet.compactPrint());
+        assertEquals("{\"biometrics\":{\"weight\":91.2}}", cutlet.write(COMPACT));
     }
 
     @Test
@@ -229,7 +231,7 @@ public class JSONCutletTest {
 
         cutlet.remove("biometrics");
 
-        assertEquals("{}", cutlet.compactPrint());
+        assertEquals("{}", cutlet.write(COMPACT));
     }
 
     private JSONCutlet getPersonInPersonJSONCutlet() {

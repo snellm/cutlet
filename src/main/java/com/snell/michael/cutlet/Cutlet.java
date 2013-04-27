@@ -8,19 +8,13 @@ import java.math.BigInteger;
 import java.util.List;
 
 interface Cutlet<C extends Cutlet<C>> {
+
     // General methods
 
     /**
-     * Print the cutlet using compact style, ie minimal newlines, whitespace and indentation
-     * @return Compact string representation
+     * Write to a String
      */
-    String compactPrint();
-
-    /**
-     * Print the cutlet using "pretty-print" style, ie newlines and indentation for human readability
-     * @return "Pretty-printed" string representation
-     */
-    String prettyPrint();
+    String write(WriteStyle style);
 
     void remove(String xpath);
 

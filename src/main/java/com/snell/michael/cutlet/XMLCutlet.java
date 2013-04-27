@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import static com.snell.michael.cutlet.WriteStyle.COMPACT;
 import static java.lang.Boolean.TRUE;
 
 public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
@@ -61,13 +62,13 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
 
     @Override
     public int hashCode() {
-        return print(false).hashCode();
+        return write(COMPACT).hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof XMLCutlet) {
-            return print(false).equals(((XMLCutlet) obj).print(false));
+            return write(COMPACT).equals(((XMLCutlet) obj).write(COMPACT));
         } else {
             return false;
         }
@@ -145,7 +146,8 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
         return new XMLCutlet(context.getRelativeContext(pointer), document);
     }
 
-    private static String serializeXML(Document document, boolean prettyPrint) {
+    private static String serializeXML(Document document, WriteStyle style) {
+        boolean prettyPrint = WriteStyle.PRETTY.equals(style);
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 
         createParser();
@@ -162,25 +164,11 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
         return byteStream.toString().trim();
     }
 
-    private String print(boolean pretty) {
-        return serializeXML(document, pretty);
-    }
-
     /**
-     * Output a XMLCutlet as XML text - UTF-8 encoded and compact printed
-     * The exact formatting is dependent on the XML library used
+     * Output a XMLCutlet as UTF-8 encoded XML text
      */
     @Override
-    public String compactPrint() {
-        return print(false);
-    }
-
-    /**
-     * Output a XMLCutlet as XML text - UTF-8 encoded and "pretty" printed
-     * The exact formatting is dependent on the XML library used
-     */
-    @Override
-    public String prettyPrint() {
-        return print(true);
+    public String write(WriteStyle style) {
+        return serializeXML(document, style);
     }
 }

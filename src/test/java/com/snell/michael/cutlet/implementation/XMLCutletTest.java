@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
+import static com.snell.michael.cutlet.WriteStyle.COMPACT;
+import static com.snell.michael.cutlet.WriteStyle.PRETTY;
 import static com.snell.michael.cutlet.implementation.TestUtil.assertContains;
 import static java.math.BigDecimal.TEN;
 import static org.joda.time.DateTimeZone.UTC;
@@ -170,7 +172,7 @@ public class XMLCutletTest {
                         .addString("name", "Green")
                         .addString("meaning", "Go")));
 
-        String generatedXML = cutlet.prettyPrint();
+        String generatedXML = cutlet.write(PRETTY);
         assertNotNull(generatedXML);
         assertContains(generatedXML, "encoding=\"UTF-8\"");
         assertContains(generatedXML, "<name>John Smith</name>");
@@ -188,8 +190,8 @@ public class XMLCutletTest {
     public void printing() {
         XMLCutlet cutlet = getPersonXMLCutlet();
 
-        String compactString = cutlet.compactPrint();
-        String prettyString = cutlet.prettyPrint();
+        String compactString = cutlet.write(COMPACT);
+        String prettyString = cutlet.write(PRETTY);
 
         XMLCutlet reparsedCompactCutlet = XMLCutlet.parse(compactString);
         assertEquals(cutlet, reparsedCompactCutlet);
