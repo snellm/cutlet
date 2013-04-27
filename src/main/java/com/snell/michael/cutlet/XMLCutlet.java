@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import static java.lang.Boolean.TRUE;
+
 public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
     private static DOMImplementationLS DOM_IMPLEMENTATION;
     private static LSParser PARSER;
@@ -141,22 +143,21 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
         return new XMLCutlet(context.getRelativeContext(pointer));
     }
 
-    private static String serializeXML(Document document, boolean pretty) {
+    private static String serializeXML(Document document, boolean prettyPrint) {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 
         createParser();
         LSSerializer serializer = DOM_IMPLEMENTATION.createLSSerializer();
-        if (serializer.getDomConfig().canSetParameter("format-pretty-print", pretty)) {
-            serializer.getDomConfig().setParameter("format-pretty-print", pretty);
+        serializer.getDomConfig().setParameter("xml-declaration", TRUE);
+        if (serializer.getDomConfig().canSetParameter("format-pretty-print", prettyPrint)) {
+            serializer.getDomConfig().setParameter("format-pretty-print", prettyPrint);
         }
-        serializer.getDomConfig().setParameter("xml-declaration", Boolean.TRUE);
 
         LSOutput output = DOM_IMPLEMENTATION.createLSOutput();
         output.setEncoding("UTF-8");
         output.setByteStream(byteStream);
-
         serializer.write(document, output);
-        return byteStream.toString();
+        return byteStream.toString().trim();
     }
 
     private String print(boolean pretty) {
@@ -168,8 +169,8 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
     }
 
     /**
-     * Output a XMLCutlet as XML text
-     * This is UTF-8 encoded and compact
+     * Output a XMLCutlet as XML text - UTF-8 encoded and compact printed
+     * The exact formatting is dependent on the XML library used
      */
     @Override
     public String compactPrint() {
@@ -177,8 +178,8 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
     }
 
     /**
-     * Output a XMLCutlet as XML text
-     * This is UTF-8 encoded and pretty-printed with newlines and indentation
+     * Output a XMLCutlet as XML text - UTF-8 encoded and "pretty" printed
+     * The exact formatting is dependent on the XML library used
      */
     @Override
     public String prettyPrint() {

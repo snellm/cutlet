@@ -107,8 +107,8 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     }
 
     /**
-     * Output a JSONCutlet as JSON text
-     * This is printed compactly
+     * Output a JSONCutlet as JSON text - this is printed compactly
+     * The exact formatting is dependent on the JSON library used
      */
     @Override
     public String compactPrint() {
@@ -117,8 +117,8 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
 
 
     /**
-     * Output a JSONCutlet as JSON text
-     * This is pretty-printed with newlines and indentation
+     * Output a JSONCutlet as JSON text - This is "pretty" printed with newlines and indentation
+     * The exact formatting is dependent on the JSON library used
      */
     @Override
     public String prettyPrint() {

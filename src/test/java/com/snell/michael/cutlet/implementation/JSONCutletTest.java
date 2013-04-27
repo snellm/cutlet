@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.math.BigDecimal.TEN;
+import static org.apache.commons.lang.StringUtils.countMatches;
 import static org.junit.Assert.*;
 
 public class JSONCutletTest {
@@ -155,6 +156,14 @@ public class JSONCutletTest {
         assertEquals(BigDecimal.valueOf(1.8), cutlet.getBigDecimal("biometrics/height"));
         assertEquals("Newcastle", cutlet.get("address").getString("city"));
         assertEquals("Red", cutlet.getArray("colours").get(0).getString("name"));
+    }
+
+    @Test
+    public void printing() {
+        JSONCutlet cutlet = getPersonJSONCutlet();
+
+        assertEquals(0, countMatches(cutlet.compactPrint(), "\n"));
+        assertEquals(30, countMatches(cutlet.prettyPrint(), "\n"));
     }
 
     @Test

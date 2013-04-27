@@ -11,6 +11,7 @@ import java.util.List;
 
 import static com.snell.michael.cutlet.implementation.TestUtil.assertContains;
 import static java.math.BigDecimal.TEN;
+import static org.apache.commons.lang.StringUtils.countMatches;
 import static org.junit.Assert.*;
 
 public class XMLCutletTest {
@@ -155,6 +156,16 @@ public class XMLCutletTest {
         assertEquals(BigDecimal.valueOf(1.8), cutlet.getBigDecimal("biometrics/height"));
         assertEquals("Newcastle", cutlet.get("address").getString("city"));
         assertEquals("Red", cutlet.getArray("colours/color").get(0).getString("name"));
+    }
+
+    @Test
+    public void printing() {
+        XMLCutlet cutlet = getPersonXMLCutlet();
+
+System.out.println(cutlet.compactPrint());
+
+        assertEquals(25, countMatches(cutlet.compactPrint(), "\n"));
+        assertEquals(25, countMatches(cutlet.prettyPrint(), "\n"));
     }
 
     @Test
