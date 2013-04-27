@@ -14,8 +14,8 @@ Example
 =======
 
 Given an XML file containing a list of people and their home and mobile phone numbers
-([input.xml](src/test/resources/com/snell/michael/cutlet/example/input.xml)), output a JSON associative array of their mobile
-phone numbers to names, changing the keys for "firstname" and "lastname" to "forename" and "surname"
+([input.xml](src/test/resources/com/snell/michael/cutlet/example/input.xml)), output a JSON associative array of their 
+mobile phone numbers to names, changing the keys for "firstname" and "lastname" to "forename" and "surname"
 ([output.json](src/test/resources/com/snell/michael/cutlet/example/output.json)):
 
 ````java
@@ -31,7 +31,8 @@ for (XMLCutlet person : input.getArray("person")) {
 String json = output.prettyPrint();
 ````
 
-See the [JSON](src/test/java/com/snell/michael/cutlet/JSONCutletTest.java) and [XML](src/test/java/com/snell/michael/cutlet/XMLCutletTest.java) tests cases for more examples.
+See the [JSON](src/test/java/com/snell/michael/cutlet/implementation/JSONCutletTest.java) and 
+[XML](src/test/java/com/snell/michael/cutlet/implementation/XMLCutletTest.java) tests cases for more examples.
 
 Downloading
 ===========
