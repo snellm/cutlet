@@ -4,32 +4,40 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Cutlet by snellm</title>
-
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
     <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
   </head>
   <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/snellm/cutlet">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/snellm/cutlet/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/snellm/cutlet/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
     <div class="wrapper">
-      <header>
-        <h1 class="header">Cutlet</h1>
-        <p class="header">Slicing and dicing XML/JSON for fun and profit</p>
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/snellm/cutlet/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/snellm/cutlet/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/snellm/cutlet">View On GitHub</a></li>
-        </ul>
-
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/snellm">snellm</a></p>
-
-
-      </header>
       <section>
+        <div id="title">
+          <h1>Cutlet</h1>
+          <p>Slicing and dicing XML/JSON for fun and profit</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/snellm">snellm</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
         <h1>Overview</h1>
 
 <p>Cutlet is a library to make working with XML and JSON simple, particularly where a JavaBean
@@ -45,8 +53,8 @@ JAXB-style approach is too heavyweight.</p>
 </ul><h1>Example</h1>
 
 <p>Given an XML file containing a list of people and their home and mobile phone numbers
-(<a href="src/test/resources/com/snell/michael/cutlet/example/input.xml">input.xml</a>), output a JSON associative array of their mobile
-phone numbers to names, changing the keys for "firstname" and "lastname" to "forename" and "surname"
+(<a href="src/test/resources/com/snell/michael/cutlet/example/input.xml">input.xml</a>), output a JSON associative array of their 
+mobile phone numbers to names, changing the keys for "firstname" and "lastname" to "forename" and "surname"
 (<a href="src/test/resources/com/snell/michael/cutlet/example/output.json">output.json</a>):</p>
 
 <div class="highlight"><pre><span class="n">XMLCutlet</span> <span class="n">input</span> <span class="o">=</span> <span class="n">XMLCutlet</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"input.xml"</span><span class="o">));</span>
@@ -61,32 +69,23 @@ phone numbers to names, changing the keys for "firstname" and "lastname" to "for
 <span class="n">String</span> <span class="n">json</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="na">prettyPrint</span><span class="o">();</span>
 </pre></div>
 
-<p>See the <a href="src/test/java/com/snell/michael/cutlet/JSONCutletTest.java">JSON</a> and <a href="src/test/java/com/snell/michael/cutlet/XMLCutletTest.java">XML</a> tests cases for more examples.</p>
+<p>See the <a href="src/test/java/com/snell/michael/cutlet/implementation/JSONCutletTest.java">JSON</a> and 
+<a href="src/test/java/com/snell/michael/cutlet/implementation/XMLCutletTest.java">XML</a> tests cases for more examples.</p>
 
 <h1>Downloading</h1>
 
-<p>Cutlet has not yet been officially released, but you can download a development snapshot from <a href="https://oss.sonatype.org/content/repositories/snapshots/com/snell/michael/cutlet/cutlet">https://oss.sonatype.org/content/repositories/snapshots/com/snell/michael/cutlet/cutlet</a>,
-or use Maven or similar tools:</p>
+<p>Current version is 0.1 - considered early beta quality.</p>
 
-<div class="highlight"><pre><span class="nt">&lt;repositories&gt;</span>
-  <span class="nt">&lt;repository&gt;</span>
-    <span class="nt">&lt;id&gt;</span>sonatype-oss-public<span class="nt">&lt;/id&gt;</span>
-    <span class="nt">&lt;url&gt;</span>https://oss.sonatype.org/content/groups/public/<span class="nt">&lt;/url&gt;</span>
-    <span class="nt">&lt;releases&gt;</span>
-      <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
-    <span class="nt">&lt;/releases&gt;</span>
-    <span class="nt">&lt;snapshots&gt;</span>
-      <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
-    <span class="nt">&lt;/snapshots&gt;</span>
-  <span class="nt">&lt;/repository&gt;</span>
-<span class="nt">&lt;/repositories&gt;</span>
+<p>Maven:</p>
 
-<span class="nt">&lt;dependency&gt;</span>
+<div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>com.snell.michael.cutlet<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>cutlet<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>0.1-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;version&gt;</span>0.1<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
+
+<p>Direct download: <a href="http://repo1.maven.org/maven2/com/snell/michael/cutlet/cutlet">http://repo1.maven.org/maven2/com/snell/michael/cutlet/cutlet</a></p>
 
 <h1>Fine print</h1>
 
@@ -97,11 +96,9 @@ or use Maven or similar tools:</p>
 <li>Things may break. Performance may suffer. Giant creatures may arise from the oceans and destroy your civilization.</li>
 </ul>
       </section>
-      <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
-      </footer>
+
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
+    
   </body>
 </html>
