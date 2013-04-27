@@ -19,12 +19,6 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         this.context = jxpathContext;
     }
 
-    static Object getContextBean(Cutlet cutlet) {
-        return ((JXPathContextCutlet) cutlet).context.getContextBean();
-    }
-
-    protected abstract J createCutlet(JXPathContext jxpathContext);
-
     @Override
     public J get(String xpath) {
         Pointer pointer = context.getPointer(xpath);
@@ -78,12 +72,9 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         return getValueArray(xpath, String.class);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public J addString(String xpath, String value) {
-        add(xpath);
-        context.setValue(xpath, value);
-        return (J) this;
+        return addValue(xpath, value, String.class);
     }
 
     @Override
@@ -96,12 +87,9 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         return getValueArray(xpath, LocalDate.class);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public J addLocalDate(String xpath, LocalDate value) {
-        add(xpath);
-        context.setValue(xpath, ValueConverters.write(value, LocalDate.class));
-        return (J) this;
+        return addValue(xpath, value, LocalDate.class);
     }
 
     @Override
@@ -114,12 +102,9 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         return getValueArray(xpath, BigDecimal.class);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public J addBigDecimal(String xpath, BigDecimal value) {
-        add(xpath);
-        context.setValue(xpath, ValueConverters.write(value, BigDecimal.class));
-        return (J) this;
+        return addValue(xpath, value, BigDecimal.class);
     }
 
     @Override
@@ -132,12 +117,9 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         return getValueArray(xpath, BigInteger.class);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public J addBigInteger(String xpath, BigInteger value) {
-        add(xpath);
-        context.setValue(xpath, ValueConverters.write(value, BigInteger.class));
-        return (J) this;
+        return addValue(xpath, value, BigInteger.class);
     }
 
     @Override
@@ -162,6 +144,13 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         }
     }
 
+    @SuppressWarnings("unchecked")
+    private <T> J addValue(String xpath, T value, Class<T> clazz) {
+        add(xpath);
+        context.setValue(xpath, ValueConverters.write(value, clazz));
+        return (J) this;
+    }
+
     private <T> List<T> getValueArray(String xpath, Class<T> clazz) {
         Iterator<?> i = context.iterate(xpath);
 
@@ -172,4 +161,10 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
         return c;
     }
+
+    static Object getContextBean(Cutlet cutlet) {
+        return ((JXPathContextCutlet) cutlet).context.getContextBean();
+    }
+
+    protected abstract J createCutlet(JXPathContext jxpathContext);
 }
