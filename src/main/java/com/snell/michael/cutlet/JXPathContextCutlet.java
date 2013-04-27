@@ -4,6 +4,7 @@ import com.snell.michael.cutlet.converters.ValueConverters;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.Pointer;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
@@ -92,6 +93,20 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         return addValue(xpath, value, LocalDate.class);
     }
 
+    @Override
+    public DateTime getDateTime(String xpath) {
+        return getValue(xpath, DateTime.class);
+    }
+
+    @Override
+    public List<DateTime> getDateTimeArray(String xpath) {
+        return getValueArray(xpath, DateTime.class);
+    }
+
+    @Override
+    public J addDateTime(String xpath, DateTime value) {
+        return addValue(xpath, value, DateTime.class);
+    }
     @Override
     public BigDecimal getBigDecimal(String xpath) {
         return getValue(xpath, BigDecimal.class);

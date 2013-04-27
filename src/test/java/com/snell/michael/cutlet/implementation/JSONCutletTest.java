@@ -2,7 +2,9 @@ package com.snell.michael.cutlet.implementation;
 
 import com.snell.michael.cutlet.CutletRuntimeException;
 import com.snell.michael.cutlet.JSONCutlet;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import static java.math.BigDecimal.TEN;
 import static org.apache.commons.lang.StringUtils.countMatches;
+import static org.joda.time.DateTimeZone.UTC;
 import static org.junit.Assert.*;
 
 public class JSONCutletTest {
@@ -68,6 +71,17 @@ public class JSONCutletTest {
 
         cutlet.addLocalDate("dateOfDeath", new LocalDate(2013, 04, 29));
         assertEquals("2013-04-29", cutlet.getString("dateOfDeath"));
+    }
+
+    @Test
+    public void dateTimes() {
+        JSONCutlet cutlet = getPersonJSONCutlet();
+
+        assertEquals(new DateTime(2012, 8, 7, 7, 47, 46, UTC), cutlet.getDateTime("lastModified"));
+
+        DateTime now = new DateTime();
+        cutlet.addDateTime("lastModified", now);
+        assertEquals(now.toString(ISODateTimeFormat.dateTime()), cutlet.getString("lastModified"));
     }
 
     @Test
@@ -173,8 +187,11 @@ public class JSONCutletTest {
     public void printing() {
         JSONCutlet cutlet = getPersonJSONCutlet();
 
+        JSONCutlet reparsedCutlet = JSONCutlet.parse(cutlet.compactPrint());
+        assertEquals(cutlet, reparsedCutlet);
+
         assertEquals(0, countMatches(cutlet.compactPrint(), "\n"));
-        assertEquals(31, countMatches(cutlet.prettyPrint(), "\n"));
+        assertEquals(32, countMatches(cutlet.prettyPrint(), "\n"));
     }
 
     @Test

@@ -11,7 +11,7 @@ public class StringConverter implements ValueConverter<String> {
     }
 
     @Override
-    public Object write(String s) {
-        return s;
+    public Object write(String string) {
+        return string;
     }
 }

@@ -3,7 +3,9 @@ package com.snell.michael.cutlet.implementation;
 import com.google.common.collect.Lists;
 import com.snell.michael.cutlet.CutletRuntimeException;
 import com.snell.michael.cutlet.XMLCutlet;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -13,6 +15,7 @@ import java.util.List;
 import static com.snell.michael.cutlet.implementation.TestUtil.assertContains;
 import static java.math.BigDecimal.TEN;
 import static org.apache.commons.lang.StringUtils.countMatches;
+import static org.joda.time.DateTimeZone.UTC;
 import static org.junit.Assert.*;
 
 public class XMLCutletTest {
@@ -70,6 +73,18 @@ public class XMLCutletTest {
         cutlet.addLocalDate("dateOfDeath", new LocalDate(2013, 04, 29));
         assertEquals("2013-04-29", cutlet.getString("dateOfDeath"));
     }
+
+    @Test
+    public void dateTimes() {
+        XMLCutlet cutlet = getPersonXMLCutlet();
+
+        assertEquals(new DateTime(2012, 8, 7, 7, 47, 46, UTC), cutlet.getDateTime("lastModified"));
+
+        DateTime now = new DateTime();
+        cutlet.addDateTime("lastModified", now);
+        assertEquals(now.toString(ISODateTimeFormat.dateTime()), cutlet.getString("lastModified"));
+    }
+
 
     @Test
     public void decimals() {
@@ -173,8 +188,8 @@ public class XMLCutletTest {
     public void printing() {
         XMLCutlet cutlet = getPersonXMLCutlet();
 
-        assertEquals(26, countMatches(cutlet.compactPrint(), "\n"));
-        assertEquals(26, countMatches(cutlet.prettyPrint(), "\n"));
+        assertEquals(27, countMatches(cutlet.compactPrint(), "\n"));
+        assertEquals(27, countMatches(cutlet.prettyPrint(), "\n"));
     }
 
     @Test

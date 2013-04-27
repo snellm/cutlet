@@ -1,5 +1,6 @@
 package com.snell.michael.cutlet.converters;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ public class ValueConverters {
         CONVERTERS.put(BigInteger.class, new BigIntegerConverter());
 
         CONVERTERS.put(LocalDate.class, new LocalDateConverter());
+        CONVERTERS.put(DateTime.class, new DateTimeConverter());
     }
 
     public static <T> T read(Object object, Class<T> clazz) {
