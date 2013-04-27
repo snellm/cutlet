@@ -37,29 +37,19 @@ See the [JSON](src/test/java/com/snell/michael/cutlet/implementation/JSONCutletT
 Downloading
 ===========
 
-Cutlet has not yet been officially released, but you can download a development snapshot from https://oss.sonatype.org/content/repositories/snapshots/com/snell/michael/cutlet/cutlet,
-or use Maven or similar tools:
+Current version is 0.1 - considered early beta quality.
+
+Maven:
 
 ````xml
-<repositories>
-  <repository>
-    <id>sonatype-oss-public</id>
-    <url>https://oss.sonatype.org/content/groups/public/</url>
-    <releases>
-      <enabled>true</enabled>
-    </releases>
-    <snapshots>
-      <enabled>true</enabled>
-    </snapshots>
-  </repository>
-</repositories>
-
 <dependency>
   <groupId>com.snell.michael.cutlet</groupId>
   <artifactId>cutlet</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
 </dependency>
 ````
+
+Direct download: http://repo1.maven.org/maven2/com/snell/michael/cutlet/cutlet
 
 Fine print
 ==========
