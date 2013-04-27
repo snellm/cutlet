@@ -1,7 +1,7 @@
 Overview
 ========
 
-Cutlet is a "batteries included" library to make working with XML and JSON in Java simple.
+Cutlet is a "batteries included" library to make working with XML and JSON in Java simpler.
 
 Cutlet supports:
 - The same interface for XML and JSON, as far as possible given the different capabilities
@@ -36,7 +36,7 @@ See the [JSON](src/test/java/com/snell/michael/cutlet/implementation/JSONCutletT
 Downloading
 ===========
 
-Current version is 0.1 - considered early beta quality.
+Current version is 0.2 - alpha quality code (API is subject to change).
 
 Maven:
 
@@ -44,7 +44,7 @@ Maven:
 <dependency>
   <groupId>com.snell.michael.cutlet</groupId>
   <artifactId>cutlet</artifactId>
-  <version>0.1</version>
+  <version>0.2</version>
 </dependency>
 ````
 
