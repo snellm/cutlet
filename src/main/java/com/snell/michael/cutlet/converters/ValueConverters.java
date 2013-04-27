@@ -13,17 +13,19 @@ public class ValueConverters {
     private ValueConverters() {}
 
     static {
+        CONVERTERS.put(String.class, new NoopConverter());
+
         CONVERTERS.put(BigDecimal.class, new BigDecimalConverter());
         CONVERTERS.put(BigInteger.class, new BigIntegerConverter());
 
         CONVERTERS.put(LocalDate.class, new LocalDateConverter());
     }
 
-    public static <T> T read(Class<T> clazz, Object object) {
+    public static <T> T read(Object object, Class<T> clazz) {
         return getValueConverter(clazz).read(object);
     }
 
-    public static <T> Object write(Class<T> clazz, T t) {
+    public static <T> Object write(T t, Class<T> clazz) {
         return getValueConverter(clazz).write(t);
     }
 

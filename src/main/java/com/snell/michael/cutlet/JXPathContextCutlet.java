@@ -105,14 +105,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @Override
     public List<String> getStringArray(String xpath) {
-        Iterator<?> i = context.iterate(xpath);
-
-        List<String> c = new ArrayList<>();
-        while (i.hasNext()) {
-            c.add((String) i.next());
-        }
-
-        return c;
+        return getValueArray(xpath, String.class);
     }
 
     @SuppressWarnings("unchecked")
@@ -128,7 +121,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         Object o = getValue(xpath);
 
         try {
-            return ValueConverters.read(LocalDate.class, o);
+            return ValueConverters.read(o, LocalDate.class);
         } catch (RuntimeException e) {
             throw new CutletRuntimeException("Cannot parse LocalDate at path [" + xpath + "] in [" + getContextBean(this) + "]", e);
         }
@@ -136,21 +129,14 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @Override
     public List<LocalDate> getLocalDateArray(String xpath) {
-        Iterator<?> i = context.iterate(xpath);
-
-        List<LocalDate> c = new ArrayList<>();
-        while (i.hasNext()) {
-            c.add(ValueConverters.read(LocalDate.class, i.next()));
-        }
-
-        return c;
+        return getValueArray(xpath, LocalDate.class);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public J addLocalDate(String xpath, LocalDate value) {
         add(xpath);
-        context.setValue(xpath, ValueConverters.write(LocalDate.class, value));
+        context.setValue(xpath, ValueConverters.write(value, LocalDate.class));
         return (J) this;
     }
 
@@ -159,7 +145,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         Object o = getValue(xpath);
 
         try {
-            return ValueConverters.read(BigDecimal.class, o);
+            return ValueConverters.read(o, BigDecimal.class);
         } catch (RuntimeException e) {
             throw new CutletRuntimeException("Cannot parse BigDecimal at path [" + xpath + "] in [" + getContextBean(this) + "]", e);
         }
@@ -167,21 +153,14 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @Override
     public List<BigDecimal> getBigDecimalArray(String xpath) {
-        Iterator<?> i = context.iterate(xpath);
-
-        List<BigDecimal> c = new ArrayList<>();
-        while (i.hasNext()) {
-            c.add(ValueConverters.read(BigDecimal.class, i.next()));
-        }
-
-        return c;
+        return getValueArray(xpath, BigDecimal.class);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public J addBigDecimal(String xpath, BigDecimal value) {
         add(xpath);
-        context.setValue(xpath, ValueConverters.write(BigDecimal.class, value));
+        context.setValue(xpath, ValueConverters.write(value, BigDecimal.class));
         return (J) this;
     }
 
@@ -190,7 +169,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         Object o = getValue(xpath);
 
         try {
-            return ValueConverters.read(BigInteger.class, o);
+            return ValueConverters.read(o, BigInteger.class);
         } catch (RuntimeException e) {
             throw new CutletRuntimeException("Cannot parse BigInteger at path [" + xpath + "] in [" + getContextBean(this) + "]", e);
         }
@@ -198,26 +177,30 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @Override
     public List<BigInteger> getBigIntegerArray(String xpath) {
-        Iterator<?> i = context.iterate(xpath);
-
-        List<BigInteger> c = new ArrayList<>();
-        while (i.hasNext()) {
-            c.add(ValueConverters.read(BigInteger.class, i.next()));
-        }
-
-        return c;
+        return getValueArray(xpath, BigInteger.class);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public J addBigInteger(String xpath, BigInteger value) {
         add(xpath);
-        context.setValue(xpath, ValueConverters.write(BigInteger.class, value));
+        context.setValue(xpath, ValueConverters.write(value, BigInteger.class));
         return (J) this;
     }
 
     @Override
     public void remove(String xpath) {
         context.removeAll(xpath);
+    }
+
+    private <T> List<T> getValueArray(String xpath, Class<T> clazz) {
+        Iterator<?> i = context.iterate(xpath);
+
+        List<T> c = new ArrayList<>();
+        while (i.hasNext()) {
+            c.add(ValueConverters.read(i.next(), clazz));
+        }
+
+        return c;
     }
 }
