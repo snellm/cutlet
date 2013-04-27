@@ -25,23 +25,6 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     protected abstract J createCutlet(JXPathContext jxpathContext);
 
-    private Object getValue(String xpath) {
-        try {
-            return context.getValue(xpath);
-        } catch (JXPathNotFoundException e) {
-            String p = "";
-            for (String s : xpath.split("/")) {
-                p = p + (p.length() > 0 ? "/" : "") + s;
-                try {
-                    context.getValue(p);
-                } catch (JXPathNotFoundException f) {
-                    throw new CutletRuntimeException("Path [" + p + "] not found while getting value at [" + xpath + "]", f);
-                }
-            }
-            throw new CutletRuntimeException("Error getting value at [" + xpath + "]", e);
-        }
-    }
-
     @Override
     public J get(String xpath) {
         Pointer pointer = context.getPointer(xpath);
@@ -87,20 +70,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @Override
     public String getString(String xpath) {
-        Object o = getValue(xpath);
-
-        if (o == null) {
-            throw new CutletRuntimeException("No value at [" + xpath + "] in [" + getContextBean(this) + "]");
-        } else if (o instanceof String) {
-            return (String) o;
-        } else {
-            return o.toString();
-        }
-    }
-
-    @Override
-    public String getOptionalString(String xpath) {
-        return (String) getValue(xpath);
+        return getValue(xpath, String.class);
     }
 
     @Override
@@ -118,13 +88,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @Override
     public LocalDate getLocalDate(String xpath) {
-        Object o = getValue(xpath);
-
-        try {
-            return ValueConverters.read(o, LocalDate.class);
-        } catch (RuntimeException e) {
-            throw new CutletRuntimeException("Cannot parse LocalDate at path [" + xpath + "] in [" + getContextBean(this) + "]", e);
-        }
+        return getValue(xpath, LocalDate.class);
     }
 
     @Override
@@ -142,13 +106,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @Override
     public BigDecimal getBigDecimal(String xpath) {
-        Object o = getValue(xpath);
-
-        try {
-            return ValueConverters.read(o, BigDecimal.class);
-        } catch (RuntimeException e) {
-            throw new CutletRuntimeException("Cannot parse BigDecimal at path [" + xpath + "] in [" + getContextBean(this) + "]", e);
-        }
+        return getValue(xpath, BigDecimal.class);
     }
 
     @Override
@@ -166,13 +124,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @Override
     public BigInteger getBigInteger(String xpath) {
-        Object o = getValue(xpath);
-
-        try {
-            return ValueConverters.read(o, BigInteger.class);
-        } catch (RuntimeException e) {
-            throw new CutletRuntimeException("Cannot parse BigInteger at path [" + xpath + "] in [" + getContextBean(this) + "]", e);
-        }
+        return getValue(xpath, BigInteger.class);
     }
 
     @Override
@@ -191,6 +143,23 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     @Override
     public void remove(String xpath) {
         context.removeAll(xpath);
+    }
+
+    private <T> T getValue(String xpath, Class<T> clazz) {
+        try {
+            return ValueConverters.read(context.getValue(xpath), clazz);
+        } catch (JXPathNotFoundException e) {
+            String p = "";
+            for (String s : xpath.split("/")) {
+                p = p + (p.length() > 0 ? "/" : "") + s;
+                try {
+                    context.getValue(p);
+                } catch (JXPathNotFoundException f) {
+                    throw new CutletRuntimeException("Path [" + p + "] not found while getting value at [" + xpath + "]", f);
+                }
+            }
+            throw new CutletRuntimeException("Error getting value at [" + xpath + "]", e);
+        }
     }
 
     private <T> List<T> getValueArray(String xpath, Class<T> clazz) {

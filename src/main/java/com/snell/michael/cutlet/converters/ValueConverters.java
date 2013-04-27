@@ -13,7 +13,7 @@ public class ValueConverters {
     private ValueConverters() {}
 
     static {
-        CONVERTERS.put(String.class, new NoopConverter());
+        CONVERTERS.put(String.class, new StringConverter());
 
         CONVERTERS.put(BigDecimal.class, new BigDecimalConverter());
         CONVERTERS.put(BigInteger.class, new BigIntegerConverter());

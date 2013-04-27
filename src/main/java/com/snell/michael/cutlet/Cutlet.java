@@ -39,8 +39,6 @@ interface Cutlet<C extends Cutlet<C>> {
 
     String getString(String xpath);
 
-    String getOptionalString(String xpath);
-
     List<String> getStringArray(String xpath);
 
     C addString(String xpath, String value);
