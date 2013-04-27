@@ -3,28 +3,44 @@ package com.snell.michael.cutlet;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
+import java.io.File;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
 interface Cutlet<C extends Cutlet<C>> {
-
-    // General methods
+    // Write methods
 
     /**
      * Write to a String
      */
     String write(WriteStyle style);
 
-    void remove(String xpath);
+    /**
+     * Write to a StringBuffer
+     */
+    StringBuffer write(StringBuffer stringBuffer, WriteStyle style);
+
+    /**
+     * Write to an OutputStream
+     */
+    void write(OutputStream outputStream, WriteStyle style);
+
+    /**
+     * Write to a File
+     */
+    void write(File file, WriteStyle style);
 
     // Cutlet methods
 
     C get(String xpath);
 
+    List<C> getArray(String xpath);
+
     boolean has(String xpath);
 
-    List<C> getArray(String xpath);
+    void remove(String xpath);
 
     C add(String xpath);
 

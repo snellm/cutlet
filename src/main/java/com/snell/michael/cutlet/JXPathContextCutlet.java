@@ -1,12 +1,16 @@
 package com.snell.michael.cutlet;
 
 import com.snell.michael.cutlet.converters.ValueConverters;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.Pointer;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -18,6 +22,32 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     protected JXPathContextCutlet(JXPathContext jxpathContext) {
         this.context = jxpathContext;
+    }
+
+    @Override
+    public abstract String write(WriteStyle style);
+
+    @Override
+    public StringBuffer write(StringBuffer stringBuffer, WriteStyle style) {
+        return stringBuffer.append(write(style));
+    }
+
+    @Override
+    public void write(OutputStream outputStream, WriteStyle style) {
+        try {
+            outputStream.write(write(style).getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException("Error writing to stream", e);
+        }
+    }
+
+    @Override
+    public void write(File file, WriteStyle style) {
+        try {
+            FileUtils.write(file, write(style));
+        } catch (IOException e) {
+            throw new RuntimeException("Error writing to file [" + file + "]", e);
+        }
     }
 
     @Override
