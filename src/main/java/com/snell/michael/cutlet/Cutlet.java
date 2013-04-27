@@ -3,7 +3,7 @@ package com.snell.michael.cutlet;
 import java.math.BigDecimal;
 import java.util.List;
 
-interface Cutlet<CUTLET extends Cutlet<CUTLET>> {
+interface Cutlet<C extends Cutlet<C>> {
     // General methods
 
     String compactPrint();
@@ -14,15 +14,15 @@ interface Cutlet<CUTLET extends Cutlet<CUTLET>> {
 
     // Cutlet methods
 
-    CUTLET get(String xpath);
+    C get(String xpath);
 
     boolean has(String xpath);
 
-    List<CUTLET> getArray(String xpath);
+    List<C> getArray(String xpath);
 
-    CUTLET add(String xpath);
+    C add(String xpath);
 
-    CUTLET addArray(String xpath, List<CUTLET> cutlets);
+    C addArray(String xpath, List<C> cutlets);
 
     // String methods
 
@@ -32,7 +32,7 @@ interface Cutlet<CUTLET extends Cutlet<CUTLET>> {
 
     List<String> getStringArray(String xpath);
 
-    CUTLET addString(String xpath, String value);
+    C addString(String xpath, String value);
 
     // BigDecimal methods
 
@@ -40,5 +40,5 @@ interface Cutlet<CUTLET extends Cutlet<CUTLET>> {
 
     List<BigDecimal> getBigDecimalArray(String xpath);
 
-    CUTLET addBigDecimal(String xpath, BigDecimal value);
+    C addBigDecimal(String xpath, BigDecimal value);
 }
