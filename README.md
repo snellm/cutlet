@@ -1,8 +1,7 @@
 Overview
 ========
 
-Cutlet is a library to make working with XML and JSON simple, particularly where a JavaBean
-JAXB-style approach is too heavyweight.
+Cutlet is a "batteries included" library to make working with XML and JSON in Java simple.
 
 Cutlet supports:
 - The same interface for XML and JSON, as far as possible given the different capabilities
@@ -28,7 +27,7 @@ for (XMLCutlet person : input.getArray("person")) {
         .addString("surname", person.getString("lastname"));
 }
 
-String json = output.prettyPrint();
+String json = output.write(PRETTY);
 ````
 
 See the [JSON](src/test/java/com/snell/michael/cutlet/implementation/JSONCutletTest.java) and 
