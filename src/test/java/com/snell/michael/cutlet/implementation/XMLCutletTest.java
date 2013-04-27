@@ -14,7 +14,6 @@ import java.util.List;
 
 import static com.snell.michael.cutlet.implementation.TestUtil.assertContains;
 import static java.math.BigDecimal.TEN;
-import static org.apache.commons.lang.StringUtils.countMatches;
 import static org.joda.time.DateTimeZone.UTC;
 import static org.junit.Assert.*;
 
@@ -70,7 +69,7 @@ public class XMLCutletTest {
 
         assertEquals(new LocalDate(1969, 2, 28), cutlet.getLocalDate("dateOfBirth"));
 
-        cutlet.addLocalDate("dateOfDeath", new LocalDate(2013, 04, 29));
+        cutlet.addLocalDate("dateOfDeath", new LocalDate(2013, 4, 29));
         assertEquals("2013-04-29", cutlet.getString("dateOfDeath"));
     }
 
@@ -184,14 +183,20 @@ public class XMLCutletTest {
         assertEquals("Red", cutlet.getArray("colours/color").get(0).getString("name"));
     }
 
+
     @Test
     public void printing() {
         XMLCutlet cutlet = getPersonXMLCutlet();
 
-        assertEquals(27, countMatches(cutlet.compactPrint(), "\n"));
-        assertEquals(27, countMatches(cutlet.prettyPrint(), "\n"));
-    }
+        String compactString = cutlet.compactPrint();
+        String prettyString = cutlet.prettyPrint();
 
+        XMLCutlet reparsedCompactCutlet = XMLCutlet.parse(compactString);
+        assertEquals(cutlet, reparsedCompactCutlet);
+
+        XMLCutlet reparsedPrettyCutlet = XMLCutlet.parse(prettyString);
+        assertEquals(cutlet, reparsedPrettyCutlet);
+    }
     @Test
     public void equalsAndHashCode() {
         XMLCutlet one = XMLCutlet.create("foo");

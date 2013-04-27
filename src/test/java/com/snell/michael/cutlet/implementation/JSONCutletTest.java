@@ -13,14 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.math.BigDecimal.TEN;
-import static org.apache.commons.lang.StringUtils.countMatches;
 import static org.joda.time.DateTimeZone.UTC;
 import static org.junit.Assert.*;
 
 public class JSONCutletTest {
     @Test
     public void parseString() {
-        JSONCutlet cutlet = JSONCutlet.parse(TestUtil.readFileResource(getClass(), "person.json"));
+        JSONCutlet cutlet = getPersonJSONCutlet();
         assertNotNull(cutlet);
         assertEquals("John", cutlet.getString("person/firstName"));
     }
@@ -34,7 +33,7 @@ public class JSONCutletTest {
 
     @Test
     public void errorHandling() {
-        JSONCutlet cutlet = getPersonJSONCutlet();
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
         try {
             cutlet.getString("location/city");
             fail();
@@ -45,7 +44,7 @@ public class JSONCutletTest {
 
     @Test
     public void strings() {
-        JSONCutlet cutlet = getPersonJSONCutlet();
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
 
         // Can get a string using XPath
         assertEquals("New York", cutlet.getString("address/city"));
@@ -65,17 +64,17 @@ public class JSONCutletTest {
 
     @Test
     public void localDates() {
-        JSONCutlet cutlet = getPersonJSONCutlet();
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
 
         assertEquals(new LocalDate(1969, 2, 28), cutlet.getLocalDate("dateOfBirth"));
 
-        cutlet.addLocalDate("dateOfDeath", new LocalDate(2013, 04, 29));
+        cutlet.addLocalDate("dateOfDeath", new LocalDate(2013, 4, 29));
         assertEquals("2013-04-29", cutlet.getString("dateOfDeath"));
     }
 
     @Test
     public void dateTimes() {
-        JSONCutlet cutlet = getPersonJSONCutlet();
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
 
         assertEquals(new DateTime(2012, 8, 7, 7, 47, 46, UTC), cutlet.getDateTime("lastModified"));
 
@@ -86,7 +85,7 @@ public class JSONCutletTest {
 
     @Test
     public void decimals() {
-        JSONCutlet cutlet = getPersonJSONCutlet();
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
 
         // Can get a integer as a BigDecimal using XPath
         assertEquals(BigDecimal.valueOf(1), cutlet.getBigDecimal("favouriteNumbers[1]"));
@@ -112,7 +111,7 @@ public class JSONCutletTest {
 
     @Test
     public void integers() {
-        JSONCutlet cutlet = getPersonJSONCutlet();
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
 
         // Can get a integer as a BigDecimal using XPath
         assertEquals(BigInteger.valueOf(1), cutlet.getBigInteger("favouriteNumbers[1]"));
@@ -135,7 +134,7 @@ public class JSONCutletTest {
 
     @Test
     public void arrays() {
-        JSONCutlet cutlet = getPersonJSONCutlet();
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
 
         // Can get a specific array entry directly using XPath
         assertEquals("home", cutlet.getString("phoneNumbers[1]/type"));
@@ -185,13 +184,16 @@ public class JSONCutletTest {
 
     @Test
     public void printing() {
-        JSONCutlet cutlet = getPersonJSONCutlet();
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
 
-        JSONCutlet reparsedCutlet = JSONCutlet.parse(cutlet.compactPrint());
-        assertEquals(cutlet, reparsedCutlet);
+        String compactString = cutlet.compactPrint();
+        String prettyString = cutlet.prettyPrint();
 
-        assertEquals(0, countMatches(cutlet.compactPrint(), "\n"));
-        assertEquals(32, countMatches(cutlet.prettyPrint(), "\n"));
+        JSONCutlet reparsedCompactCutlet = JSONCutlet.parse(compactString);
+        assertEquals(cutlet, reparsedCompactCutlet);
+
+        JSONCutlet reparsedPrettyCutlet = JSONCutlet.parse(prettyString);
+        assertEquals(cutlet, reparsedPrettyCutlet);
     }
 
     @Test
@@ -230,8 +232,12 @@ public class JSONCutletTest {
         assertEquals("{}", cutlet.compactPrint());
     }
 
-    private JSONCutlet getPersonJSONCutlet() {
-        JSONCutlet cutlet = JSONCutlet.parse(TestUtil.readFileResource(getClass(), "person.json"));
+    private JSONCutlet getPersonInPersonJSONCutlet() {
+        JSONCutlet cutlet = getPersonJSONCutlet();
         return cutlet.get("person");
+    }
+
+    private JSONCutlet getPersonJSONCutlet() {
+        return JSONCutlet.parse(TestUtil.readFileResource(getClass(), "person.json"));
     }
 }
