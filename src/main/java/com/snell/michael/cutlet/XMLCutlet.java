@@ -22,13 +22,28 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
     private static DOMImplementationLS DOM_IMPLEMENTATION;
     private static LSParser PARSER;
 
-    private XMLCutlet(JXPathContext jxpathContext) {
+    private final Document document;
+
+    private XMLCutlet(JXPathContext jxpathContext, final Document document) {
         super(jxpathContext);
+        this.document = document;
+
+        context.setFactory(new AbstractFactory() {
+            @Override
+            public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index) {
+                if (parent instanceof Element) {
+                    ((Element) parent).appendChild(document.createElement(name));
+                    return true;
+                } else {
+                    throw new RuntimeException("Parent class [" + parent.getClass() + "] not supported");
+                }
+            }
+        });
     }
 
     @Override
     protected XMLCutlet createCutlet(JXPathContext jxpathContext) {
-        return new XMLCutlet(jxpathContext);
+        return new XMLCutlet(jxpathContext, document);
     }
 
     @Override
@@ -113,10 +128,9 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
 
     private static XMLCutlet getCutletFromDocument(Document document) {
         JXPathContext context = JXPathContext.newContext(document);
-
         Pointer pointer = context.getPointer(document.getDocumentElement().getNodeName());
 
-        return new XMLCutlet(context.getRelativeContext(pointer));
+        return new XMLCutlet(context.getRelativeContext(pointer), document);
     }
 
     /**
@@ -124,23 +138,11 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
      * The root node of the XML document must be specified, and is not required in further queries
      */
     public static XMLCutlet create(String rootNode) {
-        final Document document = parseToDocument("<" + rootNode + "/>");
+        Document document = parseToDocument("<" + rootNode + "/>");
         JXPathContext context = JXPathContext.newContext(document);
 
-        context.setFactory(new AbstractFactory() {
-            @Override
-            public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index) {
-                if (parent instanceof Element) {
-                    ((Element) parent).appendChild(document.createElement(name));
-                    return true;
-                } else {
-                    throw new RuntimeException("Parent class [" + parent.getClass() + "] not supported");
-                }
-            }
-        });
-
         Pointer pointer = context.getPointer(rootNode);
-        return new XMLCutlet(context.getRelativeContext(pointer));
+        return new XMLCutlet(context.getRelativeContext(pointer), document);
     }
 
     private static String serializeXML(Document document, boolean prettyPrint) {
@@ -161,11 +163,7 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
     }
 
     private String print(boolean pretty) {
-        if (getContextBean(this) instanceof Element) {
-            return serializeXML(((Element) getContextBean(this)).getOwnerDocument(), pretty);
-        } else {
-            throw new RuntimeException("Cannot parse [" + getContextBean(this).getClass() + "] to XML string - must be Element");
-        }
+        return serializeXML(document, pretty);
     }
 
     /**

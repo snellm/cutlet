@@ -1,5 +1,7 @@
 package com.snell.michael.cutlet.converters;
 
+import org.joda.time.LocalDate;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -13,6 +15,8 @@ public class ValueConverters {
     static {
         CONVERTERS.put(BigDecimal.class, new BigDecimalConverter());
         CONVERTERS.put(BigInteger.class, new BigIntegerConverter());
+
+        CONVERTERS.put(LocalDate.class, new LocalDateConverter());
     }
 
     public static <T> T read(Class<T> clazz, Object object) {

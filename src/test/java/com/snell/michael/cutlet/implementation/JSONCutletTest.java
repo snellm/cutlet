@@ -2,6 +2,7 @@ package com.snell.michael.cutlet.implementation;
 
 import com.snell.michael.cutlet.CutletRuntimeException;
 import com.snell.michael.cutlet.JSONCutlet;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -57,6 +58,16 @@ public class JSONCutletTest {
         for (String s: strings) {
             assertNotNull(s);
         }
+    }
+
+    @Test
+    public void localDates() {
+        JSONCutlet cutlet = getPersonJSONCutlet();
+
+        assertEquals(new LocalDate(1969, 2, 28), cutlet.getLocalDate("dateOfBirth"));
+
+        cutlet.addLocalDate("dateOfDeath", new LocalDate(2013, 04, 29));
+        assertEquals("2013-04-29", cutlet.getString("dateOfDeath"));
     }
 
     @Test
@@ -163,7 +174,7 @@ public class JSONCutletTest {
         JSONCutlet cutlet = getPersonJSONCutlet();
 
         assertEquals(0, countMatches(cutlet.compactPrint(), "\n"));
-        assertEquals(30, countMatches(cutlet.prettyPrint(), "\n"));
+        assertEquals(31, countMatches(cutlet.prettyPrint(), "\n"));
     }
 
     @Test

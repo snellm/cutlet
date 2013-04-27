@@ -16,6 +16,7 @@
         <type>fax</type>
         <number>646 555-4567</number>
     </phoneNumber>
+    <dateOfBirth>1969-02-28</dateOfBirth>
     <favouriteColour>green</favouriteColour>
     <favouriteColour>blue</favouriteColour>
     <favouriteColour>indigo</favouriteColour>

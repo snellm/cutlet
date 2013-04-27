@@ -4,6 +4,7 @@ import com.snell.michael.cutlet.converters.ValueConverters;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.Pointer;
+import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -119,6 +120,37 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     public J addString(String xpath, String value) {
         add(xpath);
         context.setValue(xpath, value);
+        return (J) this;
+    }
+
+    @Override
+    public LocalDate getLocalDate(String xpath) {
+        Object o = getValue(xpath);
+
+        try {
+            return ValueConverters.read(LocalDate.class, o);
+        } catch (RuntimeException e) {
+            throw new CutletRuntimeException("Cannot parse LocalDate at path [" + xpath + "] in [" + getContextBean(this) + "]", e);
+        }
+    }
+
+    @Override
+    public List<LocalDate> getLocalDateArray(String xpath) {
+        Iterator<?> i = context.iterate(xpath);
+
+        List<LocalDate> c = new ArrayList<>();
+        while (i.hasNext()) {
+            c.add(ValueConverters.read(LocalDate.class, i.next()));
+        }
+
+        return c;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public J addLocalDate(String xpath, LocalDate value) {
+        add(xpath);
+        context.setValue(xpath, ValueConverters.write(LocalDate.class, value));
         return (J) this;
     }
 

@@ -3,6 +3,7 @@ package com.snell.michael.cutlet.implementation;
 import com.google.common.collect.Lists;
 import com.snell.michael.cutlet.CutletRuntimeException;
 import com.snell.michael.cutlet.XMLCutlet;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -58,6 +59,16 @@ public class XMLCutletTest {
         for (String s : strings) {
             assertNotNull(s);
         }
+    }
+
+    @Test
+    public void localDates() {
+        XMLCutlet cutlet = getPersonXMLCutlet();
+
+        assertEquals(new LocalDate(1969, 2, 28), cutlet.getLocalDate("dateOfBirth"));
+
+        cutlet.addLocalDate("dateOfDeath", new LocalDate(2013, 04, 29));
+        assertEquals("2013-04-29", cutlet.getString("dateOfDeath"));
     }
 
     @Test
@@ -162,10 +173,8 @@ public class XMLCutletTest {
     public void printing() {
         XMLCutlet cutlet = getPersonXMLCutlet();
 
-System.out.println(cutlet.compactPrint());
-
-        assertEquals(25, countMatches(cutlet.compactPrint(), "\n"));
-        assertEquals(25, countMatches(cutlet.prettyPrint(), "\n"));
+        assertEquals(26, countMatches(cutlet.compactPrint(), "\n"));
+        assertEquals(26, countMatches(cutlet.prettyPrint(), "\n"));
     }
 
     @Test

@@ -1,5 +1,7 @@
 package com.snell.michael.cutlet;
 
+import org.joda.time.LocalDate;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
@@ -42,6 +44,14 @@ interface Cutlet<C extends Cutlet<C>> {
     List<String> getStringArray(String xpath);
 
     C addString(String xpath, String value);
+
+    // LocalDate methods
+
+    LocalDate getLocalDate(String xpath);
+
+    List<LocalDate> getLocalDateArray(String xpath);
+
+    C addLocalDate(String xpath, LocalDate value);
 
     // BigDecimal methods
 

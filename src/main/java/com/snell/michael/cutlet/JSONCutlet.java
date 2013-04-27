@@ -18,6 +18,18 @@ import java.util.List;
 public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     private JSONCutlet(JXPathContext jxpathContext) {
         super(jxpathContext);
+
+        jxpathContext.setFactory(new AbstractFactory() {
+            @Override
+            public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index) {
+                if (parent instanceof JSONObject) {
+                    ((JSONObject) parent).put(name, new JSONObject());
+                    return true;
+                } else {
+                    throw new RuntimeException("Parent class [" + parent.getClass() + "] not supported");
+                }
+            }
+        });
     }
 
     @Override
@@ -69,19 +81,7 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
      * Create an empty JSONCutlet
      */
     public static JSONCutlet create() {
-        JXPathContext jxpathContext = JXPathContext.newContext(new JSONObject());
-        jxpathContext.setFactory(new AbstractFactory() {
-            @Override
-            public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index) {
-                if (parent instanceof JSONObject) {
-                    ((JSONObject) parent).put(name, new JSONObject());
-                    return true;
-                } else {
-                    throw new RuntimeException("Parent class [" + parent.getClass() + "] not supported");
-                }
-            }
-        });
-        return new JSONCutlet(jxpathContext);
+        return new JSONCutlet(JXPathContext.newContext(new JSONObject()));
     }
 
     @Override
@@ -99,11 +99,7 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     }
 
     private String print(boolean pretty) {
-        if (getContextBean(this) instanceof JSONObject) {
-            return ((JSONObject) getContextBean(this)).toString(pretty ? 2 : 0);
-        } else {
-            throw new RuntimeException("Cannot parse [" + getContextBean(this).getClass() + "] to JSON string - must be JSONObject");
-        }
+        return ((JSONObject) getContextBean(this)).toString(pretty ? 2 : 0);
     }
 
     /**
