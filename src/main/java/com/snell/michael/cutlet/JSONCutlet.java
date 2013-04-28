@@ -1,3 +1,5 @@
+// Copyright (c) 2013 Michael Snell - see https://github.com/snellm/cutlet
+
 package com.snell.michael.cutlet;
 
 import net.sf.json.JSONObject;
