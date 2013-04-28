@@ -15,9 +15,9 @@ Example
 =======
 
 Given an XML file containing a list of people and their home and mobile phone numbers
-([input.xml](src/test/resources/com/snell/michael/cutlet/implementation/example/input.xml)), output a JSON associative 
+([input.xml](https://github.com/snellm/cutlet/blob/master/src/test/resources/com/snell/michael/cutlet/implementation/example/input.xml)), output a JSON associative 
 array of their mobile phone numbers to names, changing the keys for "firstname" and "lastname" to "forename" and 
-"surname" ([output.json](src/test/resources/com/snell/michael/cutlet/implementation/example/output.json)):
+"surname" ([output.json](https://github.com/snellm/cutlet/blob/master/src/test/resources/com/snell/michael/cutlet/implementation/example/output.json)):
 
 ````java
 XMLCutlet input = XMLCutlet.parse(new File("input.xml"));
@@ -32,8 +32,8 @@ for (XMLCutlet person : input.getArray("person")) {
 String json = output.write(PRETTY);
 ````
 
-See the [JSON](src/test/java/com/snell/michael/cutlet/implementation/JSONCutletTest.java) and 
-[XML](src/test/java/com/snell/michael/cutlet/implementation/XMLCutletTest.java) tests cases for more examples.
+See the [JSON](https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/JSONCutletTest.java) and 
+[XML](https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/XMLCutletTest.java) tests cases for more examples.
 
 Downloading
 ===========
@@ -55,5 +55,5 @@ Direct download: http://repo1.maven.org/maven2/com/snell/michael/cutlet/cutlet
 Fine print
 ==========
 - Copyright 2013 Michael Snell
-- Licensed under the MIT license - see [LICENSE](LICENSE)
+- Licensed under the MIT license - see [LICENSE](https://github.com/snellm/cutlet/blob/master/LICENSE)
 - Things may break. Performance may suffer. Giant creatures may arise from the oceans and destroy your civilization.
