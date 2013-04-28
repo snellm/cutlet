@@ -42,9 +42,9 @@ most standard formats (eg ISO8601 dates) and edge cases (exponential notation fo
 </ul><h1>Example</h1>
 
 <p>Given an XML file containing a list of people and their home and mobile phone numbers
-(<a href="src/test/resources/com/snell/michael/cutlet/implementation/example/input.xml">input.xml</a>), output a JSON associative 
+(<a href="https://github.com/snellm/cutlet/blob/master/src/test/resources/com/snell/michael/cutlet/implementation/example/input.xml">input.xml</a>), output a JSON associative 
 array of their mobile phone numbers to names, changing the keys for "firstname" and "lastname" to "forename" and 
-"surname" (<a href="src/test/resources/com/snell/michael/cutlet/implementation/example/output.json">output.json</a>):</p>
+"surname" (<a href="https://github.com/snellm/cutlet/blob/master/src/test/resources/com/snell/michael/cutlet/implementation/example/output.json">output.json</a>):</p>
 
 <div class="highlight"><pre><span class="n">XMLCutlet</span> <span class="n">input</span> <span class="o">=</span> <span class="n">XMLCutlet</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"input.xml"</span><span class="o">));</span>
 <span class="n">JSONCutlet</span> <span class="n">output</span> <span class="o">=</span> <span class="n">JSONCutlet</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
@@ -58,8 +58,8 @@ array of their mobile phone numbers to names, changing the keys for "firstname" 
 <span class="n">String</span> <span class="n">json</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">PRETTY</span><span class="o">);</span>
 </pre></div>
 
-<p>See the <a href="src/test/java/com/snell/michael/cutlet/implementation/JSONCutletTest.java">JSON</a> and 
-<a href="src/test/java/com/snell/michael/cutlet/implementation/XMLCutletTest.java">XML</a> tests cases for more examples.</p>
+<p>See the <a href="https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/JSONCutletTest.java">JSON</a> and 
+<a href="https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/XMLCutletTest.java">XML</a> tests cases for more examples.</p>
 
 <h1>Downloading</h1>
 
@@ -80,7 +80,7 @@ array of their mobile phone numbers to names, changing the keys for "firstname" 
 
 <ul>
 <li>Copyright 2013 Michael Snell</li>
-<li>Licensed under the MIT license - see <a href="LICENSE">LICENSE</a>
+<li>Licensed under the MIT license - see <a href="https://github.com/snellm/cutlet/blob/master/LICENSE">LICENSE</a>
 </li>
 <li>Things may break. Performance may suffer. Giant creatures may arise from the oceans and destroy your civilization.</li>
 </ul>
