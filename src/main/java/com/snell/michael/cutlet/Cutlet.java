@@ -12,6 +12,13 @@ import java.math.BigInteger;
 import java.util.List;
 
 interface Cutlet<C extends Cutlet<C>> {
+    /**
+     * Set the ConverterMap used for this Cutlet
+     * @param converterMap ConverterMap to use
+     * @return The current Cutlet (to allow fluent style)
+     */
+    C withConverterMap(ConverterMap converterMap);
+
     // Write methods
 
     /**
@@ -48,7 +55,7 @@ interface Cutlet<C extends Cutlet<C>> {
     /**
      * Get the Cutlet existing at the given xpath
      * @param xpath XPath
-     * @return Cutlet
+     * @return Cutlet at path
      */
     C get(String xpath);
 

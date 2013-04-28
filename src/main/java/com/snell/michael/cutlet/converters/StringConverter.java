@@ -2,9 +2,9 @@
 
 package com.snell.michael.cutlet.converters;
 
-public class StringConverter implements ValueConverter<String> {
+public class StringConverter extends NullConverter<String> {
     @Override
-    public String read(Object object) {
+    public String readNotNull(Object object) {
         if (object instanceof String) {
             return (String) object;
         } else {
@@ -13,7 +13,7 @@ public class StringConverter implements ValueConverter<String> {
     }
 
     @Override
-    public Object write(String string) {
+    public Object writeNotNull(String string) {
         return string;
     }
 }

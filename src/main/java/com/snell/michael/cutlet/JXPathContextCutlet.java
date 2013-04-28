@@ -2,7 +2,6 @@
 
 package com.snell.michael.cutlet;
 
-import com.snell.michael.cutlet.converters.ValueConverters;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
@@ -22,8 +21,18 @@ import java.util.List;
 abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements Cutlet<J> {
     protected final JXPathContext context;
 
+    private ConverterMap converterMap;
+
     protected JXPathContextCutlet(JXPathContext jxpathContext) {
         this.context = jxpathContext;
+        this.converterMap = ConverterMapFactory.DEFAULT_CONVERTER_MAP;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public J withConverterMap(ConverterMap converterMap) {
+        this.converterMap = converterMap;
+        return (J) this;
     }
 
     // Write methods
@@ -208,7 +217,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     private <T> T getValue(String xpath, Class<T> clazz) {
         try {
-            return ValueConverters.read(context.getValue(xpath), clazz);
+            return converterMap.read(context.getValue(xpath), clazz);
         } catch (JXPathNotFoundException e) {
             String p = "";
             for (String s : xpath.split("/")) {
@@ -226,7 +235,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     @SuppressWarnings("unchecked")
     private <T> J addValue(String xpath, T value, Class<T> clazz) {
         add(xpath);
-        context.setValue(xpath, ValueConverters.write(value, clazz));
+        context.setValue(xpath, converterMap.write(value, clazz));
         return (J) this;
     }
 
@@ -235,7 +244,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
         List<T> c = new ArrayList<>();
         while (i.hasNext()) {
-            c.add(ValueConverters.read(i.next(), clazz));
+            c.add(converterMap.read(i.next(), clazz));
         }
 
         return c;

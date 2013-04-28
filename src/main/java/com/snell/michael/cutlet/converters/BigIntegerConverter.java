@@ -5,9 +5,9 @@ package com.snell.michael.cutlet.converters;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-class BigIntegerConverter implements ValueConverter<BigInteger> {
+public class BigIntegerConverter extends NullConverter<BigInteger> {
     @Override
-    public BigInteger read(Object object) {
+    public BigInteger readNotNull(Object object) {
         if (object instanceof String) {
             String s = (String) object;
             try {
@@ -34,7 +34,7 @@ class BigIntegerConverter implements ValueConverter<BigInteger> {
     }
 
     @Override
-    public Object write(BigInteger bigInteger) {
+    public Object writeNotNull(BigInteger bigInteger) {
         return bigInteger;
     }
 }
