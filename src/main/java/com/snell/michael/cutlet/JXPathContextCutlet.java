@@ -24,6 +24,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         this.context = jxpathContext;
     }
 
+    // Write methods
+
     @Override
     public abstract String write(WriteStyle style);
 
@@ -49,6 +51,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
             throw new RuntimeException("Error writing to file [" + file + "]", e);
         }
     }
+
+    // Cutlet methods
 
     @Override
     public J get(String xpath) {
@@ -94,6 +98,13 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     public abstract J addArray(String xpath, List<J> cutlets);
 
     @Override
+    public void remove(String xpath) {
+        context.removeAll(xpath);
+    }
+
+    // String methods
+
+    @Override
     public String getString(String xpath) {
         return getValue(xpath, String.class);
     }
@@ -107,6 +118,25 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     public J addString(String xpath, String value) {
         return addValue(xpath, value, String.class);
     }
+
+    // Boolean methods
+
+    @Override
+    public Boolean getBoolean(String xpath) {
+        return getValue(xpath, Boolean.class);
+    }
+
+    @Override
+    public List<Boolean> getBooleanArray(String xpath) {
+        return getValueArray(xpath, Boolean.class);
+    }
+
+    @Override
+    public J addBoolean(String xpath, Boolean value) {
+        return addValue(xpath, value, Boolean.class);
+    }
+
+    // LocalDate methods
 
     @Override
     public LocalDate getLocalDate(String xpath) {
@@ -123,6 +153,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         return addValue(xpath, value, LocalDate.class);
     }
 
+    // DateTime methods
+
     @Override
     public DateTime getDateTime(String xpath) {
         return getValue(xpath, DateTime.class);
@@ -137,6 +169,9 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     public J addDateTime(String xpath, DateTime value) {
         return addValue(xpath, value, DateTime.class);
     }
+
+    // BigDecimal methods
+
     @Override
     public BigDecimal getBigDecimal(String xpath) {
         return getValue(xpath, BigDecimal.class);
@@ -152,6 +187,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         return addValue(xpath, value, BigDecimal.class);
     }
 
+    // BigInteger methods
+
     @Override
     public BigInteger getBigInteger(String xpath) {
         return getValue(xpath, BigInteger.class);
@@ -165,11 +202,6 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     @Override
     public J addBigInteger(String xpath, BigInteger value) {
         return addValue(xpath, value, BigInteger.class);
-    }
-
-    @Override
-    public void remove(String xpath) {
-        context.removeAll(xpath);
     }
 
     private <T> T getValue(String xpath, Class<T> clazz) {

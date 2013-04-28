@@ -66,6 +66,16 @@ public class XMLCutletTest {
     }
 
     @Test
+    public void booleans() {
+        XMLCutlet cutlet = getPersonXMLCutlet();
+
+        assertEquals(true, cutlet.getBoolean("active"));
+
+        cutlet.addBoolean("active", false);
+        assertEquals("false", cutlet.getString("active"));
+    }
+
+    @Test
     public void localDates() {
         XMLCutlet cutlet = getPersonXMLCutlet();
 

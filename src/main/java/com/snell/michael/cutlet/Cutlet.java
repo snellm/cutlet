@@ -109,6 +109,30 @@ interface Cutlet<C extends Cutlet<C>> {
      */
     C addString(String xpath, String value);
 
+    // Boolean methods
+
+    /**
+     * Gets the Boolean at the given xpath
+     * @param xpath XPath
+     * @return The String value existing at the given path
+     */
+    Boolean getBoolean(String xpath);
+
+    /**
+     * Gets the arrays of Strings matching the given xpath
+     * @param xpath XPath
+     * @return List of Strings matching the given xpath
+     */
+    List<Boolean> getBooleanArray(String xpath);
+
+    /**
+     * Adds a Boolean at the given xpath
+     * @param xpath XPath
+     * @param value String to add
+     * @return Current Cutlet (to allow fluent style)
+     */
+    C addBoolean(String xpath, Boolean value);
+
     // LocalDate methods
 
     /**

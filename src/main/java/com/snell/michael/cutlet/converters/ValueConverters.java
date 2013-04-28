@@ -15,6 +15,7 @@ public class ValueConverters {
 
     static {
         CONVERTERS.put(String.class, new StringConverter());
+        CONVERTERS.put(Boolean.class, new BooleanConverter());
 
         CONVERTERS.put(BigDecimal.class, new BigDecimalConverter());
         CONVERTERS.put(BigInteger.class, new BigIntegerConverter());
@@ -24,11 +25,19 @@ public class ValueConverters {
     }
 
     public static <T> T read(Object object, Class<T> clazz) {
-        return getValueConverter(clazz).read(object);
+        if (object == null) {
+            return null;
+        } else {
+            return getValueConverter(clazz).read(object);
+        }
     }
 
     public static <T> Object write(T t, Class<T> clazz) {
-        return getValueConverter(clazz).write(t);
+        if (t == null) {
+            return null;
+        } else {
+            return getValueConverter(clazz).write(t);
+        }
     }
 
     @SuppressWarnings("unchecked")

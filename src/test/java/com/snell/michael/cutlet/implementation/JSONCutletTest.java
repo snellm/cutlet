@@ -65,6 +65,16 @@ public class JSONCutletTest {
     }
 
     @Test
+    public void booleans() {
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
+
+        assertEquals(true, cutlet.getBoolean("active"));
+
+        cutlet.addBoolean("active", false);
+        assertEquals("false", cutlet.getString("active"));
+    }
+
+    @Test
     public void localDates() {
         JSONCutlet cutlet = getPersonInPersonJSONCutlet();
 
