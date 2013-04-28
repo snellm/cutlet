@@ -75,7 +75,7 @@ interface Cutlet<C extends Cutlet<C>> {
 
     /**
      * Removes all elements matching the given xpath
-     * @param xpath
+     * @param xpath XPath
      */
     void remove(String xpath);
 

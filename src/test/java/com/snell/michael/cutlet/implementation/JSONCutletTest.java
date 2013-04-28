@@ -216,7 +216,7 @@ public class JSONCutletTest {
     @Test
     public void customConverter() {
         JSONCutlet cutlet = getPersonInPersonJSONCutlet().withConverterMap(
-                ConverterMap.createWithDefaults().register(String.class, new Converter<String>() {
+                ConverterMap.create().register(String.class, new Converter<String>() {
                     @Override
                     public String read(Object object) {
                         return StringUtils.reverse(object.toString());

@@ -16,10 +16,10 @@ public class ConverterMap {
 
     private final Map<Class<?>, Converter<?>> classConverter = new HashMap<>();
 
-    ConverterMap() {}
+    private ConverterMap() {}
 
     /**
-     * Register a converter. Will override any existing converter for the clazz
+     * Register a converter. Will override any existing converter for clazz
      * @param clazz Class for which converter is registered
      * @param converter Converter
      * @param <T> Type
