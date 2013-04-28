@@ -5,7 +5,7 @@ Cutlet is a "batteries included" library to make working with XML and JSON in Ja
 
 Cutlet supports:
 - The same interface for XML and JSON, as far as possible given the different capabilities
-- Reading and writing of both XML and JSON
+- Reading/writing of XML and JSON from/to strings, streams and files
 - Using [XPath](http://en.wikipedia.org/wiki/XPath) to select nodes
 - A nested approach, ie extracting sub-documents and working with them in the same manner as full documents
 
@@ -13,9 +13,9 @@ Example
 =======
 
 Given an XML file containing a list of people and their home and mobile phone numbers
-([input.xml](src/test/resources/com/snell/michael/cutlet/example/input.xml)), output a JSON associative array of their 
+([input.xml](src/test/resources/com/snell/michael/cutlet/implementation/example/input.xml)), output a JSON associative array of their 
 mobile phone numbers to names, changing the keys for "firstname" and "lastname" to "forename" and "surname"
-([output.json](src/test/resources/com/snell/michael/cutlet/example/output.json)):
+([output.json](src/test/resources/com/snell/michael/cutlet/implementation/example/output.json)):
 
 ````java
 XMLCutlet input = XMLCutlet.parse(new File("input.xml"));
