@@ -25,7 +25,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     protected JXPathContextCutlet(JXPathContext jxpathContext) {
         this.context = jxpathContext;
-        this.converterMap = ConverterMapFactory.DEFAULT_CONVERTER_MAP;
+        this.converterMap = ConverterMap.DEFAULT_CONVERTER_MAP;
     }
 
     @SuppressWarnings("unchecked")

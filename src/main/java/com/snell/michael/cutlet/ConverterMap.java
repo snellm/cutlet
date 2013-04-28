@@ -2,12 +2,18 @@
 
 package com.snell.michael.cutlet;
 
-import com.snell.michael.cutlet.converters.Converter;
+import com.snell.michael.cutlet.converters.*;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ConverterMap {
+    static ConverterMap DEFAULT_CONVERTER_MAP = createWithDefaults();
+
     private final Map<Class<?>, Converter<?>> classConverter = new HashMap<>();
 
     ConverterMap() {}
@@ -53,4 +59,42 @@ public class ConverterMap {
         }
         return converter;
     }
+
+    /**
+     * Create a new ConverterMap with no registered converters
+     * @return New ConverterMap
+     */
+    public static ConverterMap create() {
+        return new ConverterMap();
+    }
+
+    /**
+     * Create a new ConverterMap with default converters registered
+     * @return New ConverterMap
+     */
+    public static ConverterMap createWithDefaults() {
+        ConverterMap converterMap = create();
+        registerDefaultConverters(converterMap);
+        return converterMap;
+    }
+
+    /**
+     * Sets the default ConverterMap for all Cutlets created after this call
+     * @param converterMap ConverterMap
+     */
+    public static void setDefaultConverterMap(ConverterMap converterMap) {
+        DEFAULT_CONVERTER_MAP = converterMap;
+    }
+
+    private static void registerDefaultConverters(ConverterMap converterMap) {
+        converterMap.register(String.class, new StringConverter());
+        converterMap.register(Boolean.class, new BooleanConverter());
+
+        converterMap.register(BigDecimal.class, new BigDecimalConverter());
+        converterMap.register(BigInteger.class, new BigIntegerConverter());
+
+        converterMap.register(LocalDate.class, new LocalDateConverter());
+        converterMap.register(DateTime.class, new DateTimeConverter());
+    }
+
 }

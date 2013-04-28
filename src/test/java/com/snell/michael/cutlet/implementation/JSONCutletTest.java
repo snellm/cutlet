@@ -2,7 +2,7 @@
 
 package com.snell.michael.cutlet.implementation;
 
-import com.snell.michael.cutlet.ConverterMapFactory;
+import com.snell.michael.cutlet.ConverterMap;
 import com.snell.michael.cutlet.CutletRuntimeException;
 import com.snell.michael.cutlet.JSONCutlet;
 import com.snell.michael.cutlet.converters.Converter;
@@ -216,7 +216,7 @@ public class JSONCutletTest {
     @Test
     public void customConverter() {
         JSONCutlet cutlet = getPersonInPersonJSONCutlet().withConverterMap(
-                ConverterMapFactory.createDefault().register(String.class, new Converter<String>() {
+                ConverterMap.createWithDefaults().register(String.class, new Converter<String>() {
                     @Override
                     public String read(Object object) {
                         return StringUtils.reverse(object.toString());
@@ -231,7 +231,7 @@ public class JSONCutletTest {
         assertEquals("nhoJ", cutlet.getString("firstName"));
 
         cutlet.addString("lastName", "htimS");
-        assertEquals("Smith", cutlet.withConverterMap(ConverterMapFactory.createDefault()).getString("lastName"));
+        assertEquals("Smith", cutlet.withConverterMap(ConverterMap.createWithDefaults()).getString("lastName"));
     }
 
     @Test
