@@ -38,7 +38,7 @@ See the [JSON](https://github.com/snellm/cutlet/blob/master/src/test/java/com/sn
 Downloading
 ===========
 
-Current version is 0.2 - alpha quality code (API is subject to change).
+Current version is 0.3 - alpha quality code (API is subject to change).
 
 Maven:
 
@@ -46,7 +46,7 @@ Maven:
 <dependency>
   <groupId>com.snell.michael.cutlet</groupId>
   <artifactId>cutlet</artifactId>
-  <version>0.2</version>
+  <version>0.3</version>
 </dependency>
 ````
 
