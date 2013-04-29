@@ -6,8 +6,9 @@ Cutlet is a "batteries included" library to make working with XML and JSON in Ja
 - The same interface for XML and JSON, as far as possible given their different capabilities
 - Reading/writing of XML and JSON from/to strings, streams and files
 - Fails fast and provides useful error messages
-- Reading and writing of common data types (Strings, BigInteger, BigDecimal, LocalDate, DateTime) supporting
+- Conversion of common data types (Strings, BigInteger, BigDecimal, LocalDate, DateTime) supporting
 most standard formats (eg ISO8601 dates) and edge cases (exponential notation for numbers)
+- Pluggable data type converters
 - Uses [XPath](http://en.wikipedia.org/wiki/XPath) to select nodes
 - A nested approach, ie extracting sub-documents and working with them in the same manner as full documents
 
