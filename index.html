@@ -35,8 +35,9 @@
 <li>The same interface for XML and JSON, as far as possible given their different capabilities</li>
 <li>Reading/writing of XML and JSON from/to strings, streams and files</li>
 <li>Fails fast and provides useful error messages</li>
-<li>Reading and writing of common data types (Strings, BigInteger, BigDecimal, LocalDate, DateTime) supporting
+<li>Conversion of common data types (Strings, BigInteger, BigDecimal, LocalDate, DateTime) supporting
 most standard formats (eg ISO8601 dates) and edge cases (exponential notation for numbers)</li>
+<li>Pluggable data type converters</li>
 <li>Uses <a href="http://en.wikipedia.org/wiki/XPath">XPath</a> to select nodes</li>
 <li>A nested approach, ie extracting sub-documents and working with them in the same manner as full documents</li>
 </ul><h1>Example</h1>
@@ -63,14 +64,14 @@ array of their mobile phone numbers to names, changing the keys for "firstname" 
 
 <h1>Downloading</h1>
 
-<p>Current version is 0.2 - alpha quality code (API is subject to change).</p>
+<p>Current version is 0.3 - alpha quality code (API is subject to change).</p>
 
 <p>Maven:</p>
 
 <div class="highlight"><pre><span class="nt">&lt;dependency&gt;</span>
   <span class="nt">&lt;groupId&gt;</span>com.snell.michael.cutlet<span class="nt">&lt;/groupId&gt;</span>
   <span class="nt">&lt;artifactId&gt;</span>cutlet<span class="nt">&lt;/artifactId&gt;</span>
-  <span class="nt">&lt;version&gt;</span>0.2<span class="nt">&lt;/version&gt;</span>
+  <span class="nt">&lt;version&gt;</span>0.3<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 
