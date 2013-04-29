@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.snell.michael.cutlet.WriteStyle.PRETTY;
+
 abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements Cutlet<J> {
     protected final JXPathContext context;
 
@@ -262,4 +264,9 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     protected abstract J createCutlet(JXPathContext jxpathContext);
+
+    @Override
+    public String toString() {
+        return write(PRETTY);
+    }
 }

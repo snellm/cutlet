@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.snell.michael.cutlet.WriteStyle.PRETTY;
+
 public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     private JSONCutlet(JXPathContext jxpathContext) {
         super(jxpathContext);
@@ -37,6 +39,11 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     @Override
     protected JSONCutlet createCutlet(JXPathContext jxpathContext) {
         return new JSONCutlet(jxpathContext);
+    }
+
+    @Override
+    public String write(WriteStyle style) {
+        return ((JSONObject) getContextBean(this)).toString(PRETTY.equals(style) ? 2 : 0);
     }
 
     @Override
@@ -98,10 +105,5 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     @Override
     public int hashCode() {
         return getContextBean(this).hashCode();
-    }
-
-    @Override
-    public String write(WriteStyle style) {
-        return ((JSONObject) getContextBean(this)).toString(WriteStyle.PRETTY.equals(style) ? 2 : 0);
     }
 }
