@@ -113,6 +113,51 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         context.removeAll(xpath);
     }
 
+    // Value methods
+
+    @Override
+    public J addBigInteger(String xpath, BigInteger value) {
+        return addValue(xpath, value, BigInteger.class);
+    }
+
+    @Override
+    public <T> T getValue(String xpath, Class<T> clazz) {
+        try {
+            return converterMap.read(context.getValue(xpath), clazz);
+        } catch (JXPathNotFoundException e) {
+            String p = "";
+            for (String s : xpath.split("/")) {
+                p = p + (p.length() > 0 ? "/" : "") + s;
+                try {
+                    context.getValue(p);
+                } catch (JXPathNotFoundException f) {
+                    throw new CutletRuntimeException("Path [" + p + "] not found while getting value at [" + xpath + "]", f);
+                }
+            }
+            throw new CutletRuntimeException("Error getting value at [" + xpath + "]", e);
+        }
+    }
+
+    @Override
+    public <T> List<T> getValueArray(String xpath, Class<T> clazz) {
+        Iterator<?> i = context.iterate(xpath);
+
+        List<T> c = new ArrayList<>();
+        while (i.hasNext()) {
+            c.add(converterMap.read(i.next(), clazz));
+        }
+
+        return c;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> J addValue(String xpath, T value, Class<T> clazz) {
+        add(xpath);
+        context.setValue(xpath, converterMap.write(value, clazz));
+        return (J) this;
+    }
+
     // String methods
 
     @Override
@@ -210,45 +255,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         return getValueArray(xpath, BigInteger.class);
     }
 
-    @Override
-    public J addBigInteger(String xpath, BigInteger value) {
-        return addValue(xpath, value, BigInteger.class);
-    }
-
-    private <T> T getValue(String xpath, Class<T> clazz) {
-        try {
-            return converterMap.read(context.getValue(xpath), clazz);
-        } catch (JXPathNotFoundException e) {
-            String p = "";
-            for (String s : xpath.split("/")) {
-                p = p + (p.length() > 0 ? "/" : "") + s;
-                try {
-                    context.getValue(p);
-                } catch (JXPathNotFoundException f) {
-                    throw new CutletRuntimeException("Path [" + p + "] not found while getting value at [" + xpath + "]", f);
-                }
-            }
-            throw new CutletRuntimeException("Error getting value at [" + xpath + "]", e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> J addValue(String xpath, T value, Class<T> clazz) {
-        add(xpath);
-        context.setValue(xpath, converterMap.write(value, clazz));
-        return (J) this;
-    }
-
-    private <T> List<T> getValueArray(String xpath, Class<T> clazz) {
-        Iterator<?> i = context.iterate(xpath);
-
-        List<T> c = new ArrayList<>();
-        while (i.hasNext()) {
-            c.add(converterMap.read(i.next(), clazz));
-        }
-
-        return c;
-    }
+    // Other
 
     static Object getContextBean(Cutlet cutlet) {
         return ((JXPathContextCutlet) cutlet).context.getContextBean();
