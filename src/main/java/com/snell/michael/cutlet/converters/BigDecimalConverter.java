@@ -4,36 +4,19 @@ package com.snell.michael.cutlet.converters;
 
 import java.math.BigDecimal;
 
-public class BigDecimalConverter extends NullConverter<BigDecimal> {
+public class BigDecimalConverter extends NumberConverter<BigDecimal> {
     @Override
-    public BigDecimal readNotNull(Object object) {
-        if (object instanceof String) {
-            String s = (String) object;
-            try {
-                if (s.toLowerCase().contains("e")) {
-                    return read(new BigDecimal(s).toPlainString());
-                } else {
-                    return new BigDecimal(s);
-                }
-            } catch (NumberFormatException e) {
-                throw new RuntimeException("Cannot parse [" + object + "] into BigDecimal", e);
-            }
-        } else if (object instanceof Double) {
-            Double d = (Double) object;
-            if (d.toString().toLowerCase().contains("e")) {
-                return read(BigDecimal.valueOf(d).toPlainString());
-            } else {
-                return BigDecimal.valueOf(d);
-            }
-        } else if (object instanceof Integer) {
-            return BigDecimal.valueOf((Integer) object);
-        } else {
-            throw new RuntimeException("Cannot convert class [" + object.getClass() + "] value [" + object + "] to BigDecimal");
-        }
+    protected BigDecimal readString(String string) {
+        return new BigDecimal(string);
     }
 
     @Override
-    public Object writeNotNull(BigDecimal bigDecimal) {
-        return bigDecimal;
+    protected BigDecimal readDouble(Double dbl) {
+        return BigDecimal.valueOf(dbl);
+    }
+
+    @Override
+    protected BigDecimal readInteger(Integer integer) {
+        return BigDecimal.valueOf(integer);
     }
 }
