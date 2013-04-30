@@ -194,6 +194,74 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         return addValue(xpath, value, Boolean.class);
     }
 
+    // Integer methods
+
+    @Override
+    public Integer getInteger(String xpath) {
+        return getValue(xpath, Integer.class);
+    }
+
+    @Override
+    public List<Integer> getIntegerArray(String xpath) {
+        return getValueArray(xpath, Integer.class);
+    }
+
+    @Override
+    public J addInteger(String xpath, Integer value) {
+        return addValue(xpath, value, Integer.class);
+    }
+
+    // Long methods
+
+    @Override
+    public Long getLong(String xpath) {
+        return getValue(xpath, Long.class);
+    }
+
+    @Override
+    public List<Long> getLongArray(String xpath) {
+        return getValueArray(xpath, Long.class);
+    }
+
+    @Override
+    public J addLong(String xpath, Long value) {
+        return addValue(xpath, value, Long.class);
+    }
+
+    // Double methods
+
+    @Override
+    public Double getDouble(String xpath) {
+        return getValue(xpath, Double.class);
+    }
+
+    @Override
+    public List<Double> getDoubleArray(String xpath) {
+        return getValueArray(xpath, Double.class);
+    }
+
+    @Override
+    public J addDouble(String xpath, Double value) {
+        return addValue(xpath, value, Double.class);
+    }
+
+    // Float methods
+
+    @Override
+    public Float getFloat(String xpath) {
+        return getValue(xpath, Float.class);
+    }
+
+    @Override
+    public List<Float> getFloatArray(String xpath) {
+        return getValueArray(xpath, Float.class);
+    }
+
+    @Override
+    public J addFloat(String xpath, Float value) {
+        return addValue(xpath, value, Float.class);
+    }
+
     // LocalDate methods
 
     @Override

@@ -123,145 +123,61 @@ interface Cutlet<C extends Cutlet<C>> {
 
     // String methods
 
-    /**
-     * Gets the String at the given xpath
-     * @param xpath XPath
-     * @return The String value existing at the given path
-     */
     String getString(String xpath);
-
-    /**
-     * Gets the arrays of Strings matching the given xpath
-     * @param xpath XPath
-     * @return List of Strings matching the given xpath
-     */
     List<String> getStringArray(String xpath);
-
-    /**
-     * Adds a String at the given xpath
-     * @param xpath XPath
-     * @param value String to add
-     * @return Current Cutlet (to allow fluent style)
-     */
     C addString(String xpath, String value);
 
     // Boolean methods
 
-    /**
-     * Gets the Boolean at the given xpath
-     * @param xpath XPath
-     * @return The String value existing at the given path
-     */
     Boolean getBoolean(String xpath);
-
-    /**
-     * Gets the arrays of Strings matching the given xpath
-     * @param xpath XPath
-     * @return List of Strings matching the given xpath
-     */
     List<Boolean> getBooleanArray(String xpath);
-
-    /**
-     * Adds a Boolean at the given xpath
-     * @param xpath XPath
-     * @param value String to add
-     * @return Current Cutlet (to allow fluent style)
-     */
     C addBoolean(String xpath, Boolean value);
 
-    // LocalDate methods
+    // Integer methods
 
-    /**
-     * Gets the LocalDate at the given xpath
-     * @param xpath XPath
-     * @return The LocalDate value existing at the given path
-     */
-    LocalDate getLocalDate(String xpath);
+    Integer getInteger(String xpath);
+    List<Integer> getIntegerArray(String xpath);
+    C addInteger(String xpath, Integer value);
 
-    /**
-     * Gets the arrays of LocalDates matching the given xpath
-     * @param xpath XPath
-     * @return List of LocalDates matching the given xpath
-     */
-    List<LocalDate> getLocalDateArray(String xpath);
+    // Long methods
 
-    /**
-     * Adds a LocalDate at the given xpath
-     * @param xpath XPath
-     * @param value LocalDate to add
-     * @return Current Cutlet (to allow fluent style)
-     */
-    C addLocalDate(String xpath, LocalDate value);
+    Long getLong(String xpath);
+    List<Long> getLongArray(String xpath);
+    C addLong(String xpath, Long value);
 
-    // DateTime methods
+    // Double methods
 
-    /**
-     * Gets the DateTime at the given xpath
-     * @param xpath XPath
-     * @return The DateTime value existing at the given path
-     */
-    DateTime getDateTime(String xpath);
+    Double getDouble(String xpath);
+    List<Double> getDoubleArray(String xpath);
+    C addDouble(String xpath, Double value);
 
-    /**
-     * Gets the arrays of DateTimes matching the given xpath
-     * @param xpath XPath
-     * @return List of DateTimes matching the given xpath
-     */
-    List<DateTime> getDateTimeArray(String xpath);
+    // Float methods
 
-    /**
-     * Adds a DateTime at the given xpath
-     * @param xpath XPath
-     * @param value DateTime to add
-     * @return Current Cutlet (to allow fluent style)
-     */
-    C addDateTime(String xpath, DateTime value);
+    Float getFloat(String xpath);
+    List<Float> getFloatArray(String xpath);
+    C addFloat(String xpath, Float value);
 
     // BigDecimal methods
 
-    /**
-     * Gets the BigDecimal at the given xpath
-     * @param xpath XPath
-     * @return The BigDecimal value existing at the given path
-     */
     BigDecimal getBigDecimal(String xpath);
-
-    /**
-     * Gets the arrays of BigDecimals matching the given xpath
-     * @param xpath XPath
-     * @return List of BigDecimals matching the given xpath
-     */
     List<BigDecimal> getBigDecimalArray(String xpath);
-
-    /**
-     * Adds a BigDecimal at the given xpath
-     * @param xpath XPath
-     * @param value BigDecimal to add
-     * @return Current Cutlet (to allow fluent style)
-     */
     C addBigDecimal(String xpath, BigDecimal value);
 
     // BigInteger methods
 
-    /**
-     * Gets the BigInteger at the given xpath
-     * @param xpath XPath
-     * @return The BigInteger value existing at the given path
-     */
     BigInteger getBigInteger(String xpath);
-
-    /**
-     * Gets the arrays of BigIntegers matching the given xpath
-     * @param xpath XPath
-     * @return List of BigIntegers matching the given xpath
-     */
     List<BigInteger> getBigIntegerArray(String xpath);
-
-    /**
-     * Adds a BigInteger at the given xpath
-     * @param xpath XPath
-     * @param value BigInteger to add
-     * @return Current Cutlet (to allow fluent style)
-     */
     C addBigInteger(String xpath, BigInteger value);
+
+    // LocalDate methods
+
+    LocalDate getLocalDate(String xpath);
+    List<LocalDate> getLocalDateArray(String xpath);
+    C addLocalDate(String xpath, LocalDate value);
+
+    // DateTime methods
+
+    DateTime getDateTime(String xpath);
+    List<DateTime> getDateTimeArray(String xpath);
+    C addDateTime(String xpath, DateTime value);
 }
