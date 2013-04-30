@@ -90,6 +90,10 @@ public class ConverterMap {
         converterMap.register(String.class, new StringConverter());
         converterMap.register(Boolean.class, new BooleanConverter());
 
+        converterMap.register(Integer.class, new IntegerConverter());
+        converterMap.register(Long.class, new LongConverter());
+        converterMap.register(Double.class, new DoubleConverter());
+        converterMap.register(Float.class, new FloatConverter());
         converterMap.register(BigDecimal.class, new BigDecimalConverter());
         converterMap.register(BigInteger.class, new BigIntegerConverter());
 
