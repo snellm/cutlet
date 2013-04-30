@@ -8,6 +8,7 @@ import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,6 +100,8 @@ public class ConverterMap {
 
         converterMap.register(LocalDate.class, new LocalDateConverter());
         converterMap.register(DateTime.class, new DateTimeConverter());
+
+        converterMap.register(Currency.class, new CurrencyConverter());
     }
 
 }
