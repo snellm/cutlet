@@ -60,30 +60,40 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     /**
      * Parse a JSON string into a JSONCutlet with can be queried using XPath expressions
      */
-    public static JSONCutlet parse(String json) {
-        return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(json)));
+    public static JSONCutlet parse(String string) {
+        try {
+            return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(string)));
+        } catch (RuntimeException e) {
+            throw new CutletRuntimeException("Could not parse [" + string + "] as JSON", e);
+        }
     }
 
     /**
      * Parse a JSON input stream into a JSONCutlet with can be queried using XPath expressions
      */
     public static JSONCutlet parse(InputStream inputStream) {
+        String string;
         try {
-            return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(IOUtils.toString(inputStream))));
+            string = IOUtils.toString(inputStream);
         } catch (IOException e) {
             throw new CutletRuntimeException("IO exception reading from input stream [" + inputStream + "]", e);
         }
+
+        return parse(string);
     }
 
     /**
      * Parse a JSON file into a JSONCutlet with can be queried using XPath expressions
      */
     public static JSONCutlet parse(File file) {
+        String string;
         try {
-            return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(FileUtils.readFileToString(file))));
+            string = FileUtils.readFileToString(file);
         } catch (IOException e) {
             throw new CutletRuntimeException("IO exception reading from file [" + file + "]", e);
         }
+
+        return parse(string);
     }
 
     /**

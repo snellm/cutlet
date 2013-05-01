@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -161,7 +162,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> J addValueArray(String xpath, List<T> values, Class<T> clazz) {
+    public <T> J addValueArray(String xpath, Collection<T> values, Class<T> clazz) {
         List<Object> converted = new ArrayList<>(values.size());
         for (T t : values) {
             converted.add(converterMap.write(t, clazz));

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.List;
 
 interface Cutlet<C extends Cutlet<C>> {
@@ -122,13 +123,13 @@ interface Cutlet<C extends Cutlet<C>> {
     <T> C addValue(String xpath, T value, Class<T> clazz);
 
     /**
-     * Add an array of valuse at the given xpath, converting from the given class
+     * Add an array of values at the given xpath, converting from the given class
      * @param xpath XPath
-     * @param values List of values to set
+     * @param values Collection of values to set
      * @param clazz Class to convert from
      * @return Current Cutlet (to allow fluent style)
      */
-    <T> C addValueArray(String xpath, List<T> values, Class<T> clazz);
+    <T> C addValueArray(String xpath, Collection<T> values, Class<T> clazz);
 
     // String methods
 
