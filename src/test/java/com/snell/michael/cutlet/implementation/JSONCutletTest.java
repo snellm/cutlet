@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static com.snell.michael.cutlet.WriteStyle.COMPACT;
 import static com.snell.michael.cutlet.WriteStyle.PRETTY;
 import static java.math.BigDecimal.TEN;
@@ -165,6 +166,11 @@ public class JSONCutletTest {
         for (JSONCutlet o : cutlets) {
             assertNotNull(o.getString("type"));
         }
+
+        // Can add an array of strings
+        cutlet = JSONCutlet.create();
+        cutlet.addValueArray("foo", newArrayList("One", "Two", "Three"), String.class);
+        assertEquals(3, cutlet.getStringArray("foo").size());
     }
 
     @Test

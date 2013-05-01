@@ -155,8 +155,18 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     @SuppressWarnings("unchecked")
     @Override
     public <T> J addValue(String xpath, T value, Class<T> clazz) {
-        add(xpath);
-        context.setValue(xpath, converterMap.write(value, clazz));
+        context.createPathAndSetValue(xpath, converterMap.write(value, clazz));
+        return (J) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> J addValueArray(String xpath, List<T> values, Class<T> clazz) {
+        List<Object> converted = new ArrayList<>(values.size());
+        for (T t : values) {
+            converted.add(converterMap.write(t, clazz));
+        }
+        context.createPathAndSetValue(xpath, converted);
         return (J) this;
     }
 

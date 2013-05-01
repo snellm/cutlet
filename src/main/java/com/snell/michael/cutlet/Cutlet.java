@@ -121,6 +121,15 @@ interface Cutlet<C extends Cutlet<C>> {
      */
     <T> C addValue(String xpath, T value, Class<T> clazz);
 
+    /**
+     * Add an array of valuse at the given xpath, converting from the given class
+     * @param xpath XPath
+     * @param values List of values to set
+     * @param clazz Class to convert from
+     * @return Current Cutlet (to allow fluent style)
+     */
+    <T> C addValueArray(String xpath, List<T> values, Class<T> clazz);
+
     // String methods
 
     String getString(String xpath);
