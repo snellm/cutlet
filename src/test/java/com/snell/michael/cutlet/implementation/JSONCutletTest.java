@@ -77,7 +77,7 @@ public class JSONCutletTest {
 
         assertEquals(true, cutlet.getBoolean("active"));
 
-        cutlet.addBoolean("active", false);
+        cutlet.withBoolean("active", false);
         assertEquals("false", cutlet.getString("active"));
     }
 
@@ -87,7 +87,7 @@ public class JSONCutletTest {
 
         assertEquals(new LocalDate(1969, 2, 28), cutlet.getLocalDate("dateOfBirth"));
 
-        cutlet.addLocalDate("dateOfDeath", new LocalDate(2013, 4, 29));
+        cutlet.withLocalDate("dateOfDeath", new LocalDate(2013, 4, 29));
         assertEquals("2013-04-29", cutlet.getString("dateOfDeath"));
     }
 
@@ -98,7 +98,7 @@ public class JSONCutletTest {
         assertEquals(new DateTime(2012, 8, 7, 7, 47, 46, UTC), cutlet.getDateTime("lastModified"));
 
         DateTime now = new DateTime();
-        cutlet.addDateTime("lastModified", now);
+        cutlet.withDateTime("lastModified", now);
         assertEquals(now.toString(ISODateTimeFormat.dateTime()), cutlet.getString("lastModified"));
     }
 
@@ -169,7 +169,7 @@ public class JSONCutletTest {
 
         // Can add an array of strings
         cutlet = JSONCutlet.create();
-        cutlet.addValueArray("foo", newArrayList("One", "Two", "Three"), String.class);
+        cutlet.withValueArray("foo", newArrayList("One", "Two", "Three"), String.class);
         assertEquals(3, cutlet.getStringArray("foo").size());
     }
 
@@ -183,22 +183,22 @@ public class JSONCutletTest {
     @Test
     public void creation() {
         JSONCutlet cutlet = JSONCutlet.create();
-        cutlet.addString("name", "John Smith");
+        cutlet.withString("name", "John Smith");
 
         cutlet.add("address")
-                .addString("city", "Newcastle")
-                .addString("county", "Northumberland");
+                .withString("city", "Newcastle")
+                .withString("county", "Northumberland");
 
-        cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
+        cutlet.withBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
 
         List<JSONCutlet> cutlets = new ArrayList<>();
         cutlets.add(JSONCutlet.create()
-                .addString("name", "Red")
-                .addString("meaning", "Stop"));
+                .withString("name", "Red")
+                .withString("meaning", "Stop"));
         cutlets.add(JSONCutlet.create()
-                .addString("name", "Green")
-                .addString("meaning", "Go"));
-        cutlet.addArray("colours", cutlets);
+                .withString("name", "Green")
+                .withString("meaning", "Go"));
+        cutlet.withArray("colours", cutlets);
 
         String s = cutlet.write(PRETTY);
         assertNotNull(s);
@@ -243,19 +243,19 @@ public class JSONCutletTest {
 
         assertEquals("nhoJ", cutlet.getString("firstName"));
 
-        cutlet.addString("lastName", "htimS");
+        cutlet.withString("lastName", "htimS");
         assertEquals("Smith", cutlet.withConverterMap(ConverterMap.createWithDefaults()).getString("lastName"));
     }
 
     @Test
     public void equalsAndHashCode() {
         JSONCutlet one = JSONCutlet.create();
-        one.addString("bar/baz", "nop");
-        one.addBigDecimal("baz/bar", TEN);
+        one.withString("bar/baz", "nop");
+        one.withBigDecimal("baz/bar", TEN);
 
         JSONCutlet two = JSONCutlet.create();
-        two.addBigDecimal("baz/bar", TEN);
-        two.addString("bar/baz", "nop");
+        two.withBigDecimal("baz/bar", TEN);
+        two.withString("bar/baz", "nop");
 
         assertEquals(one.hashCode(), two.hashCode());
         assertEquals(one, two);
@@ -264,8 +264,8 @@ public class JSONCutletTest {
     @Test
     public void canRemoveIndividualSectionsUsingXpath() {
         JSONCutlet cutlet = JSONCutlet.create();
-        cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
-        cutlet.addBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
+        cutlet.withBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
+        cutlet.withBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
 
         cutlet.remove("biometrics/height");
 
@@ -275,8 +275,8 @@ public class JSONCutletTest {
     @Test
     public void canRemoveSeveralSectionsUsingXpath() {
         JSONCutlet cutlet = JSONCutlet.create();
-        cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
-        cutlet.addBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
+        cutlet.withBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
+        cutlet.withBigDecimal("biometrics/weight", BigDecimal.valueOf(91.2));
 
         cutlet.remove("biometrics");
 

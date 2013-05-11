@@ -100,7 +100,7 @@ interface Cutlet<C extends Cutlet<C>> {
      * @param cutlets List of Cutlets to be added
      * @return The current Cutlet (to allow fluent style)
      */
-    C addArray(String xpath, List<C> cutlets);
+    C withArray(String xpath, List<C> cutlets);
 
     // Value methods
 
@@ -127,7 +127,7 @@ interface Cutlet<C extends Cutlet<C>> {
      * @param clazz Class to convert from
      * @return Current Cutlet (to allow fluent style)
      */
-    <T> C addValue(String xpath, T value, Class<T> clazz);
+    <T> C withValue(String xpath, T value, Class<T> clazz);
 
     /**
      * Add an array of values at the given xpath, converting from the given class
@@ -136,66 +136,65 @@ interface Cutlet<C extends Cutlet<C>> {
      * @param clazz Class to convert from
      * @return Current Cutlet (to allow fluent style)
      */
-    <T> C addValueArray(String xpath, Collection<T> values, Class<T> clazz);
+    <T> C withValueArray(String xpath, Collection<T> values, Class<T> clazz);
 
     // String methods
 
     String getString(String xpath);
     List<String> getStringArray(String xpath);
-    // TODO Remove and add "with" method
-    C addString(String xpath, String value);
+    C withString(String xpath, String value);
 
     // Boolean methods
 
     Boolean getBoolean(String xpath);
     List<Boolean> getBooleanArray(String xpath);
-    C addBoolean(String xpath, Boolean value);
+    C withBoolean(String xpath, Boolean value);
 
     // Integer methods
 
     Integer getInteger(String xpath);
     List<Integer> getIntegerArray(String xpath);
-    C addInteger(String xpath, Integer value);
+    C withInteger(String xpath, Integer value);
 
     // Long methods
 
     Long getLong(String xpath);
     List<Long> getLongArray(String xpath);
-    C addLong(String xpath, Long value);
+    C withLong(String xpath, Long value);
 
     // Double methods
 
     Double getDouble(String xpath);
     List<Double> getDoubleArray(String xpath);
-    C addDouble(String xpath, Double value);
+    C withDouble(String xpath, Double value);
 
     // Float methods
 
     Float getFloat(String xpath);
     List<Float> getFloatArray(String xpath);
-    C addFloat(String xpath, Float value);
+    C withFloat(String xpath, Float value);
 
     // BigDecimal methods
 
     BigDecimal getBigDecimal(String xpath);
     List<BigDecimal> getBigDecimalArray(String xpath);
-    C addBigDecimal(String xpath, BigDecimal value);
+    C withBigDecimal(String xpath, BigDecimal value);
 
     // BigInteger methods
 
     BigInteger getBigInteger(String xpath);
     List<BigInteger> getBigIntegerArray(String xpath);
-    C addBigInteger(String xpath, BigInteger value);
+    C withBigInteger(String xpath, BigInteger value);
 
     // LocalDate methods
 
     LocalDate getLocalDate(String xpath);
     List<LocalDate> getLocalDateArray(String xpath);
-    C addLocalDate(String xpath, LocalDate value);
+    C withLocalDate(String xpath, LocalDate value);
 
     // DateTime methods
 
     DateTime getDateTime(String xpath);
     List<DateTime> getDateTimeArray(String xpath);
-    C addDateTime(String xpath, DateTime value);
+    C withDateTime(String xpath, DateTime value);
 }

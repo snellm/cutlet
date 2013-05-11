@@ -74,7 +74,7 @@ public class XMLCutletTest {
 
         assertEquals(true, cutlet.getBoolean("active"));
 
-        cutlet.addBoolean("active", false);
+        cutlet.withBoolean("active", false);
         assertEquals("false", cutlet.getString("active"));
     }
 
@@ -84,7 +84,7 @@ public class XMLCutletTest {
 
         assertEquals(new LocalDate(1969, 2, 28), cutlet.getLocalDate("dateOfBirth"));
 
-        cutlet.addLocalDate("dateOfDeath", new LocalDate(2013, 4, 29));
+        cutlet.withLocalDate("dateOfDeath", new LocalDate(2013, 4, 29));
         assertEquals("2013-04-29", cutlet.getString("dateOfDeath"));
     }
 
@@ -95,7 +95,7 @@ public class XMLCutletTest {
         assertEquals(new DateTime(2012, 8, 7, 7, 47, 46, UTC), cutlet.getDateTime("lastModified"));
 
         DateTime now = new DateTime();
-        cutlet.addDateTime("lastModified", now);
+        cutlet.withDateTime("lastModified", now);
         assertEquals(now.toString(ISODateTimeFormat.dateTime()), cutlet.getString("lastModified"));
     }
 
@@ -176,21 +176,21 @@ public class XMLCutletTest {
     @Test
     public void creation() {
         XMLCutlet cutlet = XMLCutlet.create("person");
-        cutlet.addString("name", "John Smith");
+        cutlet.withString("name", "John Smith");
 
         cutlet.add("address")
-            .addString("city", "Newcastle")
-            .addString("county", "Northumberland");
+            .withString("city", "Newcastle")
+            .withString("county", "Northumberland");
 
-        cutlet.addBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
+        cutlet.withBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
 
-        cutlet.addArray("colours", Lists.newArrayList(
-                XMLCutlet.create("color")
-                        .addString("name", "Red")
-                        .addString("meaning", "Stop"),
-                XMLCutlet.create("color")
-                        .addString("name", "Green")
-                        .addString("meaning", "Go")));
+        cutlet.withArray("colours", Lists.newArrayList(
+            XMLCutlet.create("color")
+                .withString("name", "Red")
+                .withString("meaning", "Stop"),
+            XMLCutlet.create("color")
+                .withString("name", "Green")
+                .withString("meaning", "Go")));
 
         String generatedXML = cutlet.write(PRETTY);
         assertNotNull(generatedXML);
@@ -222,12 +222,12 @@ public class XMLCutletTest {
     @Test
     public void equalsAndHashCode() {
         XMLCutlet one = XMLCutlet.create("foo");
-        one.addString("bar/baz", "nop");
-        one.addBigDecimal("baz/bar", TEN);
+        one.withString("bar/baz", "nop");
+        one.withBigDecimal("baz/bar", TEN);
 
         XMLCutlet two = XMLCutlet.create("foo");
-        two.addString("bar/baz", "nop");
-        two.addBigDecimal("baz/bar", TEN);
+        two.withString("bar/baz", "nop");
+        two.withBigDecimal("baz/bar", TEN);
 
         assertEquals(one.hashCode(), two.hashCode());
         assertEquals(one, two);

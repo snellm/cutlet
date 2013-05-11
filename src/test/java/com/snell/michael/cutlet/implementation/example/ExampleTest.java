@@ -25,8 +25,8 @@ public class ExampleTest {
 
         for (XMLCutlet person : input.getArray("person")) {
             output.add("mobile-" + person.getString("phonenumber[@type = 'mobile']"))
-                .addString("forename", person.getString("firstname"))
-                .addString("surname", person.getString("lastname"));
+                .withString("forename", person.getString("firstname"))
+                .withString("surname", person.getString("lastname"));
         }
 
         String json = output.write(PRETTY);
