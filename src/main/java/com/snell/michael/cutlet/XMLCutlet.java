@@ -9,6 +9,7 @@ import org.apache.commons.jxpath.Pointer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.*;
 
@@ -16,7 +17,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.snell.michael.cutlet.WriteStyle.COMPACT;
 import static java.lang.Boolean.TRUE;
@@ -47,6 +50,20 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
     @Override
     protected XMLCutlet createCutlet(JXPathContext jxpathContext) {
         return new XMLCutlet(jxpathContext, document);
+    }
+
+    @Override
+    public Set<String> getChildren() {
+        Element element = (Element) getContextBean(this);
+        NodeList nodeList = element.getChildNodes();
+        Set<String> s = new LinkedHashSet<>();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+            if (node.getLocalName() != null) {
+                s.add(node.getLocalName());
+            }
+        }
+        return s;
     }
 
     @Override

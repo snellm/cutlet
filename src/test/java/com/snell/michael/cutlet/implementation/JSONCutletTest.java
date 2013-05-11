@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Sets.newHashSet;
 import static com.snell.michael.cutlet.WriteStyle.COMPACT;
 import static com.snell.michael.cutlet.WriteStyle.PRETTY;
 import static java.math.BigDecimal.TEN;
@@ -126,7 +127,6 @@ public class JSONCutletTest {
         }
     }
 
-
     @Test
     public void integers() {
         JSONCutlet cutlet = getPersonInPersonJSONCutlet();
@@ -171,6 +171,13 @@ public class JSONCutletTest {
         cutlet = JSONCutlet.create();
         cutlet.addValueArray("foo", newArrayList("One", "Two", "Three"), String.class);
         assertEquals(3, cutlet.getStringArray("foo").size());
+    }
+
+    @Test
+    public void children() {
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
+
+        assertEquals(newHashSet("Albert", "Bethanie", "Charlie"), cutlet.get("children").getChildren());
     }
 
     @Test

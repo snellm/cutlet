@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import static com.snell.michael.cutlet.WriteStyle.PRETTY;
 
@@ -44,6 +45,12 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     @Override
     public String write(WriteStyle style) {
         return ((JSONObject) getContextBean(this)).toString(PRETTY.equals(style) ? 2 : 0);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public Set<String> getChildren() {
+        return ((JSONObject) getContextBean(this)).keySet();
     }
 
     @Override

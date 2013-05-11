@@ -16,6 +16,11 @@
         <type>fax</type>
         <number>646 555-4567</number>
     </phoneNumber>
+    <children>
+        <Albert>boy</Albert>
+        <Bethanie>girl</Bethanie>
+        <Charlie>boy</Charlie>
+    </children>
     <dateOfBirth>1969-02-28</dateOfBirth>
     <favouriteColour>green</favouriteColour>
     <favouriteColour>blue</favouriteColour>

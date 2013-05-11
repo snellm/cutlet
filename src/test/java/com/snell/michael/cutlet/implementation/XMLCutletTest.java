@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
+import static com.google.common.collect.Sets.newHashSet;
 import static com.snell.michael.cutlet.WriteStyle.COMPACT;
 import static com.snell.michael.cutlet.WriteStyle.PRETTY;
 import static com.snell.michael.cutlet.implementation.TestUtil.assertContains;
@@ -163,6 +164,13 @@ public class XMLCutletTest {
         for (XMLCutlet phoneNumberCutlet : cutlets) {
             assertNotNull(phoneNumberCutlet.getString("type"));
         }
+    }
+
+    @Test
+    public void children() {
+        XMLCutlet cutlet = getPersonXMLCutlet();
+
+        assertEquals(newHashSet("Albert", "Bethanie", "Charlie"), cutlet.get("children").getChildren());
     }
 
     @Test

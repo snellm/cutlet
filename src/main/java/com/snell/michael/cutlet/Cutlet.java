@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 interface Cutlet<C extends Cutlet<C>> {
     /**
@@ -66,6 +67,12 @@ interface Cutlet<C extends Cutlet<C>> {
      * @return List of Cutlets matching the xpath
      */
     List<C> getArray(String xpath);
+
+    /**
+     * Get the names of all child nodes of this Cutlet
+     * @return Set of child node names
+     */
+    Set<String> getChildren();
 
     /**
      * Tests fot the existence of the given xpath
@@ -135,6 +142,7 @@ interface Cutlet<C extends Cutlet<C>> {
 
     String getString(String xpath);
     List<String> getStringArray(String xpath);
+    // TODO Remove and add "with" method
     C addString(String xpath, String value);
 
     // Boolean methods
