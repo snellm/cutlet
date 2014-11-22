@@ -9,7 +9,7 @@ Cutlet is a "batteries included" library to make working with XML and JSON in Ja
 - Conversion of common data types (Strings, BigInteger, BigDecimal, LocalDate, DateTime) supporting
 most standard formats (eg ISO8601 dates) and edge cases (exponential notation for numbers)
 - Pluggable data type converters
-- Uses [XPath](http://en.wikipedia.org/wiki/XPath) to select nodes
+- Uses [XPath](http://en.wikipedia.org/wiki/XPath) to select nodes in both XML and JSON
 - A nested approach, ie extracting sub-documents and working with them in the same manner as full documents
 
 Example
