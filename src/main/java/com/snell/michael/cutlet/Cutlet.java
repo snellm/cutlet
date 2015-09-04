@@ -75,9 +75,16 @@ interface Cutlet<C extends Cutlet<C>> {
     Set<String> getChildren();
 
     /**
-     * Tests fot the existence of the given xpath
+     * Tests for the existence of the given xpath
      * @param xpath XPath
      * @return True if there is at least one element matching the xpath, false otherwise
+     */
+    boolean exists(String xpath);
+
+    /**
+     * Tests for the existence of the given xpath with a non-blank value
+     * @param xpath XPath
+     * @return True if there is at least one element matching the xpath with a non-blank value, false otherwise
      */
     boolean has(String xpath);
 

@@ -52,6 +52,26 @@ public class JSONCutletTest {
     }
 
     @Test
+    public void exists() {
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
+
+        assertTrue(cutlet.exists("address/city"));
+        assertTrue(cutlet.exists("active"));
+        assertTrue(cutlet.exists("opinion"));
+
+        assertFalse(cutlet.exists("address/country"));
+        assertFalse(cutlet.exists("sex"));
+        assertFalse(cutlet.exists("favouriteNumbers[5]"));
+    }
+
+    @Test
+    public void has() {
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
+
+        assertFalse(cutlet.has("opinion"));
+    }
+
+    @Test
     public void strings() {
         JSONCutlet cutlet = getPersonInPersonJSONCutlet();
 

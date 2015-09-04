@@ -35,8 +35,8 @@
         <connection>scm:git:git@github.com:snellm/cutlet.git</connection>
         <url>scm:git:git@github.com:snellm/cutlet.git</url>
         <developerConnection>scm:git:git@github.com:snellm/cutlet.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <build>
         <plugins>

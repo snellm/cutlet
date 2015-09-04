@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.snell.michael.cutlet.WriteStyle.PRETTY;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements Cutlet<J> {
     protected final JXPathContext context;
@@ -80,13 +81,23 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public boolean has(String xpath) {
+    public boolean exists(String xpath) {
         try {
-            getString(xpath);
-        } catch (Exception e) {
+            Object value = context.getValue(xpath);
+            return value != null;
+        } catch (JXPathNotFoundException e) {
             return false;
         }
-        return true;
+    }
+
+    @Override
+    public boolean has(String xpath) {
+        try {
+            Object value = context.getValue(xpath);
+            return value != null && !isBlank(value.toString());
+        } catch (JXPathNotFoundException e) {
+            return false;
+        }
     }
 
     @Override
