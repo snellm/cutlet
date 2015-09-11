@@ -216,8 +216,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public <T> J with(String xpath, T value, Class<T> clazz) {
+    private <T> J with(String xpath, T value, Class<T> clazz) {
         Object convertedValue = convertToJSONValue(xpath, value, clazz);
 
         context.createPathAndSetValue(xpath, convertedValue);
