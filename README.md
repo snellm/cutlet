@@ -39,7 +39,7 @@ See the [JSON](https://github.com/snellm/cutlet/blob/master/src/test/java/com/sn
 Downloading
 ===========
 
-Current version is 0.3 - alpha quality code (API is subject to change).
+Current version is 0.4 - alpha quality code (API is subject to change).
 
 Maven:
 
@@ -47,7 +47,7 @@ Maven:
 <dependency>
   <groupId>com.snell.michael.cutlet</groupId>
   <artifactId>cutlet</artifactId>
-  <version>0.3</version>
+  <version>0.4</version>
 </dependency>
 ````
 
@@ -55,6 +55,6 @@ Direct download: http://repo1.maven.org/maven2/com/snell/michael/cutlet/cutlet
 
 Fine print
 ==========
-- Copyright 2013 Michael Snell
+- Copyright 2015 Michael Snell
 - Licensed under the MIT license - see [LICENSE](https://github.com/snellm/cutlet/blob/master/LICENSE)
 - Things may break. Performance may suffer. Giant creatures may arise from the oceans and destroy your civilization.

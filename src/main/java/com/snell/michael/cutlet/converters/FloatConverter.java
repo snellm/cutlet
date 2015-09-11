@@ -1,4 +1,4 @@
-// Copyright (c) 2013 Michael Snell - see https://github.com/snellm/cutlet
+// Copyright (c) 2015 Michael Snell - see https://github.com/snellm/cutlet
 
 package com.snell.michael.cutlet.converters;
 

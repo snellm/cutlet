@@ -1,4 +1,4 @@
-// Copyright (c) 2013 Michael Snell - see https://github.com/snellm/cutlet
+// Copyright (c) 2015 Michael Snell - see https://github.com/snellm/cutlet
 
 package com.snell.michael.cutlet.implementation;
 
@@ -84,8 +84,8 @@ public class XMLCutletTest {
 
         assertEquals(new LocalDate(1969, 2, 28), cutlet.getLocalDate("dateOfBirth"));
 
-        cutlet.withLocalDate("dateOfDeath", new LocalDate(2013, 4, 29));
-        assertEquals("2013-04-29", cutlet.getString("dateOfDeath"));
+        cutlet.withLocalDate("dateOfDeath", new LocalDate(2015, 4, 29));
+        assertEquals("2015-04-29", cutlet.getString("dateOfDeath"));
     }
 
     @Test
