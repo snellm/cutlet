@@ -131,13 +131,19 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @Override
     public J withBigInteger(String xpath, BigInteger value) {
-        return withValue(xpath, value, BigInteger.class);
+        return with(xpath, value, BigInteger.class);
     }
 
     @Override
-    public <T> T getValue(String xpath, Class<T> clazz) {
+    public <T> T get(String xpath, Class<T> clazz) {
+        Object value = getAtPath(xpath);
+
+        return converterMap.read(value, clazz);
+    }
+
+    public Object getAtPath(String xpath) {
         try {
-            return converterMap.read(context.getValue(xpath), clazz);
+            return context.getValue(xpath);
         } catch (JXPathNotFoundException e) {
             String p = "";
             for (String s : xpath.split("/")) {
@@ -153,7 +159,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public <T> List<T> getValueArray(String xpath, Class<T> clazz) {
+    public <T> List<T> getArray(String xpath, Class<T> clazz) {
         Iterator<?> i = context.iterate(xpath);
 
         List<T> c = new ArrayList<>();
@@ -166,14 +172,14 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> J withValue(String xpath, T value, Class<T> clazz) {
+    public <T> J with(String xpath, T value, Class<T> clazz) {
         context.createPathAndSetValue(xpath, converterMap.write(value, clazz));
         return (J) this;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> J withValueArray(String xpath, Collection<T> values, Class<T> clazz) {
+    public <T> J withArray(String xpath, Collection<T> values, Class<T> clazz) {
         List<Object> converted = new ArrayList<>(values.size());
         for (T t : values) {
             converted.add(converterMap.write(t, clazz));
@@ -186,165 +192,165 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @Override
     public String getString(String xpath) {
-        return getValue(xpath, String.class);
+        return get(xpath, String.class);
     }
 
     @Override
     public List<String> getStringArray(String xpath) {
-        return getValueArray(xpath, String.class);
+        return getArray(xpath, String.class);
     }
 
     @Override
     public J withString(String xpath, String value) {
-        return withValue(xpath, value, String.class);
+        return with(xpath, value, String.class);
     }
 
     // Boolean methods
 
     @Override
     public Boolean getBoolean(String xpath) {
-        return getValue(xpath, Boolean.class);
+        return get(xpath, Boolean.class);
     }
 
     @Override
     public List<Boolean> getBooleanArray(String xpath) {
-        return getValueArray(xpath, Boolean.class);
+        return getArray(xpath, Boolean.class);
     }
 
     @Override
     public J withBoolean(String xpath, Boolean value) {
-        return withValue(xpath, value, Boolean.class);
+        return with(xpath, value, Boolean.class);
     }
 
     // Integer methods
 
     @Override
     public Integer getInteger(String xpath) {
-        return getValue(xpath, Integer.class);
+        return get(xpath, Integer.class);
     }
 
     @Override
     public List<Integer> getIntegerArray(String xpath) {
-        return getValueArray(xpath, Integer.class);
+        return getArray(xpath, Integer.class);
     }
 
     @Override
     public J withInteger(String xpath, Integer value) {
-        return withValue(xpath, value, Integer.class);
+        return with(xpath, value, Integer.class);
     }
 
     // Long methods
 
     @Override
     public Long getLong(String xpath) {
-        return getValue(xpath, Long.class);
+        return get(xpath, Long.class);
     }
 
     @Override
     public List<Long> getLongArray(String xpath) {
-        return getValueArray(xpath, Long.class);
+        return getArray(xpath, Long.class);
     }
 
     @Override
     public J withLong(String xpath, Long value) {
-        return withValue(xpath, value, Long.class);
+        return with(xpath, value, Long.class);
     }
 
     // Double methods
 
     @Override
     public Double getDouble(String xpath) {
-        return getValue(xpath, Double.class);
+        return get(xpath, Double.class);
     }
 
     @Override
     public List<Double> getDoubleArray(String xpath) {
-        return getValueArray(xpath, Double.class);
+        return getArray(xpath, Double.class);
     }
 
     @Override
     public J withDouble(String xpath, Double value) {
-        return withValue(xpath, value, Double.class);
+        return with(xpath, value, Double.class);
     }
 
     // Float methods
 
     @Override
     public Float getFloat(String xpath) {
-        return getValue(xpath, Float.class);
+        return get(xpath, Float.class);
     }
 
     @Override
     public List<Float> getFloatArray(String xpath) {
-        return getValueArray(xpath, Float.class);
+        return getArray(xpath, Float.class);
     }
 
     @Override
     public J withFloat(String xpath, Float value) {
-        return withValue(xpath, value, Float.class);
+        return with(xpath, value, Float.class);
     }
 
     // LocalDate methods
 
     @Override
     public LocalDate getLocalDate(String xpath) {
-        return getValue(xpath, LocalDate.class);
+        return get(xpath, LocalDate.class);
     }
 
     @Override
     public List<LocalDate> getLocalDateArray(String xpath) {
-        return getValueArray(xpath, LocalDate.class);
+        return getArray(xpath, LocalDate.class);
     }
 
     @Override
     public J withLocalDate(String xpath, LocalDate value) {
-        return withValue(xpath, value, LocalDate.class);
+        return with(xpath, value, LocalDate.class);
     }
 
     // DateTime methods
 
     @Override
     public DateTime getDateTime(String xpath) {
-        return getValue(xpath, DateTime.class);
+        return get(xpath, DateTime.class);
     }
 
     @Override
     public List<DateTime> getDateTimeArray(String xpath) {
-        return getValueArray(xpath, DateTime.class);
+        return getArray(xpath, DateTime.class);
     }
 
     @Override
     public J withDateTime(String xpath, DateTime value) {
-        return withValue(xpath, value, DateTime.class);
+        return with(xpath, value, DateTime.class);
     }
 
     // BigDecimal methods
 
     @Override
     public BigDecimal getBigDecimal(String xpath) {
-        return getValue(xpath, BigDecimal.class);
+        return get(xpath, BigDecimal.class);
     }
 
     @Override
     public List<BigDecimal> getBigDecimalArray(String xpath) {
-        return getValueArray(xpath, BigDecimal.class);
+        return getArray(xpath, BigDecimal.class);
     }
 
     @Override
     public J withBigDecimal(String xpath, BigDecimal value) {
-        return withValue(xpath, value, BigDecimal.class);
+        return with(xpath, value, BigDecimal.class);
     }
 
     // BigInteger methods
 
     @Override
     public BigInteger getBigInteger(String xpath) {
-        return getValue(xpath, BigInteger.class);
+        return get(xpath, BigInteger.class);
     }
 
     @Override
     public List<BigInteger> getBigIntegerArray(String xpath) {
-        return getValueArray(xpath, BigInteger.class);
+        return getArray(xpath, BigInteger.class);
     }
 
     // Other

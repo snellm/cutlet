@@ -189,7 +189,7 @@ public class JSONCutletTest {
 
         // Can add an array of strings
         cutlet = JSONCutlet.create();
-        cutlet.withValueArray("foo", newArrayList("One", "Two", "Three"), String.class);
+        cutlet.withArray("foo", newArrayList("One", "Two", "Three"), String.class);
         assertEquals(3, cutlet.getStringArray("foo").size());
     }
 
