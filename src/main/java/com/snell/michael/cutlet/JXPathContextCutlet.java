@@ -12,6 +12,7 @@ import org.joda.time.LocalDate;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 
 abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements Cutlet<J> {
     protected final JXPathContext context;
+
+    private static final MicrotypeRegistry MICROTYPE_REGISTRY = new MicrotypeRegistry();
 
     private ConverterMap converterMap;
 
@@ -130,18 +133,21 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     // Value methods
 
     @Override
-    public J withBigInteger(String xpath, BigInteger value) {
-        return with(xpath, value, BigInteger.class);
-    }
-
-    @Override
     public <T> T get(String xpath, Class<T> clazz) {
         Object value = getPath(xpath);
 
+        return convertFromJSONValue(xpath, clazz, value);
+    }
+
+    private <T> T convertFromJSONValue(String xpath, Class<T> clazz, Object value) {
         if (clazz.isEnum()) {
-            return getEnum(clazz, value);
-        } else {
+            return convertToEnum(clazz, value);
+        } else if (converterMap.hasConverter(clazz)){
             return converterMap.read(value, clazz);
+        } else if (MICROTYPE_REGISTRY.isMicrotype(clazz)) {
+            return convertToMicrotype(clazz, value);
+        } else {
+            throw new RuntimeException("Converting value [" + value + "] at [" + xpath + "] to [" + clazz + "] not supported");
         }
     }
 
@@ -163,11 +169,24 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T getEnum(Class<T> clazz, Object value) {
+    private <T> T convertToEnum(Class<T> clazz, Object value) {
         if (value == null) {
             return null;
         } else {
             return (T) Enum.valueOf((Class<? extends Enum>) clazz, value.toString());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T convertToMicrotype(Class<T> clazz, Object value) {
+        Class<?> valueClass = MICROTYPE_REGISTRY.getMicrotypeValueClass(clazz);
+        Object convertedValue = converterMap.read(value, valueClass);
+        try {
+            return (T) clazz.getConstructor(valueClass).newInstance(convertedValue);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Failed to instantiate microtype", e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Microtype has no accessible constructor taking wrapped value", e);
         }
     }
 
@@ -185,18 +204,52 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> J with(String xpath, T value, Class<T> clazz) {
-        Object convertedValue = convert(value, clazz);
+    public <T> J with(String xpath, T value) {
+        Object convertedValue = null;
+        if (value != null) {
+            Class<T> clazz = (Class<T>) value.getClass();
+            convertedValue = convertToJSONValue(xpath, value, clazz);
+        }
 
         context.createPathAndSetValue(xpath, convertedValue);
         return (J) this;
     }
 
-    private <T> Object convert(T value, Class<T> clazz) {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> J with(String xpath, T value, Class<T> clazz) {
+        Object convertedValue = convertToJSONValue(xpath, value, clazz);
+
+        context.createPathAndSetValue(xpath, convertedValue);
+        return (J) this;
+    }
+
+    private <T> Object convertToJSONValue(String xpath, T value, Class<T> clazz) {
         if (clazz.isEnum()) {
             return value.toString();
-        } else {
+        } else if (converterMap.hasConverter(clazz)) {
             return converterMap.write(value, clazz);
+        } else if (MICROTYPE_REGISTRY.isMicrotype(clazz)) {
+            return convertMicrotypeToJSONValue(value, clazz);
+        } else {
+            throw new RuntimeException("Converting value [" + value + "] at [" + xpath + "] to [" + clazz + "] not supported");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Object convertMicrotypeToJSONValue(T microtype, Class<T> clazz) {
+        try {
+            Object value = clazz.getMethod("getValue").invoke(microtype);
+            if (value == null) {
+                return null;
+            } else {
+                Class<Object> valueClass = (Class<Object>) value.getClass();
+                return converterMap.write(value, valueClass);
+            }
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Unable to invoke getValue method on microtype");
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("No getValue method on microtype");
         }
     }
 
@@ -374,6 +427,11 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     @Override
     public List<BigInteger> getBigIntegerArray(String xpath) {
         return getArray(xpath, BigInteger.class);
+    }
+
+    @Override
+    public J withBigInteger(String xpath, BigInteger value) {
+        return with(xpath, value, BigInteger.class);
     }
 
     // Other

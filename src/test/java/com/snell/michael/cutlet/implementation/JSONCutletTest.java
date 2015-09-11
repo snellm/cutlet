@@ -26,8 +26,20 @@ import static org.joda.time.DateTimeZone.UTC;
 import static org.junit.Assert.*;
 
 public class JSONCutletTest {
-    private enum State {
+    private enum StateEnum {
         Ohio, NY
+    }
+
+    public static class StateMicrotype {
+        private final String value;
+
+        public StateMicrotype(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 
     @Test
@@ -99,11 +111,22 @@ public class JSONCutletTest {
     public void enums() {
         JSONCutlet cutlet = getPersonInPersonJSONCutlet();
 
-        assertEquals(State.NY, cutlet.get("address/state", State.class));
+        assertEquals(StateEnum.NY, cutlet.get("address/state", StateEnum.class));
 
-        cutlet.with("address/state", State.Ohio, State.class);
+        cutlet.with("address/state", StateEnum.Ohio);
 
-        assertEquals(State.Ohio, cutlet.get("address/state", State.class));
+        assertEquals(StateEnum.Ohio, cutlet.get("address/state", StateEnum.class));
+    }
+
+    @Test
+    public void microtypes() {
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
+
+        assertEquals("NY", cutlet.get("address/state", StateMicrotype.class).getValue());
+
+        cutlet.with("address/state", new StateMicrotype("Ohio"));
+
+//        assertEquals("Ohio", cutlet.getString("address/state"));
     }
 
     @Test

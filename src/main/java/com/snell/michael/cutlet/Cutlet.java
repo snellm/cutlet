@@ -131,6 +131,14 @@ interface Cutlet<C extends Cutlet<C>> {
      * Adds a value at the given xpath, converting from the given class
      * @param xpath XPath
      * @param value Value to set
+     * @return Current Cutlet (to allow fluent style)
+     */
+    <T> C with(String xpath, T value);
+
+    /**
+     * Adds a value at the given xpath, converting from the given class
+     * @param xpath XPath
+     * @param value Value to set
      * @param clazz Class to convert from
      * @return Current Cutlet (to allow fluent style)
      */

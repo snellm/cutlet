@@ -53,6 +53,10 @@ public class ConverterMap {
         return getConverter(clazz).write(t);
     }
 
+    public boolean hasConverter(Class<?> clazz) {
+        return classConverter.containsKey(clazz);
+    }
+
     @SuppressWarnings("unchecked")
     private <T> Converter<T> getConverter(Class<T> clazz) {
         Converter<T> converter = (Converter<T>) classConverter.get(clazz);
