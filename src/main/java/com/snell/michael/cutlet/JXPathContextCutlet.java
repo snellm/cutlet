@@ -136,12 +136,16 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @Override
     public <T> T get(String xpath, Class<T> clazz) {
-        Object value = getAtPath(xpath);
+        Object value = getPath(xpath);
 
-        return converterMap.read(value, clazz);
+        if (clazz.isEnum()) {
+            return getEnum(clazz, value);
+        } else {
+            return converterMap.read(value, clazz);
+        }
     }
 
-    public Object getAtPath(String xpath) {
+    private Object getPath(String xpath) {
         try {
             return context.getValue(xpath);
         } catch (JXPathNotFoundException e) {
@@ -155,6 +159,15 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
                 }
             }
             throw new CutletRuntimeException("Error getting value at [" + xpath + "]", e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getEnum(Class<T> clazz, Object value) {
+        if (value == null) {
+            return null;
+        } else {
+            return (T) Enum.valueOf((Class<? extends Enum>) clazz, value.toString());
         }
     }
 
@@ -173,8 +186,18 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     @SuppressWarnings("unchecked")
     @Override
     public <T> J with(String xpath, T value, Class<T> clazz) {
-        context.createPathAndSetValue(xpath, converterMap.write(value, clazz));
+        Object convertedValue = convert(value, clazz);
+
+        context.createPathAndSetValue(xpath, convertedValue);
         return (J) this;
+    }
+
+    private <T> Object convert(T value, Class<T> clazz) {
+        if (clazz.isEnum()) {
+            return value.toString();
+        } else {
+            return converterMap.write(value, clazz);
+        }
     }
 
     @SuppressWarnings("unchecked")

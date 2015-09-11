@@ -26,6 +26,10 @@ import static org.joda.time.DateTimeZone.UTC;
 import static org.junit.Assert.*;
 
 public class JSONCutletTest {
+    private enum State {
+        Ohio, NY
+    }
+
     @Test
     public void parseString() {
         JSONCutlet cutlet = getPersonJSONCutlet();
@@ -89,6 +93,17 @@ public class JSONCutletTest {
         for (String s: strings) {
             assertNotNull(s);
         }
+    }
+
+    @Test
+    public void enums() {
+        JSONCutlet cutlet = getPersonInPersonJSONCutlet();
+
+        assertEquals(State.NY, cutlet.get("address/state", State.class));
+
+        cutlet.with("address/state", State.Ohio, State.class);
+
+        assertEquals(State.Ohio, cutlet.get("address/state", State.class));
     }
 
     @Test
