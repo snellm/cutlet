@@ -25,13 +25,15 @@
 <p>Cutlet is a "batteries included" library to make working with XML and JSON in Java simpler.</p>
 
 <ul>
-<li>The same interface for XML and JSON, as far as possible given their different capabilities</li>
+<li>Simple, concise, fluent, type-safe API<br>
+</li>
+<li>The same API for XML and JSON, as far as possible given their different capabilities</li>
 <li>Reading/writing of XML and JSON from/to strings, streams and files</li>
 <li>Fails fast and provides useful error messages</li>
-<li>Conversion of common data types (Strings, BigInteger, BigDecimal, LocalDate, DateTime) supporting
-most standard formats (eg ISO8601 dates) and edge cases (exponential notation for numbers)</li>
+<li>Conversion of common data types (Strings, BigInteger, BigDecimal, LocalDate, DateTime, enums) supporting
+most standard formats (eg ISO8601 dates) and edge cases (exponential notation for numbers) as well as microtypes</li>
 <li>Pluggable data type converters</li>
-<li>Uses <a href="http://en.wikipedia.org/wiki/XPath">XPath</a> to select nodes</li>
+<li>Uses <a href="http://en.wikipedia.org/wiki/XPath">XPath</a> to select nodes in both XML and JSON</li>
 <li>A nested approach, ie extracting sub-documents and working with them in the same manner as full documents</li>
 </ul>
 
@@ -43,7 +45,7 @@ most standard formats (eg ISO8601 dates) and edge cases (exponential notation fo
 array of their mobile phone numbers to names, changing the keys for "firstname" and "lastname" to "forename" and 
 "surname" (<a href="https://github.com/snellm/cutlet/blob/master/src/test/resources/com/snell/michael/cutlet/implementation/example/output.json">output.json</a>):</p>
 
-<div class="highlight highlight-java"><pre><span class="pl-smi">XMLCutlet</span> input <span class="pl-k">=</span> <span class="pl-smi">XMLCutlet</span><span class="pl-k">.</span>parse(<span class="pl-k">new</span> <span class="pl-smi">File</span>(<span class="pl-s"><span class="pl-pds">"</span>input.xml<span class="pl-pds">"</span></span>));
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">XMLCutlet</span> input <span class="pl-k">=</span> <span class="pl-smi">XMLCutlet</span><span class="pl-k">.</span>parse(<span class="pl-k">new</span> <span class="pl-smi">File</span>(<span class="pl-s"><span class="pl-pds">"</span>input.xml<span class="pl-pds">"</span></span>));
 <span class="pl-smi">JSONCutlet</span> output <span class="pl-k">=</span> <span class="pl-smi">JSONCutlet</span><span class="pl-k">.</span>create();
 
 <span class="pl-k">for</span> (<span class="pl-smi">XMLCutlet</span> person <span class="pl-k">:</span> input<span class="pl-k">.</span>getArray(<span class="pl-s"><span class="pl-pds">"</span>person<span class="pl-pds">"</span></span>)) {
@@ -64,7 +66,7 @@ array of their mobile phone numbers to names, changing the keys for "firstname" 
 
 <p>Maven:</p>
 
-<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">dependency</span>&gt;
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">dependency</span>&gt;
   &lt;<span class="pl-ent">groupId</span>&gt;com.snell.michael.cutlet&lt;/<span class="pl-ent">groupId</span>&gt;
   &lt;<span class="pl-ent">artifactId</span>&gt;cutlet&lt;/<span class="pl-ent">artifactId</span>&gt;
   &lt;<span class="pl-ent">version</span>&gt;0.4&lt;/<span class="pl-ent">version</span>&gt;
