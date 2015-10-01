@@ -3,11 +3,12 @@ Overview
 
 Cutlet is a "batteries included" library to make working with XML and JSON in Java simpler.
 
-- The same interface for XML and JSON, as far as possible given their different capabilities
+- Simple, concise, fluent, type-safe API  
+- The same API for XML and JSON, as far as possible given their different capabilities
 - Reading/writing of XML and JSON from/to strings, streams and files
 - Fails fast and provides useful error messages
-- Conversion of common data types (Strings, BigInteger, BigDecimal, LocalDate, DateTime) supporting
-most standard formats (eg ISO8601 dates) and edge cases (exponential notation for numbers)
+- Conversion of common data types (Strings, BigInteger, BigDecimal, LocalDate, DateTime, enums) supporting
+most standard formats (eg ISO8601 dates) and edge cases (exponential notation for numbers) as well as microtypes
 - Pluggable data type converters
 - Uses [XPath](http://en.wikipedia.org/wiki/XPath) to select nodes in both XML and JSON
 - A nested approach, ie extracting sub-documents and working with them in the same manner as full documents
