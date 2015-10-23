@@ -25,7 +25,7 @@ array of their mobile phone numbers to names, changing the keys for "firstname" 
 XMLCutlet input = XMLCutlet.parse(new File("input.xml"));
 JSONCutlet output = JSONCutlet.create();
 
-for (XMLCutlet person : input.getArray("person")) {
+for (XMLCutlet person : input.getList("person")) {
     output.add("mobile-" + person.getString("phonenumber[@type = 'mobile']"))
         .addString("forename", person.getString("firstname"))
         .addString("surname", person.getString("lastname"));

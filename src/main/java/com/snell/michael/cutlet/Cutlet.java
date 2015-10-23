@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Currency;
 import java.util.List;
 import java.util.Set;
 
@@ -66,7 +67,7 @@ interface Cutlet<C extends Cutlet<C>> {
      * @param xpath XPath
      * @return List of Cutlets matching the xpath
      */
-    List<C> getArray(String xpath);
+    List<C> getList(String xpath);
 
     /**
      * Get the names of all child nodes of this Cutlet
@@ -107,7 +108,7 @@ interface Cutlet<C extends Cutlet<C>> {
      * @param cutlets List of Cutlets to be added
      * @return The current Cutlet (to allow fluent style)
      */
-    C withArray(String xpath, List<C> cutlets);
+    C withList(String xpath, List<C> cutlets);
 
     // Value methods
 
@@ -120,12 +121,21 @@ interface Cutlet<C extends Cutlet<C>> {
     <T> T get(String xpath, Class<T> clazz);
 
     /**
-     * Gets the arrays of values matching the given xpath, converted into the given class
+     * Gets the arrays of values matching the given xpath, converted into the given class, as a list
      * @param xpath XPath
      * @param clazz Class to return
      * @return List of values existing at the given path converted into clazz
      */
-    <T> List<T> getArray(String xpath, Class<T> clazz);
+    <T> List<T> getList(String xpath, Class<T> clazz);
+
+    /**
+     * Gets the arrays of values matching the given xpath, converted into the given class, as a set
+     * @param xpath XPath
+     * @param clazz Class to return
+     * @return List of values existing at the given path converted into clazz
+     */
+    <T> Set<T> getSet(String xpath, Class<T> clazz);
+
 
     /**
      * Adds a value at the given xpath
@@ -142,65 +152,72 @@ interface Cutlet<C extends Cutlet<C>> {
      * @param clazz Class to convert from
      * @return Current Cutlet (to allow fluent style)
      */
-    <T> C withArray(String xpath, Collection<T> values, Class<T> clazz);
+    <T> C withList(String xpath, Collection<T> values, Class<T> clazz);
 
     // String methods
 
     String getString(String xpath);
-    List<String> getStringArray(String xpath);
+    List<String> getStringList(String xpath);
+    Set<String> getStringSet(String xpath);
     C withString(String xpath, String value);
 
     // Boolean methods
 
     Boolean getBoolean(String xpath);
-    List<Boolean> getBooleanArray(String xpath);
+    List<Boolean> getBooleanList(String xpath);
     C withBoolean(String xpath, Boolean value);
 
     // Integer methods
 
     Integer getInteger(String xpath);
-    List<Integer> getIntegerArray(String xpath);
+    List<Integer> getIntegerList(String xpath);
     C withInteger(String xpath, Integer value);
 
     // Long methods
 
     Long getLong(String xpath);
-    List<Long> getLongArray(String xpath);
+    List<Long> getLongList(String xpath);
     C withLong(String xpath, Long value);
 
     // Double methods
 
     Double getDouble(String xpath);
-    List<Double> getDoubleArray(String xpath);
+    List<Double> getDoubleList(String xpath);
     C withDouble(String xpath, Double value);
 
     // Float methods
 
     Float getFloat(String xpath);
-    List<Float> getFloatArray(String xpath);
+    List<Float> getFloatList(String xpath);
     C withFloat(String xpath, Float value);
 
     // BigDecimal methods
 
     BigDecimal getBigDecimal(String xpath);
-    List<BigDecimal> getBigDecimalArray(String xpath);
+    List<BigDecimal> getBigDecimalList(String xpath);
     C withBigDecimal(String xpath, BigDecimal value);
 
     // BigInteger methods
 
     BigInteger getBigInteger(String xpath);
-    List<BigInteger> getBigIntegerArray(String xpath);
+    List<BigInteger> getBigIntegerList(String xpath);
     C withBigInteger(String xpath, BigInteger value);
 
     // LocalDate methods
 
     LocalDate getLocalDate(String xpath);
-    List<LocalDate> getLocalDateArray(String xpath);
+    List<LocalDate> getLocalDateList(String xpath);
     C withLocalDate(String xpath, LocalDate value);
 
     // DateTime methods
 
     DateTime getDateTime(String xpath);
-    List<DateTime> getDateTimeArray(String xpath);
+    List<DateTime> getDateTimeList(String xpath);
     C withDateTime(String xpath, DateTime value);
+
+    // Currency methods
+
+    Currency getCurrency(String xpath);
+    List<Currency> getCurrencyList(String xpath);
+    C withCurrency(String xpath, Currency value);
 }

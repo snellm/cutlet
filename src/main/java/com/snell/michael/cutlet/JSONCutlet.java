@@ -54,7 +54,7 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     }
 
     @Override
-    public JSONCutlet withArray(String xpath, List<JSONCutlet> cutlets) {
+    public JSONCutlet withList(String xpath, List<JSONCutlet> cutlets) {
         Collection<Object> os = new ArrayList<>(cutlets.size());
         for (JSONCutlet cutlet : cutlets) {
             os.add(getContextBean(cutlet));

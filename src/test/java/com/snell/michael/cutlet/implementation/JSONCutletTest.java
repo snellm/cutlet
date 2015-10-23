@@ -5,6 +5,7 @@ package com.snell.michael.cutlet.implementation;
 import com.snell.michael.cutlet.ConverterMap;
 import com.snell.michael.cutlet.CutletRuntimeException;
 import com.snell.michael.cutlet.JSONCutlet;
+import com.snell.michael.cutlet.WriteStyle;
 import com.snell.michael.cutlet.converters.Converter;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
@@ -12,10 +13,14 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
@@ -54,6 +59,21 @@ public class JSONCutletTest {
         JSONCutlet cutlet = JSONCutlet.parse(TestUtil.openResourceStream(getClass(), "person.json"));
         assertNotNull(cutlet);
         assertEquals("John", cutlet.getString("person/firstName"));
+    }
+
+    @Test
+    public void writeFile() throws IOException {
+        Currency usd = Currency.getInstance("USD");
+        JSONCutlet cutlet = JSONCutlet.create()
+                .with("hello", "world")
+                .with("currency", usd);
+
+        File file = File.createTempFile("cutlet", "json");
+        cutlet.write(file, WriteStyle.COMPACT);
+
+        cutlet = JSONCutlet.parse(file);
+        assertEquals("world", cutlet.getString("hello"));
+        assertEquals(usd, cutlet.getCurrency("currency"));
     }
 
     @Test
@@ -100,9 +120,16 @@ public class JSONCutletTest {
         assertEquals("NY", addressCutlet.getString("state"));
 
         // Can get an array of Strings
-        List<String> strings = cutlet.getStringArray("favouriteColours");
+        List<String> strings = cutlet.getStringList("favouriteColours");
         assertEquals(3, strings.size());
         for (String s: strings) {
+            assertNotNull(s);
+        }
+
+        // Can get a set of Strings
+        Set<String> stringSet = cutlet.getStringSet("favouriteColours");
+        assertEquals(3, stringSet.size());
+        for (String s: stringSet) {
             assertNotNull(s);
         }
     }
@@ -126,7 +153,7 @@ public class JSONCutletTest {
 
         cutlet.with("address/state", new StateMicrotype("Ohio"));
 
-//        assertEquals("Ohio", cutlet.getString("address/state"));
+        assertEquals("Ohio", cutlet.getString("address/state"));
     }
 
     @Test
@@ -178,7 +205,7 @@ public class JSONCutletTest {
         assertEquals(BigDecimal.valueOf(10000000), cutlet.getBigDecimal("favouriteNumbers[4]"));
 
         // Can get an array of BigDecimals
-        List<BigDecimal> numbers = cutlet.getBigDecimalArray("favouriteNumbers");
+        List<BigDecimal> numbers = cutlet.getBigDecimalList("favouriteNumbers");
         assertEquals(4, numbers.size());
         for (BigDecimal b: numbers) {
             assertNotNull(b);
@@ -219,7 +246,7 @@ public class JSONCutletTest {
         assertEquals("212 555-1234", cutlet.getString("phoneNumbers[type = 'home']/number"));
 
         // Can get an array and extract values
-        List<JSONCutlet> cutlets = cutlet.getArray("phoneNumbers");
+        List<JSONCutlet> cutlets = cutlet.getList("phoneNumbers");
         assertEquals(2, cutlets.size());
         for (JSONCutlet o : cutlets) {
             assertNotNull(o.getString("type"));
@@ -227,8 +254,8 @@ public class JSONCutletTest {
 
         // Can add an array of strings
         cutlet = JSONCutlet.create();
-        cutlet.withArray("foo", newArrayList("One", "Two", "Three"), String.class);
-        assertEquals(3, cutlet.getStringArray("foo").size());
+        cutlet.withList("foo", newArrayList("One", "Two", "Three"), String.class);
+        assertEquals(3, cutlet.getStringList("foo").size());
     }
 
     @Test
@@ -256,7 +283,7 @@ public class JSONCutletTest {
         cutlets.add(JSONCutlet.create()
                 .withString("name", "Green")
                 .withString("meaning", "Go"));
-        cutlet.withArray("colours", cutlets);
+        cutlet.withList("colours", cutlets);
 
         String s = cutlet.write(PRETTY);
         assertNotNull(s);
@@ -267,7 +294,7 @@ public class JSONCutletTest {
         assertNotNull(cutlet);
         assertEquals(BigDecimal.valueOf(1.8), cutlet.getBigDecimal("biometrics/height"));
         assertEquals("Newcastle", cutlet.get("address").getString("city"));
-        assertEquals("Red", cutlet.getArray("colours").get(0).getString("name"));
+        assertEquals("Red", cutlet.getList("colours").get(0).getString("name"));
     }
 
     @Test

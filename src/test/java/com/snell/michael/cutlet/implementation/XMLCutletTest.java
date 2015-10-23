@@ -61,7 +61,7 @@ public class XMLCutletTest {
         assertEquals("NY", addressCutlets.getString("state"));
 
         // Can get an array of Strings
-        List<String> strings = cutlet.getStringArray("favouriteColour");
+        List<String> strings = cutlet.getStringList("favouriteColour");
         assertEquals(3, strings.size());
         for (String s : strings) {
             assertNotNull(s);
@@ -118,7 +118,7 @@ public class XMLCutletTest {
         assertEquals(BigDecimal.valueOf(10000000), cutlet.getBigDecimal("favouriteNumber[4]"));
 
         // Can get an array of BigDecimals
-        List<BigDecimal> numbers = cutlet.getBigDecimalArray("favouriteNumber");
+        List<BigDecimal> numbers = cutlet.getBigDecimalList("favouriteNumber");
         assertEquals(4, numbers.size());
         for (BigDecimal b : numbers) {
             assertNotNull(b);
@@ -159,7 +159,7 @@ public class XMLCutletTest {
         assertEquals("212 555-1234", cutlet.getString("phoneNumber[type = 'home']/number"));
 
         // Can get an array and extract values
-        List<XMLCutlet> cutlets = cutlet.getArray("phoneNumber");
+        List<XMLCutlet> cutlets = cutlet.getList("phoneNumber");
         assertEquals(2, cutlets.size());
         for (XMLCutlet phoneNumberCutlet : cutlets) {
             assertNotNull(phoneNumberCutlet.getString("type"));
@@ -184,13 +184,13 @@ public class XMLCutletTest {
 
         cutlet.withBigDecimal("biometrics/height", BigDecimal.valueOf(1.8));
 
-        cutlet.withArray("colours", Lists.newArrayList(
-            XMLCutlet.create("color")
-                .withString("name", "Red")
-                .withString("meaning", "Stop"),
-            XMLCutlet.create("color")
-                .withString("name", "Green")
-                .withString("meaning", "Go")));
+        cutlet.withList("colours", Lists.newArrayList(
+                XMLCutlet.create("color")
+                        .withString("name", "Red")
+                        .withString("meaning", "Stop"),
+                XMLCutlet.create("color")
+                        .withString("name", "Green")
+                        .withString("meaning", "Go")));
 
         String generatedXML = cutlet.write(PRETTY);
         assertNotNull(generatedXML);
@@ -202,7 +202,7 @@ public class XMLCutletTest {
         assertNotNull(cutlet);
         assertEquals(BigDecimal.valueOf(1.8), cutlet.getBigDecimal("biometrics/height"));
         assertEquals("Newcastle", cutlet.get("address").getString("city"));
-        assertEquals("Red", cutlet.getArray("colours/color").get(0).getString("name"));
+        assertEquals("Red", cutlet.getList("colours/color").get(0).getString("name"));
     }
 
 

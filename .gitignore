@@ -1,20 +1,5 @@
-*.class
-
-# Package Files
-*.jar
-*.war
-*.ear
-
 # Eclipse and IntelliJ settings
-.classpath
-.project
-.settings/
 .idea/
 *.iml
-*.iws
-.DS_Store
-log/
 target/
 
-# PMIP
-pmip/

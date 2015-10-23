@@ -15,10 +15,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static com.snell.michael.cutlet.WriteStyle.PRETTY;
 import static org.apache.commons.lang.StringUtils.isBlank;
@@ -104,7 +101,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public List<J> getArray(String xpath) {
+    public List<J> getList(String xpath) {
         Iterator<?> i = context.iteratePointers(xpath);
 
         List<J> c = new ArrayList<>();
@@ -123,7 +120,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public abstract J withArray(String xpath, List<J> cutlets);
+    public abstract J withList(String xpath, List<J> cutlets);
 
     @Override
     public void remove(String xpath) {
@@ -182,7 +179,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         Class<?> valueClass = MICROTYPE_REGISTRY.getMicrotypeValueClass(clazz);
         Object convertedValue = converterMap.read(value, valueClass);
         try {
-            return (T) clazz.getConstructor(valueClass).newInstance(convertedValue);
+            return clazz.getConstructor(valueClass).newInstance(convertedValue);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException("Failed to instantiate microtype", e);
         } catch (NoSuchMethodException e) {
@@ -191,15 +188,24 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public <T> List<T> getArray(String xpath, Class<T> clazz) {
-        Iterator<?> i = context.iterate(xpath);
+    public <T> List<T> getList(String xpath, Class<T> clazz) {
+        List<T> list = new ArrayList<>();
+        populateCollection(xpath, clazz, list);
+        return list;
+    }
 
-        List<T> c = new ArrayList<>();
+    @Override
+    public <T> Set<T> getSet(String xpath, Class<T> clazz) {
+        Set<T> set = new HashSet<>();
+        populateCollection(xpath, clazz, set);
+        return set;
+    }
+
+    private <T> void populateCollection(String xpath, Class<T> clazz, Collection<T> c) {
+        Iterator<?> i = context.iterate(xpath);
         while (i.hasNext()) {
             c.add(converterMap.read(i.next(), clazz));
         }
-
-        return c;
     }
 
     @SuppressWarnings("unchecked")
@@ -254,7 +260,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> J withArray(String xpath, Collection<T> values, Class<T> clazz) {
+    public <T> J withList(String xpath, Collection<T> values, Class<T> clazz) {
         List<Object> converted = new ArrayList<>(values.size());
         for (T t : values) {
             converted.add(converterMap.write(t, clazz));
@@ -271,8 +277,13 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public List<String> getStringArray(String xpath) {
-        return getArray(xpath, String.class);
+    public List<String> getStringList(String xpath) {
+        return getList(xpath, String.class);
+    }
+
+    @Override
+    public Set<String> getStringSet(String xpath) {
+        return getSet(xpath, String.class);
     }
 
     @Override
@@ -288,8 +299,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public List<Boolean> getBooleanArray(String xpath) {
-        return getArray(xpath, Boolean.class);
+    public List<Boolean> getBooleanList(String xpath) {
+        return getList(xpath, Boolean.class);
     }
 
     @Override
@@ -305,8 +316,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public List<Integer> getIntegerArray(String xpath) {
-        return getArray(xpath, Integer.class);
+    public List<Integer> getIntegerList(String xpath) {
+        return getList(xpath, Integer.class);
     }
 
     @Override
@@ -322,8 +333,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public List<Long> getLongArray(String xpath) {
-        return getArray(xpath, Long.class);
+    public List<Long> getLongList(String xpath) {
+        return getList(xpath, Long.class);
     }
 
     @Override
@@ -339,8 +350,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public List<Double> getDoubleArray(String xpath) {
-        return getArray(xpath, Double.class);
+    public List<Double> getDoubleList(String xpath) {
+        return getList(xpath, Double.class);
     }
 
     @Override
@@ -356,8 +367,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public List<Float> getFloatArray(String xpath) {
-        return getArray(xpath, Float.class);
+    public List<Float> getFloatList(String xpath) {
+        return getList(xpath, Float.class);
     }
 
     @Override
@@ -373,8 +384,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public List<LocalDate> getLocalDateArray(String xpath) {
-        return getArray(xpath, LocalDate.class);
+    public List<LocalDate> getLocalDateList(String xpath) {
+        return getList(xpath, LocalDate.class);
     }
 
     @Override
@@ -390,8 +401,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public List<DateTime> getDateTimeArray(String xpath) {
-        return getArray(xpath, DateTime.class);
+    public List<DateTime> getDateTimeList(String xpath) {
+        return getList(xpath, DateTime.class);
     }
 
     @Override
@@ -407,8 +418,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public List<BigDecimal> getBigDecimalArray(String xpath) {
-        return getArray(xpath, BigDecimal.class);
+    public List<BigDecimal> getBigDecimalList(String xpath) {
+        return getList(xpath, BigDecimal.class);
     }
 
     @Override
@@ -424,13 +435,30 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     }
 
     @Override
-    public List<BigInteger> getBigIntegerArray(String xpath) {
-        return getArray(xpath, BigInteger.class);
+    public List<BigInteger> getBigIntegerList(String xpath) {
+        return getList(xpath, BigInteger.class);
     }
 
     @Override
     public J withBigInteger(String xpath, BigInteger value) {
         return with(xpath, value, BigInteger.class);
+    }
+
+    // Currency
+
+    @Override
+    public Currency getCurrency(String xpath) {
+        return get(xpath, Currency.class);
+    }
+
+    @Override
+    public List<Currency> getCurrencyList(String xpath) {
+        return getList(xpath, Currency.class);
+    }
+
+    @Override
+    public J withCurrency(String xpath, Currency value) {
+        return with(xpath, value, Currency.class);
     }
 
     // Other

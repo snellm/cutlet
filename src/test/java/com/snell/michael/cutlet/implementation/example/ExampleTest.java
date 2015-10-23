@@ -23,7 +23,7 @@ public class ExampleTest {
         XMLCutlet input = XMLCutlet.parse(readFile("input.xml"));
         JSONCutlet output = JSONCutlet.create();
 
-        for (XMLCutlet person : input.getArray("person")) {
+        for (XMLCutlet person : input.getList("person")) {
             output.add("mobile-" + person.getString("phonenumber[@type = 'mobile']"))
                 .withString("forename", person.getString("firstname"))
                 .withString("surname", person.getString("lastname"));

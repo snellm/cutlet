@@ -67,7 +67,7 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
     }
 
     @Override
-    public XMLCutlet withArray(String xpath, List<XMLCutlet> cutlets) {
+    public XMLCutlet withList(String xpath, List<XMLCutlet> cutlets) {
         Pointer p = context.createPath(xpath);
         Element e = (Element) p.getNode();
         for (XMLCutlet cutlet : cutlets) {
