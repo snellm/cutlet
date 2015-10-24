@@ -3,7 +3,6 @@
 package com.snell.michael.cutlet;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.Pointer;
 import org.joda.time.DateTime;
@@ -20,14 +19,14 @@ import java.util.*;
 import static com.snell.michael.cutlet.WriteStyle.PRETTY;
 import static org.apache.commons.lang.StringUtils.isBlank;
 
-abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements Cutlet<J> {
-    protected final JXPathContext context;
+abstract class JXPathContext<J extends JXPathContext<J>> implements Cutlet<J> {
+    protected final org.apache.commons.jxpath.JXPathContext context;
 
     private static final MicrotypeRegistry MICROTYPE_REGISTRY = new MicrotypeRegistry();
 
     private ConverterMap converterMap;
 
-    protected JXPathContextCutlet(JXPathContext jxpathContext) {
+    protected JXPathContext(org.apache.commons.jxpath.JXPathContext jxpathContext) {
         this.context = jxpathContext;
         this.converterMap = ConverterMap.DEFAULT_CONVERTER_MAP;
     }
@@ -73,8 +72,8 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     public J get(String xpath) {
         Pointer pointer = context.getPointer(xpath);
         if (pointer != null) {
-            JXPathContext relativeContext = context.getRelativeContext(pointer);
-            return createCutlet(relativeContext);
+            org.apache.commons.jxpath.JXPathContext relativeContext = context.getRelativeContext(pointer);
+            return create(relativeContext);
         } else {
             throw new CutletRuntimeException("No node at [" + xpath + "] in [" + getContextBean(this) + "]");
         }
@@ -107,7 +106,7 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
         List<J> c = new ArrayList<>();
         while (i.hasNext()) {
             Pointer p = (Pointer) i.next();
-            c.add(createCutlet(context.getRelativeContext(p)));
+            c.add(create(context.getRelativeContext(p)));
         }
 
         return c;
@@ -464,10 +463,10 @@ abstract class JXPathContextCutlet<J extends JXPathContextCutlet<J>> implements 
     // Other
 
     static Object getContextBean(Cutlet cutlet) {
-        return ((JXPathContextCutlet) cutlet).context.getContextBean();
+        return ((JXPathContext) cutlet).context.getContextBean();
     }
 
-    protected abstract J createCutlet(JXPathContext jxpathContext);
+    protected abstract J create(org.apache.commons.jxpath.JXPathContext jxpathContext);
 
     @Override
     public String toString() {

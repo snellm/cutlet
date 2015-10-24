@@ -2,8 +2,8 @@
 
 package com.snell.michael.cutlet.implementation.example;
 
-import com.snell.michael.cutlet.JSONCutlet;
-import com.snell.michael.cutlet.XMLCutlet;
+import com.snell.michael.cutlet.JSON;
+import com.snell.michael.cutlet.XML;
 import org.junit.Test;
 
 import java.io.InputStream;
@@ -20,10 +20,10 @@ public class ExampleTest {
     @Test
     public void example() {
         // Example starts
-        XMLCutlet input = XMLCutlet.parse(readFile("input.xml"));
-        JSONCutlet output = JSONCutlet.create();
+        XML input = XML.parse(readFile("input.xml"));
+        JSON output = JSON.create();
 
-        for (XMLCutlet person : input.getList("person")) {
+        for (XML person : input.getList("person")) {
             output.add("mobile-" + person.getString("phonenumber[@type = 'mobile']"))
                 .withString("forename", person.getString("firstname"))
                 .withString("surname", person.getString("lastname"));
@@ -32,7 +32,7 @@ public class ExampleTest {
         String json = output.write(PRETTY);
         // Example ends
 
-        assertEquals(JSONCutlet.parse(readFileResource(getClass(), "output.json")), JSONCutlet.parse(json));
+        assertEquals(JSON.parse(readFileResource(getClass(), "output.json")), JSON.parse(json));
     }
 
     private InputStream readFile(String filename) {

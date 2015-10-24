@@ -7,7 +7,6 @@ import net.sf.json.JSONSerializer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 
 import java.io.File;
@@ -22,15 +21,15 @@ import java.util.regex.Pattern;
 import static com.snell.michael.cutlet.WriteStyle.PRETTY;
 import static java.util.regex.Pattern.DOTALL;
 
-public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
+public class JSON extends JXPathContext<JSON> {
     private static final Pattern COMMENT_PATTERN = Pattern.compile("^/\\*.*?\\*/", DOTALL);
 
-    private JSONCutlet(JXPathContext jxpathContext) {
+    private JSON(org.apache.commons.jxpath.JXPathContext jxpathContext) {
         super(jxpathContext);
 
         jxpathContext.setFactory(new AbstractFactory() {
             @Override
-            public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index) {
+            public boolean createObject(org.apache.commons.jxpath.JXPathContext context, Pointer pointer, Object parent, String name, int index) {
                 if (parent instanceof JSONObject) {
                     ((JSONObject) parent).put(name, new JSONObject());
                     return true;
@@ -42,8 +41,8 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     }
 
     @Override
-    protected JSONCutlet createCutlet(JXPathContext jxpathContext) {
-        return new JSONCutlet(jxpathContext);
+    protected JSON create(org.apache.commons.jxpath.JXPathContext jxpathContext) {
+        return new JSON(jxpathContext);
     }
 
     @Override
@@ -58,10 +57,10 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     }
 
     @Override
-    public JSONCutlet withList(String xpath, List<JSONCutlet> cutlets) {
-        Collection<Object> os = new ArrayList<>(cutlets.size());
-        for (JSONCutlet cutlet : cutlets) {
-            os.add(getContextBean(cutlet));
+    public JSON withList(String xpath, List<JSON> jsons) {
+        Collection<Object> os = new ArrayList<>(jsons.size());
+        for (JSON json : jsons) {
+            os.add(getContextBean(json));
         }
         context.createPathAndSetValue(xpath, os);
 
@@ -71,10 +70,10 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     /**
      * Parse a JSON string into a JSONCutlet with can be queried using XPath expressions
      */
-    public static JSONCutlet parse(String string) {
+    public static JSON parse(String string) {
         try {
             string = stripComments(string);
-            return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(string)));
+            return new JSON(org.apache.commons.jxpath.JXPathContext.newContext(JSONSerializer.toJSON(string)));
         } catch (RuntimeException e) {
             throw new CutletRuntimeException("Could not parse [" + string + "] as JSON", e);
         }
@@ -87,7 +86,7 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     /**
      * Parse a JSON input stream into a JSONCutlet with can be queried using XPath expressions
      */
-    public static JSONCutlet parse(InputStream inputStream) {
+    public static JSON parse(InputStream inputStream) {
         String string;
         try {
             string = IOUtils.toString(inputStream);
@@ -101,7 +100,7 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     /**
      * Parse a JSON file into a JSONCutlet with can be queried using XPath expressions
      */
-    public static JSONCutlet parse(File file) {
+    public static JSON parse(File file) {
         String string;
         try {
             string = FileUtils.readFileToString(file);
@@ -115,14 +114,14 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
     /**
      * Create an empty JSONCutlet
      */
-    public static JSONCutlet create() {
-        return new JSONCutlet(JXPathContext.newContext(new JSONObject()));
+    public static JSON create() {
+        return new JSON(org.apache.commons.jxpath.JXPathContext.newContext(new JSONObject()));
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof JSONCutlet) {
-            return getContextBean(this).equals((getContextBean((JSONCutlet) obj)));
+        if (obj instanceof JSON) {
+            return getContextBean(this).equals((getContextBean((JSON) obj)));
         } else {
             return false;
         }

@@ -6,12 +6,12 @@ Cutlet is a "batteries included" library to make working with XML and JSON in Ja
 - Simple, concise, fluent, type-safe API  
 - The same API for XML and JSON, as far as possible given their slightly different data models
 - Reading/writing of XML and JSON from/to strings, streams and files
-- Fails fast and provides useful error messages
+- Provides useful error messages
 - Conversion of common data types (Strings, BigInteger, BigDecimal, LocalDate, DateTime, enums) supporting
 most standard formats (eg ISO8601 dates) and edge cases (exponential notation for numbers) as well as microtypes
 - Pluggable data type converters
 - Uses [XPath](http://en.wikipedia.org/wiki/XPath) to select nodes in both XML and JSON
-- A nested approach, ie extracting sub-documents and working with them in the same manner as full documents
+- A nested approach - extracting sub-documents and working with them in the same manner as full documents
 
 Non goals:
 
@@ -27,10 +27,10 @@ array of their mobile phone numbers to names, changing the keys for "firstname" 
 "surname" ([output.json](https://github.com/snellm/cutlet/blob/master/src/test/resources/com/snell/michael/cutlet/implementation/example/output.json)):
 
 ````java
-XMLCutlet input = XMLCutlet.parse(new File("input.xml"));
-JSONCutlet output = JSONCutlet.create();
+XML input = XML.parse(new File("input.xml"));
+JSON output = JSON.create();
 
-for (XMLCutlet person : input.getList("person")) {
+for (XML person : input.getList("person")) {
     output.add("mobile-" + person.getString("phonenumber[@type = 'mobile']"))
         .addString("forename", person.getString("firstname"))
         .addString("surname", person.getString("lastname"));

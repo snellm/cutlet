@@ -4,7 +4,6 @@ package com.snell.michael.cutlet;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.jxpath.AbstractFactory;
-import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -24,19 +23,19 @@ import java.util.Set;
 import static com.snell.michael.cutlet.WriteStyle.COMPACT;
 import static java.lang.Boolean.TRUE;
 
-public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
+public class XML extends JXPathContext<XML> {
     private static DOMImplementationLS DOM_IMPLEMENTATION;
     private static LSParser PARSER;
 
     private final Document document;
 
-    private XMLCutlet(JXPathContext jxpathContext, final Document document) {
+    private XML(org.apache.commons.jxpath.JXPathContext jxpathContext, final Document document) {
         super(jxpathContext);
         this.document = document;
 
         context.setFactory(new AbstractFactory() {
             @Override
-            public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index) {
+            public boolean createObject(org.apache.commons.jxpath.JXPathContext context, Pointer pointer, Object parent, String name, int index) {
                 if (parent instanceof Element) {
                     ((Element) parent).appendChild(document.createElement(name));
                     return true;
@@ -48,8 +47,8 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
     }
 
     @Override
-    protected XMLCutlet createCutlet(JXPathContext jxpathContext) {
-        return new XMLCutlet(jxpathContext, document);
+    protected XML create(org.apache.commons.jxpath.JXPathContext jxpathContext) {
+        return new XML(jxpathContext, document);
     }
 
     @Override
@@ -67,11 +66,11 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
     }
 
     @Override
-    public XMLCutlet withList(String xpath, List<XMLCutlet> cutlets) {
+    public XML withList(String xpath, List<XML> xmls) {
         Pointer p = context.createPath(xpath);
         Element e = (Element) p.getNode();
-        for (XMLCutlet cutlet : cutlets) {
-            Node n = (Node) getContextBean(cutlet);
+        for (XML xml : xmls) {
+            Node n = (Node) getContextBean(xml);
             Node ni = ((Element) getContextBean(this)).getOwnerDocument().importNode(n, true);
             e.appendChild(ni);
         }
@@ -86,8 +85,8 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof XMLCutlet) {
-            return write(COMPACT).equals(((XMLCutlet) obj).write(COMPACT));
+        if (obj instanceof XML) {
+            return write(COMPACT).equals(((XML) obj).write(COMPACT));
         } else {
             return false;
         }
@@ -119,50 +118,50 @@ public class XMLCutlet extends JXPathContextCutlet<XMLCutlet> {
     }
 
     /**
-     * Parse a XML string into a Cutlet class with can be queried using XPath expressions
+     * Parse a XML string into a Cutlet class
      */
-    public static XMLCutlet parse(String xml) {
+    public static XML parse(String xml) {
         Document document = parseToDocument(xml);
-        return getCutletFromDocument(document);
+        return getFromDocument(document);
     }
 
     /**
-     * Parse a XML input stream into a Cutlet class with can be queried using XPath expressions
+     * Parse a XML input stream into a Cutlet class
      */
-    public static XMLCutlet parse(InputStream inputStream) {
+    public static XML parse(InputStream inputStream) {
         Document document = parseToDocument(inputStream);
-        return getCutletFromDocument(document);
+        return getFromDocument(document);
     }
 
     /**
-     * Parse a XML file into a Cutlet class with can be queried using XPath expressions
+     * Parse a XML file into a Cutlet class
      */
-    public static XMLCutlet parse(File file) {
+    public static XML parse(File file) {
         try {
             Document document = parseToDocument(FileUtils.openInputStream(file));
-            return getCutletFromDocument(document);
+            return getFromDocument(document);
         } catch (IOException e) {
             throw new RuntimeException("IO exception reading from file [" + file + "]");
         }
     }
 
-    private static XMLCutlet getCutletFromDocument(Document document) {
-        JXPathContext context = JXPathContext.newContext(document);
+    private static XML getFromDocument(Document document) {
+        org.apache.commons.jxpath.JXPathContext context = org.apache.commons.jxpath.JXPathContext.newContext(document);
         Pointer pointer = context.getPointer(document.getDocumentElement().getNodeName());
 
-        return new XMLCutlet(context.getRelativeContext(pointer), document);
+        return new XML(context.getRelativeContext(pointer), document);
     }
 
     /**
      * Create an empty XMLCutlet than can later be serialised to XML
      * The root node of the XML document must be specified, and is not required in further queries
      */
-    public static XMLCutlet create(String rootNode) {
+    public static XML create(String rootNode) {
         Document document = parseToDocument("<" + rootNode + "/>");
-        JXPathContext context = JXPathContext.newContext(document);
+        org.apache.commons.jxpath.JXPathContext context = org.apache.commons.jxpath.JXPathContext.newContext(document);
 
         Pointer pointer = context.getPointer(rootNode);
-        return new XMLCutlet(context.getRelativeContext(pointer), document);
+        return new XML(context.getRelativeContext(pointer), document);
     }
 
     private static String serializeXML(Document document, WriteStyle style) {
