@@ -17,10 +17,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import static com.snell.michael.cutlet.WriteStyle.PRETTY;
+import static java.util.regex.Pattern.DOTALL;
 
 public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
+    private static final Pattern COMMENT_PATTERN = Pattern.compile("^/\\*.*?\\*/", DOTALL);
+
     private JSONCutlet(JXPathContext jxpathContext) {
         super(jxpathContext);
 
@@ -69,10 +73,15 @@ public class JSONCutlet extends JXPathContextCutlet<JSONCutlet> {
      */
     public static JSONCutlet parse(String string) {
         try {
+            string = stripComments(string);
             return new JSONCutlet(JXPathContext.newContext(JSONSerializer.toJSON(string)));
         } catch (RuntimeException e) {
             throw new CutletRuntimeException("Could not parse [" + string + "] as JSON", e);
         }
+    }
+
+    private static String stripComments(String string) {
+        return COMMENT_PATTERN.matcher(string.trim()).replaceFirst("").trim();
     }
 
     /**

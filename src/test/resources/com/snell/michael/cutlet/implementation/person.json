@@ -1,3 +1,7 @@
+
+/*
+This comment will be discarded when file is read
+*/
 {
     "person" : {
         "firstName": "John",
