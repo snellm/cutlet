@@ -7,6 +7,7 @@ import net.sf.json.JSONSerializer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.jxpath.AbstractFactory;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 
 import java.io.File;
@@ -21,15 +22,19 @@ import java.util.regex.Pattern;
 import static com.snell.michael.cutlet.WriteStyle.PRETTY;
 import static java.util.regex.Pattern.DOTALL;
 
-public class JSON extends JXPathContext<JSON> {
+public class JSON extends CutletJXPathContext<JSON> {
     private static final Pattern COMMENT_PATTERN = Pattern.compile("^/\\*.*?\\*/", DOTALL);
 
-    private JSON(org.apache.commons.jxpath.JXPathContext jxpathContext) {
+    private final JSON root;
+
+    private JSON(JSON root, JXPathContext jxpathContext) {
         super(jxpathContext);
+
+        this.root = root;
 
         jxpathContext.setFactory(new AbstractFactory() {
             @Override
-            public boolean createObject(org.apache.commons.jxpath.JXPathContext context, Pointer pointer, Object parent, String name, int index) {
+            public boolean createObject(JXPathContext context, Pointer pointer, Object parent, String name, int index) {
                 if (parent instanceof JSONObject) {
                     ((JSONObject) parent).put(name, new JSONObject());
                     return true;
@@ -41,13 +46,17 @@ public class JSON extends JXPathContext<JSON> {
     }
 
     @Override
-    protected JSON create(org.apache.commons.jxpath.JXPathContext jxpathContext) {
-        return new JSON(jxpathContext);
+    protected JSON create(JXPathContext jxpathContext) {
+        return new JSON(root == null? this : root, jxpathContext);
     }
 
     @Override
     public String write(WriteStyle style) {
-        return ((JSONObject) getContextBean(this)).toString(PRETTY.equals(style) ? 2 : 0);
+        if (root == null) {
+            return ((JSONObject) getContextBean(this)).toString(PRETTY.equals(style) ? 2 : 0);
+        } else {
+            return root.write(style);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -73,7 +82,7 @@ public class JSON extends JXPathContext<JSON> {
     public static JSON parse(String string) {
         try {
             string = stripComments(string);
-            return new JSON(org.apache.commons.jxpath.JXPathContext.newContext(JSONSerializer.toJSON(string)));
+            return new JSON(null, JXPathContext.newContext(JSONSerializer.toJSON(string)));
         } catch (RuntimeException e) {
             throw new CutletRuntimeException("Could not parse [" + string + "] as JSON", e);
         }
@@ -122,7 +131,7 @@ public class JSON extends JXPathContext<JSON> {
      * Create an empty JSONCutlet
      */
     public static JSON create() {
-        return new JSON(org.apache.commons.jxpath.JXPathContext.newContext(new JSONObject()));
+        return new JSON(null, JXPathContext.newContext(new JSONObject()));
     }
 
     @Override

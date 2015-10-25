@@ -1,7 +1,7 @@
 Overview
 ========
 
-Cutlet is a "batteries included" library to make working directly with XML and JSON as datastructures in Java simpler.
+Cutlet is a "batteries included" library to make working directly with XML and JSON as data structures in Java simpler.
 
 - Simple, concise, fluent, type-safe API  
 - The same API for XML and JSON, as far as possible given their slightly different data models
@@ -21,7 +21,37 @@ Non goals:
 Example
 =======
 
-Given an XML file containing a list of people and their home and mobile phone numbers
+Hello world in JSON:
+
+````java
+JSON.create().add("message").with("hello", "world")
+````
+
+creates: 
+
+````json
+{
+  "message": {
+    "hello": "world"
+  }
+}
+````
+
+Hello world in XML:
+
+````java
+XML.create("message").with("hello", "world")
+````
+
+creates: 
+
+````xml
+<message>
+    <hello>world</hello>
+</message>
+````
+
+More complex: Given an XML file containing a list of people and their home and mobile phone numbers
 ([input.xml](https://github.com/snellm/cutlet/blob/master/src/test/resources/com/snell/michael/cutlet/implementation/example/input.xml)), output a JSON associative 
 array of their mobile phone numbers to names, changing the keys for "firstname" and "lastname" to "forename" and 
 "surname" ([output.json](https://github.com/snellm/cutlet/blob/master/src/test/resources/com/snell/michael/cutlet/implementation/example/output.json)):

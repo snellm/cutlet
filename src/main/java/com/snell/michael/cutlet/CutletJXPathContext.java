@@ -3,6 +3,7 @@
 package com.snell.michael.cutlet;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathNotFoundException;
 import org.apache.commons.jxpath.Pointer;
 import org.joda.time.DateTime;
@@ -19,14 +20,14 @@ import java.util.*;
 import static com.snell.michael.cutlet.WriteStyle.PRETTY;
 import static org.apache.commons.lang.StringUtils.isBlank;
 
-abstract class JXPathContext<J extends JXPathContext<J>> implements Cutlet<J> {
-    protected final org.apache.commons.jxpath.JXPathContext context;
+abstract class CutletJXPathContext<J extends CutletJXPathContext<J>> implements Cutlet<J> {
+    protected final JXPathContext context;
 
     private static final MicrotypeRegistry MICROTYPE_REGISTRY = new MicrotypeRegistry();
 
     private ConverterMap converterMap;
 
-    protected JXPathContext(org.apache.commons.jxpath.JXPathContext jxpathContext) {
+    protected CutletJXPathContext(JXPathContext jxpathContext) {
         this.context = jxpathContext;
         this.converterMap = ConverterMap.DEFAULT_CONVERTER_MAP;
     }
@@ -72,7 +73,7 @@ abstract class JXPathContext<J extends JXPathContext<J>> implements Cutlet<J> {
     public J get(String xpath) {
         Pointer pointer = context.getPointer(xpath);
         if (pointer != null) {
-            org.apache.commons.jxpath.JXPathContext relativeContext = context.getRelativeContext(pointer);
+            JXPathContext relativeContext = context.getRelativeContext(pointer);
             return create(relativeContext);
         } else {
             throw new CutletRuntimeException("No node at [" + xpath + "] in [" + getContextBean(this) + "]");
@@ -463,10 +464,10 @@ abstract class JXPathContext<J extends JXPathContext<J>> implements Cutlet<J> {
     // Other
 
     static Object getContextBean(Cutlet cutlet) {
-        return ((JXPathContext) cutlet).context.getContextBean();
+        return ((CutletJXPathContext) cutlet).context.getContextBean();
     }
 
-    protected abstract J create(org.apache.commons.jxpath.JXPathContext jxpathContext);
+    protected abstract J create(JXPathContext jxpathContext);
 
     @Override
     public String toString() {

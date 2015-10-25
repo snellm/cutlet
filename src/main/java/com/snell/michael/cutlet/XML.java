@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 import static com.snell.michael.cutlet.WriteStyle.COMPACT;
 import static java.lang.Boolean.TRUE;
 
-public class XML extends JXPathContext<XML> {
+public class XML extends CutletJXPathContext<XML> {
     private static final Pattern NEWLINE_LEADING_WHITESPACE_PATTERN = Pattern.compile("\\n\\s*");
 
     private static DOMImplementationLS DOM_IMPLEMENTATION;

@@ -18,6 +18,18 @@ import static org.junit.Assert.assertEquals;
  */
 public class ExampleTest {
     @Test
+    public void helloWorldJSON() {
+        JSON json = JSON.create().add("message").with("hello", "world");
+        System.out.println(json);
+    }
+
+    @Test
+    public void helloWorldXML() {
+        XML xml = XML.create("message").with("hello", "world");
+        System.out.println(xml);
+    }
+
+    @Test
     public void example() {
         // Example starts
         JSON output = JSON.create();
