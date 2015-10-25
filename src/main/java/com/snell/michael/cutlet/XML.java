@@ -148,6 +148,13 @@ public class XML extends JXPathContext<XML> {
         }
     }
 
+    /**
+     * Parse a XML file into a Cutlet class
+     */
+    public static XML parseFile(String filename) {
+        return parse(new File(filename));
+    }
+
     private static XML getFromDocument(Document document) {
         org.apache.commons.jxpath.JXPathContext context = org.apache.commons.jxpath.JXPathContext.newContext(document);
         Pointer pointer = context.getPointer(document.getDocumentElement().getNodeName());

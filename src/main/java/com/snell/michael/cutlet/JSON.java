@@ -68,7 +68,7 @@ public class JSON extends JXPathContext<JSON> {
     }
 
     /**
-     * Parse a JSON string into a JSONCutlet with can be queried using XPath expressions
+     * Parse a JSON string into a Cutlet
      */
     public static JSON parse(String string) {
         try {
@@ -84,7 +84,7 @@ public class JSON extends JXPathContext<JSON> {
     }
 
     /**
-     * Parse a JSON input stream into a JSONCutlet with can be queried using XPath expressions
+     * Parse a JSON input stream into a Cutlet
      */
     public static JSON parse(InputStream inputStream) {
         String string;
@@ -98,7 +98,7 @@ public class JSON extends JXPathContext<JSON> {
     }
 
     /**
-     * Parse a JSON file into a JSONCutlet with can be queried using XPath expressions
+     * Parse a JSON file into a Cutlet
      */
     public static JSON parse(File file) {
         String string;
@@ -109,6 +109,13 @@ public class JSON extends JXPathContext<JSON> {
         }
 
         return parse(string);
+    }
+
+    /**
+     * Parse a JSON file into a Cutlet
+     */
+    public static JSON parseFile(String filename) {
+        return parse(new File(filename));
     }
 
     /**

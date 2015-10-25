@@ -1,7 +1,7 @@
 Overview
 ========
 
-Cutlet is a "batteries included" library to make working with XML and JSON in Java simpler.
+Cutlet is a "batteries included" library to make working directly with XML and JSON as datastructures in Java simpler.
 
 - Simple, concise, fluent, type-safe API  
 - The same API for XML and JSON, as far as possible given their slightly different data models
@@ -11,11 +11,11 @@ Cutlet is a "batteries included" library to make working with XML and JSON in Ja
 most standard formats (eg ISO8601 dates) and edge cases (exponential notation for numbers) as well as microtypes
 - Pluggable data type converters
 - Uses [XPath](http://en.wikipedia.org/wiki/XPath) to select nodes in both XML and JSON
-- A nested approach - extracting sub-documents and working with them in the same manner as full documents
+- Nested approach: Extract sub-documents and working with them in the same manner as full documents
 
 Non goals:
 
-- Mapping to/from objects and JSON/XML
+- Mapping between classes and JSON/XML
 - Performance and memory efficiency are secondary goals
 
 Example
@@ -27,20 +27,16 @@ array of their mobile phone numbers to names, changing the keys for "firstname" 
 "surname" ([output.json](https://github.com/snellm/cutlet/blob/master/src/test/resources/com/snell/michael/cutlet/implementation/example/output.json)):
 
 ````java
-XML input = XML.parse(new File("input.xml"));
 JSON output = JSON.create();
-
-for (XML person : input.getList("person")) {
+XML.parseFile("input.xml").getList("person").forEach(person -> 
     output.add("mobile-" + person.getString("phonenumber[@type = 'mobile']"))
-        .addString("forename", person.getString("firstname"))
-        .addString("surname", person.getString("lastname"));
-}
-
+        .withString("forename", person.getString("firstname"))
+        .withString("surname", person.getString("lastname")));
 String json = output.write(PRETTY);
 ````
 
-See the [JSON](https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/JSONCutletTest.java) and 
-[XML](https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/XMLCutletTest.java) tests cases for more examples.
+See the [JSON](https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/JSONTest.java) and 
+[XML](https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/XMLTest.java) tests cases for more examples.
 
 Downloading
 ===========

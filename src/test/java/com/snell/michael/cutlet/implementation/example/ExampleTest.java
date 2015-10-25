@@ -20,15 +20,12 @@ public class ExampleTest {
     @Test
     public void example() {
         // Example starts
-        XML input = XML.parse(readFile("input.xml"));
         JSON output = JSON.create();
-
-        for (XML person : input.getList("person")) {
+        for (XML person : XML.parse(readFile("input.xml")).getList("person")) {
             output.add("mobile-" + person.getString("phonenumber[@type = 'mobile']"))
                 .withString("forename", person.getString("firstname"))
                 .withString("surname", person.getString("lastname"));
         }
-
         String json = output.write(PRETTY);
         // Example ends
 

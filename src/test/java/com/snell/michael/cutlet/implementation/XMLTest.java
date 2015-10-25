@@ -205,14 +205,6 @@ public class XMLTest {
         assertEquals("Red", xml.getList("colours/color").get(0).getString("name"));
     }
 
-
-    @Test
-    public void compactPrinting() {
-        XML xml = getPersonXMLCutlet();
-
-        String compactString = xml.write(COMPACT);
-    }
-
     @Test
     public void printing() {
         XML xml = getPersonXMLCutlet();

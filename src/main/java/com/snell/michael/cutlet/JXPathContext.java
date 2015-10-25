@@ -188,14 +188,14 @@ abstract class JXPathContext<J extends JXPathContext<J>> implements Cutlet<J> {
 
     @Override
     public <T> List<T> getList(String xpath, Class<T> clazz) {
-        List<T> list = new ArrayList<>();
+        List<T> list = new ArrayList<>(0);
         populateCollection(xpath, clazz, list);
         return list;
     }
 
     @Override
     public <T> Set<T> getSet(String xpath, Class<T> clazz) {
-        Set<T> set = new HashSet<>();
+        Set<T> set = new HashSet<>(0);
         populateCollection(xpath, clazz, set);
         return set;
     }
