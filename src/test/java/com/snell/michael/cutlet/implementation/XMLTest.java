@@ -207,11 +207,20 @@ public class XMLTest {
 
 
     @Test
+    public void compactPrinting() {
+        XML xml = getPersonXMLCutlet();
+
+        String compactString = xml.write(COMPACT);
+    }
+
+    @Test
     public void printing() {
         XML xml = getPersonXMLCutlet();
 
         String compactString = xml.write(COMPACT);
         String prettyString = xml.write(PRETTY);
+
+        assertNotEquals(compactString, prettyString);
 
         XML reparsedCompactCutlet = XML.parse(compactString);
         assertEquals(xml, reparsedCompactCutlet);

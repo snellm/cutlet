@@ -19,11 +19,14 @@ import java.io.InputStream;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import static com.snell.michael.cutlet.WriteStyle.COMPACT;
 import static java.lang.Boolean.TRUE;
 
 public class XML extends JXPathContext<XML> {
+    private static final Pattern NEWLINE_LEADING_WHITESPACE_PATTERN = Pattern.compile("\\n\\s*");
+
     private static DOMImplementationLS DOM_IMPLEMENTATION;
     private static LSParser PARSER;
 
@@ -179,7 +182,13 @@ public class XML extends JXPathContext<XML> {
         output.setEncoding("UTF-8");
         output.setByteStream(byteStream);
         serializer.write(document, output);
-        return byteStream.toString().trim();
+        String str = byteStream.toString().trim();
+
+        if (style == WriteStyle.COMPACT) {
+            str = NEWLINE_LEADING_WHITESPACE_PATTERN.matcher(str).replaceAll("");
+        }
+
+        return str;
     }
 
     /**
