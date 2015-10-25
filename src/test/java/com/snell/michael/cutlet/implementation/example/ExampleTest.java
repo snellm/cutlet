@@ -20,13 +20,13 @@ public class ExampleTest {
     @Test
     public void helloWorldJSON() {
         JSON json = JSON.create().add("message").with("hello", "world");
-        System.out.println(json);
+        //System.out.println(json);
     }
 
     @Test
     public void helloWorldXML() {
         XML xml = XML.create("message").with("hello", "world");
-        System.out.println(xml);
+        //System.out.println(xml);
     }
 
     @Test

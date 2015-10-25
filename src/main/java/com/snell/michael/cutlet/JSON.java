@@ -30,7 +30,7 @@ public class JSON extends CutletJXPathContext<JSON> {
     private JSON(JSON root, JXPathContext jxpathContext) {
         super(jxpathContext);
 
-        this.root = root;
+        this.root = (root == null ? this : root);
 
         jxpathContext.setFactory(new AbstractFactory() {
             @Override
@@ -52,11 +52,7 @@ public class JSON extends CutletJXPathContext<JSON> {
 
     @Override
     public String write(WriteStyle style) {
-        if (root == null) {
-            return ((JSONObject) getContextBean(this)).toString(PRETTY.equals(style) ? 2 : 0);
-        } else {
-            return root.write(style);
-        }
+        return ((JSONObject) getContextBean(root)).toString(PRETTY.equals(style) ? 2 : 0);
     }
 
     @SuppressWarnings("unchecked")
@@ -137,7 +133,7 @@ public class JSON extends CutletJXPathContext<JSON> {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof JSON) {
-            return getContextBean(this).equals((getContextBean((JSON) obj)));
+            return getContextBean(root).equals((getContextBean(((JSON) obj).root)));
         } else {
             return false;
         }
