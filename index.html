@@ -22,42 +22,67 @@
       <h1>
 <a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h1>
 
-<p>Cutlet is a "batteries included" library to make working with XML and JSON in Java simpler.</p>
+<p>Cutlet is a "batteries included" library to make working directly with XML and JSON as data structures in Java simpler.</p>
 
 <ul>
 <li>Simple, concise, fluent, type-safe API<br>
 </li>
-<li>The same API for XML and JSON, as far as possible given their different capabilities</li>
+<li>The same API for XML and JSON, as far as possible given their slightly different data models</li>
 <li>Reading/writing of XML and JSON from/to strings, streams and files</li>
-<li>Fails fast and provides useful error messages</li>
+<li>Provides useful error messages</li>
 <li>Conversion of common data types (Strings, BigInteger, BigDecimal, LocalDate, DateTime, enums) supporting
 most standard formats (eg ISO8601 dates) and edge cases (exponential notation for numbers) as well as microtypes</li>
 <li>Pluggable data type converters</li>
 <li>Uses <a href="http://en.wikipedia.org/wiki/XPath">XPath</a> to select nodes in both XML and JSON</li>
-<li>A nested approach, ie extracting sub-documents and working with them in the same manner as full documents</li>
+<li>Nested approach: Extract sub-documents and working with them in the same manner as full documents</li>
+</ul>
+
+<p>Non goals:</p>
+
+<ul>
+<li>Mapping between classes and JSON/XML</li>
+<li>Performance and memory efficiency are secondary goals</li>
 </ul>
 
 <h1>
-<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h1>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h1>
 
-<p>Given an XML file containing a list of people and their home and mobile phone numbers
+<p>Hello world in JSON:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-c1">JSON</span><span class="pl-k">.</span>create()<span class="pl-k">.</span>add(<span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>with(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)</pre></div>
+
+<p>creates: </p>
+
+<div class="highlight highlight-source-json"><pre>{
+  <span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>: {
+    <span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>
+  }
+}</pre></div>
+
+<p>Hello world in XML:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-c1">XML</span><span class="pl-k">.</span>create(<span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>with(<span class="pl-s"><span class="pl-pds">"</span>hello<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>world<span class="pl-pds">"</span></span>)</pre></div>
+
+<p>creates: </p>
+
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">message</span>&gt;
+    &lt;<span class="pl-ent">hello</span>&gt;world&lt;/<span class="pl-ent">hello</span>&gt;
+&lt;/<span class="pl-ent">message</span>&gt;</pre></div>
+
+<p>More complex: Given an XML file containing a list of people and their home and mobile phone numbers
 (<a href="https://github.com/snellm/cutlet/blob/master/src/test/resources/com/snell/michael/cutlet/implementation/example/input.xml">input.xml</a>), output a JSON associative 
 array of their mobile phone numbers to names, changing the keys for "firstname" and "lastname" to "forename" and 
 "surname" (<a href="https://github.com/snellm/cutlet/blob/master/src/test/resources/com/snell/michael/cutlet/implementation/example/output.json">output.json</a>):</p>
 
-<div class="highlight highlight-source-java"><pre><span class="pl-smi">XMLCutlet</span> input <span class="pl-k">=</span> <span class="pl-smi">XMLCutlet</span><span class="pl-k">.</span>parse(<span class="pl-k">new</span> <span class="pl-smi">File</span>(<span class="pl-s"><span class="pl-pds">"</span>input.xml<span class="pl-pds">"</span></span>));
-<span class="pl-smi">JSONCutlet</span> output <span class="pl-k">=</span> <span class="pl-smi">JSONCutlet</span><span class="pl-k">.</span>create();
-
-<span class="pl-k">for</span> (<span class="pl-smi">XMLCutlet</span> person <span class="pl-k">:</span> input<span class="pl-k">.</span>getArray(<span class="pl-s"><span class="pl-pds">"</span>person<span class="pl-pds">"</span></span>)) {
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">JSON</span> output <span class="pl-k">=</span> <span class="pl-c1">JSON</span><span class="pl-k">.</span>create();
+<span class="pl-c1">XML</span><span class="pl-k">.</span>parseFile(<span class="pl-s"><span class="pl-pds">"</span>input.xml<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>getList(<span class="pl-s"><span class="pl-pds">"</span>person<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>forEach(person <span class="pl-k">-</span><span class="pl-k">&gt;</span> 
     output<span class="pl-k">.</span>add(<span class="pl-s"><span class="pl-pds">"</span>mobile-<span class="pl-pds">"</span></span> <span class="pl-k">+</span> person<span class="pl-k">.</span>getString(<span class="pl-s"><span class="pl-pds">"</span>phonenumber[@type = 'mobile']<span class="pl-pds">"</span></span>))
-        .addString(<span class="pl-s"><span class="pl-pds">"</span>forename<span class="pl-pds">"</span></span>, person<span class="pl-k">.</span>getString(<span class="pl-s"><span class="pl-pds">"</span>firstname<span class="pl-pds">"</span></span>))
-        .addString(<span class="pl-s"><span class="pl-pds">"</span>surname<span class="pl-pds">"</span></span>, person<span class="pl-k">.</span>getString(<span class="pl-s"><span class="pl-pds">"</span>lastname<span class="pl-pds">"</span></span>));
-}
-
+        .withString(<span class="pl-s"><span class="pl-pds">"</span>forename<span class="pl-pds">"</span></span>, person<span class="pl-k">.</span>getString(<span class="pl-s"><span class="pl-pds">"</span>firstname<span class="pl-pds">"</span></span>))
+        .withString(<span class="pl-s"><span class="pl-pds">"</span>surname<span class="pl-pds">"</span></span>, person<span class="pl-k">.</span>getString(<span class="pl-s"><span class="pl-pds">"</span>lastname<span class="pl-pds">"</span></span>)));
 <span class="pl-smi">String</span> json <span class="pl-k">=</span> output<span class="pl-k">.</span>write(<span class="pl-c1">PRETTY</span>);</pre></div>
 
-<p>See the <a href="https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/JSONCutletTest.java">JSON</a> and 
-<a href="https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/XMLCutletTest.java">XML</a> tests cases for more examples.</p>
+<p>See the <a href="https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/JSONTest.java">JSON</a> and 
+<a href="https://github.com/snellm/cutlet/blob/master/src/test/java/com/snell/michael/cutlet/implementation/XMLTest.java">XML</a> tests cases for more examples.</p>
 
 <h1>
 <a id="downloading" class="anchor" href="#downloading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Downloading</h1>
