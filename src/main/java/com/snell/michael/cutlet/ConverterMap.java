@@ -13,7 +13,7 @@ import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConverterMap {
+public class ZConverterMap {
     static ConverterMap DEFAULT_CONVERTER_MAP = createWithDefaults();
 
     private final Map<Class<?>, Converter<?>> classConverter = new HashMap<>();
