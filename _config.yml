@@ -1,0 +1,8 @@
+title: Cutlet
+description: Slicing and dicing XML/JSON in Java for fun and profit
+google_analytics: UA-40490896-1
+show_downloads: true
+theme: jekyll-theme-cayman
+
+gems:
+  - jekyll-mentions
