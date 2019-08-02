@@ -85,6 +85,10 @@ Maven:
 
 Direct download: http://repo1.maven.org/maven2/com/snell/michael/cutlet/cutlet
 
+Build status
+============
+[![Build Status](https://travis-ci.org/snellm/cutlet.svg?branch=master)](https://travis-ci.org/snellm/cutlet)
+
 Fine print
 ==========
 - Copyright 2015 Michael Snell
